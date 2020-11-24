@@ -6,7 +6,7 @@
 
 This app is in development right now
 
-Check [Requirements](requirements.md) for more information
+Check [Requirements](Requirements.md) for more information
 
 ## Contribute
 
