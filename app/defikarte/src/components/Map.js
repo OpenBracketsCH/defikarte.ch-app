@@ -1,27 +1,26 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
+import DefiMarker from './DefiMarker';
 import defis from '../api/backendDefis';
 
-const Map = () => {
+const Map = ({initCoords}) => { 
   return (
     <View style={styles.containerStyle}>
       <MapView 
         style={styles.mapStyle}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+        region={{
+          latitude: initCoords.latitude,
+          longitude: initCoords.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
         >
-        {defis().map((defi, index) => {
-          return (          
-            <Marker
-              key={index}
-              coordinate={defi.latlng}
-              title={defi.title}
-              description={defi.description}
+        {defis().elements.map((defi) => {        
+          return (     
+            <DefiMarker
+              key={defi.id.toString()}
+              defibrillator={defi}
             />
           );}
         )}
