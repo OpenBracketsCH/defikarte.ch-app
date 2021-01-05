@@ -16,7 +16,7 @@ const getDefibrillators = dispatch => {
   };
 };
 
-const addDefibrillator = (dispatch) => {
+const addDefibrillator = () => {
   return async (defibrillator, callback) => {
     await defikarteBackendMock.post('/defibrillator', defibrillator)
     if (callback) {

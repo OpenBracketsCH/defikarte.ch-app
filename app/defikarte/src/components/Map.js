@@ -10,6 +10,8 @@ const Map = ({ initCoords, mapRef, defibrillators }) => {
         ref={mapRef}
         style={styles.mapStyle}
         initialRegion={initCoords}
+        showsUserLocation
+        followsUserLocation={false}
       >
         {defibrillators.map((defibrillator) => {
           return (

@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { withNavigation } from 'react-navigation';
 
 const DefiItem = ({ defibrillator, navigation }) => {
-  const [latlng, setLatLng] = useState({ latitude: defibrillator.lat, longitude: defibrillator.lon })
+  const latlng = { latitude: defibrillator.lat, longitude: defibrillator.lon };
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('Main', { latlng })}>
       <View style={styles.containerStyle}>
         <Text style={styles.titleStyle}>{defibrillator.tags['defibrillator:location'] ?? 'n/A'}</Text>
-        <Text>{defibrillator.lat}, {defibrillator.lon} / {defibrillator.tags['emergency:phone']}</Text>
+        <View style={styles.inlineStyle}>
+          <MaterialIcons style={styles.inlineIconStyle} name='my-location' />
+          <Text style={styles.inlineTextStyle}>{defibrillator.distance}m
+          / {defibrillator.lat.toFixed(4)}, {defibrillator.lon.toFixed(4)}
+          </Text>
+          <MaterialIcons style={styles.inlineIconStyle} name='phone' />
+          <Text style={styles.inlineTextStyle}>{defibrillator.tags['emergency:phone']}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -19,6 +27,18 @@ const styles = StyleSheet.create({
   titleStyle: {
     fontSize: 20,
     fontWeight: 'bold',
+    marginLeft: 5,
+  },
+  inlineIconStyle: {
+    fontSize: 20,
+    margin: 5,
+  },
+  inlineStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  inlineTextStyle: {
+    fontSize: 16,
   },
   containerStyle: {
     padding: 5,
