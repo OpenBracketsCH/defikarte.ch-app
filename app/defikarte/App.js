@@ -1,5 +1,7 @@
+import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { Provider as DefibrillatorProvider } from './src/context/DefibrillatorContext';
 import ListScreen from './src/screens/ListScreen';
 import MainScreen from './src/screens/MainScreen';
 
@@ -14,4 +16,12 @@ const navigator = createStackNavigator({
   }
 });
 
-export default createAppContainer(navigator);
+const App = createAppContainer(navigator);
+
+export default () => {
+  return (
+    <DefibrillatorProvider>
+      <App />
+    </DefibrillatorProvider>
+  );
+};

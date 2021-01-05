@@ -1,28 +1,27 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
+import React, { useContext } from 'react';
+import { View, StyleSheet } from 'react-native';
+import MapView from 'react-native-map-clustering';
 import DefiMarker from './DefiMarker';
-import defis from '../api/backendDefis';
 
-const Map = ({initCoords}) => { 
+const Map = ({ initCoords, mapRef, defibrillators }) => {
+
   return (
     <View style={styles.containerStyle}>
-      <MapView 
+      <MapView
+        ref={mapRef}
         style={styles.mapStyle}
-        region={{
-          latitude: initCoords.latitude,
-          longitude: initCoords.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        >
-        {defis().elements.map((defi) => {        
-          return (     
+        initialRegion={initCoords}
+      >
+        {defibrillators.map((defibrillator) => {
+          const tags = defibrillator.tags;
+          return (
             <DefiMarker
-              key={defi.id.toString()}
-              defibrillator={defi}
+              key={defibrillator.id.toString()}
+              defibrillator={defibrillator}
+              coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
             />
-          );}
+          );
+        }
         )}
       </MapView>
     </View>
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   mapStyle: {
     ...StyleSheet.absoluteFillObject,

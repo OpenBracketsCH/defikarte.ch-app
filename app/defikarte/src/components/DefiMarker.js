@@ -3,10 +3,10 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Marker, Callout} from 'react-native-maps';
 
 const DefiMarker = ({defibrillator}) => {
- const tags = defibrillator.tags;
+  const tags = defibrillator.tags;
 
   return (
-    <View>
+    <>
       <Marker 
         coordinate={{latitude: defibrillator.lat, longitude: defibrillator.lon}}
         >
@@ -20,7 +20,7 @@ const DefiMarker = ({defibrillator}) => {
             </View>          
           </Callout>       
       </Marker>
-    </View>
+    </>
   );
 };
 
