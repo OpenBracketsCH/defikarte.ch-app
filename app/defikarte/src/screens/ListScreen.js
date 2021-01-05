@@ -6,7 +6,6 @@ import useLocation from '../hooks/useLocation'
 import useDefibrillators from '../hooks/useDefibrillators';
 import DefiItem from '../components/DefiItem';
 
-// 2km near defi
 const ListScreen = ({ navigation }) => {
   const [state] = useDefibrillators(navigation);
   const [location, errorMsg] = useLocation();

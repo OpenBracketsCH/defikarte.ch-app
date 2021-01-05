@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import * as Location from "expo-location";
 
 export default () => {
@@ -29,7 +29,7 @@ export default () => {
         });
       } catch (err) {
         console.log({ err });
-        setErrorMsg({err})
+        setErrorMsg({ err })
       }
     })();
   });

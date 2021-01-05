@@ -1,8 +1,8 @@
-import {useContext, useEffect} from 'react';
+import { useContext, useEffect } from 'react';
 import { Context } from '../context/DefibrillatorContext';
 
 export default (navigation) => {
-  const { state, getDefibrillators } = useContext(Context);  
+  const { state, getDefibrillators } = useContext(Context);
 
   useEffect(() => {
     getDefibrillators();

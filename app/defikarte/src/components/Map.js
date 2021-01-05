@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView from 'react-native-map-clustering';
 import DefiMarker from './DefiMarker';
 
 const Map = ({ initCoords, mapRef, defibrillators }) => {
-
   return (
     <View style={styles.containerStyle}>
       <MapView
@@ -13,7 +12,6 @@ const Map = ({ initCoords, mapRef, defibrillators }) => {
         initialRegion={initCoords}
       >
         {defibrillators.map((defibrillator) => {
-          const tags = defibrillator.tags;
           return (
             <DefiMarker
               key={defibrillator.id.toString()}

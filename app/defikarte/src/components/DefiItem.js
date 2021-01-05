@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
-const DefiItem = ({defibrillator, navigation}) => {
-  const [latlng, setLatLng] = useState({latitude: defibrillator.lat , longitude: defibrillator.lon})
+const DefiItem = ({ defibrillator, navigation }) => {
+  const [latlng, setLatLng] = useState({ latitude: defibrillator.lat, longitude: defibrillator.lon })
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('Main', { latlng })}>
