@@ -19,7 +19,6 @@ const reducer = (state, action) => {
 const enableLocationTracking = dispatch => {
   return async () => {
     try {
-      console.log(await Location.hasServicesEnabledAsync())
       await Location.enableNetworkProviderAsync();
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
