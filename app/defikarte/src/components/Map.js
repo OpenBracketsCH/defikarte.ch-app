@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { Marker, Callout } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
 import DefiMarker from './DefiMarker';
 
@@ -13,6 +14,7 @@ const Map = ({ initCoords, mapRef, defibrillators }) => {
         showsUserLocation
         followsUserLocation={false}
       >
+        
         {defibrillators.map((defibrillator) => {
           return (
             <DefiMarker
@@ -23,6 +25,11 @@ const Map = ({ initCoords, mapRef, defibrillators }) => {
           );
         }
         )}
+
+        <Marker style={{ zIndex: 1000}}
+          coordinate={{ latitude: 47.34066,
+          longitude: 8.52787,}}
+         />
       </MapView>
     </View>
   );
