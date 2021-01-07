@@ -89,7 +89,7 @@ const ListScreen = ({ navigation }) => {
   return (
     <View style={styles.containerStyle}>
       <Text style={styles.titleStyle}>Defibrillatoren in deiner Nähe</Text>
-      <View>{locationConfig[currentConfig].render()}</View>
+      <>{locationConfig[currentConfig].render()}</>
       <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Main')}>
         <Feather name='map' style={styles.iconStyle} />
       </TouchableOpacity>
