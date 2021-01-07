@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "DefikarteBackend": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "osmApiUrl": "https://master.apis.dev.openstreetmap.org/api/",
+        "overpassUrl": "https://overpass.osm.ch/api/interpreter",
+        "osmUserPassword": "userpassword",
+        "osmUsername": "username"
+      }
+    }
+  }
+}
