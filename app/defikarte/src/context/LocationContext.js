@@ -10,18 +10,14 @@ const reducer = (state, action) => {
       return { ...state, errorMessage: action.payload };
     case 'update_enabled':
       return { ...state, enabled: action.payload };
+    case 'add_locationTracker':
+      return { ...state, locationTracker: action.payload };
     default:
       return state;
   }
 };
 
 const enableLocationTracking = dispatch => {
-  return (enable) => {
-    dispatch({ type: 'update_enabled', payload: enable })
-  }
-}
-
-const getUserLocation = dispatch => {
   return async () => {
     try {
       let { status } = await Location.requestPermissionsAsync();
@@ -32,14 +28,17 @@ const getUserLocation = dispatch => {
 
       dispatch({ type: 'update_enabled', payload: true });
 
-      const location = await Location.getCurrentPositionAsync({});
+      const locationTracker = Location.watchPositionAsync({}, (location) => {
+        dispatch({
+          type: 'update_location', payload: {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          }
+        });
+      })
 
-      dispatch({
-        type: 'update_location', payload: {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        }
-      });
+      dispatch({ type: 'add_locationTracker', payload: { locationTracker } });
+
     } catch (err) {
       console.log({ err });
       dispatch({ type: 'update_errorMessage', payload: "Cannot access location" });
@@ -50,7 +49,7 @@ const getUserLocation = dispatch => {
 
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getUserLocation, enableLocationTracking },
+  { enableLocationTracking },
   {
     location: null,
     enabled: false,

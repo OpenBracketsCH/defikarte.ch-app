@@ -36,23 +36,18 @@ const DefiMarker = ({ defibrillator }) => {
 };
 
 const styles = StyleSheet.create({
-  markerStyle: {
-    borderWidth: 1,
-    borderColor: 'black',
-    height: 50,
-    width: 50,
-  },
   imageStyle: {
     width: 38,
     height: 38,
-    margin: 2,
+    margin: 4,
+    alignSelf: 'center',
   },
   markerOutsideStyle: {
-    borderRadius: 10,
+    borderRadius: 15,
     borderColor: 'green',
     backgroundColor: '#009a3b',
-    height: 50,
-    width: 50,
+    height: 54,
+    width: 54,
     zIndex: 100,
   },
   markerPointerStyle: {
@@ -70,12 +65,12 @@ const styles = StyleSheet.create({
   },
   markerDayStyle: {
     borderColor: 'orange',
-    borderRadius: 10,
+    borderRadius: 15,
     borderWidth: 4,
   },
   markerDayNightStyle: {
     borderColor: '#009a3b',
-    borderRadius: 10,
+    borderRadius: 15,
     borderWidth: 4,
   },
   calloutStyle: {

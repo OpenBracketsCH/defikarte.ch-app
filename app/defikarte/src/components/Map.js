@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Marker, Callout } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
 import DefiMarker from './DefiMarker';
 
