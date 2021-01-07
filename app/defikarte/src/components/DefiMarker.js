@@ -23,11 +23,11 @@ const DefiMarker = ({ defibrillator }) => {
 
         <Callout style={styles.calloutStyle}>
           <View >
-            <Text>Verfügbarkeit: {tags.opening_hours}</Text>
-            <Text>Ort: {tags['defibrillator:location']}</Text>
-            <Text>Besonderes: {tags.description}</Text>
-            <Text>Zugang: {tags.access}</Text>
-            <Text>Nortrufnummer: {tags['emergency:phone']}</Text>
+            <Text><Text style={styles.titleStyle}>Verfügbarkeit: </Text>{tags.opening_hours}</Text>
+            <Text><Text style={styles.titleStyle}>Ort: </Text>{tags['defibrillator:location']}</Text>
+            <Text><Text style={styles.titleStyle}>Besonderes: </Text>{tags.description}</Text>
+            <Text><Text style={styles.titleStyle}>Zugang: </Text>{tags.access}</Text>
+            <Text><Text style={styles.titleStyle}>Nortrufnummer: </Text>{tags['emergency:phone']}</Text>
           </View>
         </Callout>
       </Marker>
@@ -72,6 +72,9 @@ const styles = StyleSheet.create({
     borderColor: '#009a3b',
     borderRadius: 15,
     borderWidth: 4,
+  },
+  titleStyle: {
+    fontWeight: 'bold',
   },
   calloutStyle: {
     width: 250,
