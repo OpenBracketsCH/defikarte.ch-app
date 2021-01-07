@@ -40,6 +40,10 @@ The data is extracted from OpenStreetMap via the Overpass API. This can also be 
 One proposal of Patricia is the Xamarin Framework
 https://dotnet.microsoft.com/apps/xamarin
 
+* React Native (selected)
+One proposal of Marc is the React Native Framework
+https://reactnative.dev/
+
 ## Addition
 
 Detailed requirements can then be worked out with the project team when the project is implemented. An expansion of the app is conceivable.

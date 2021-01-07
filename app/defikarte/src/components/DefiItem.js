@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Feather } from '@expo/vector-icons';
 import { withNavigation } from 'react-navigation';
 
 const DefiItem = ({ defibrillator, navigation }) => {
@@ -9,7 +9,7 @@ const DefiItem = ({ defibrillator, navigation }) => {
   return (
     <TouchableOpacity onPress={() => navigation.navigate('Main', { latlng })}>
       <View style={styles.containerStyle}>
-        <Text style={styles.titleStyle}>{defibrillator.tags['defibrillator:location'] ?? 'n/A'}</Text>
+        <Text style={styles.titleStyle}>{defibrillator.tags['defibrillator:location'] ?? defibrillator.tags.description ?? defibrillator.tags.operator ?? 'n/A'}</Text>
         <View style={styles.inlineStyle}>
           <MaterialIcons style={styles.inlineIconStyle} name='my-location' />
           <Text style={styles.inlineTextStyle}>{defibrillator.distance}m
@@ -17,6 +17,8 @@ const DefiItem = ({ defibrillator, navigation }) => {
           </Text>
           <MaterialIcons style={styles.inlineIconStyle} name='phone' />
           <Text style={styles.inlineTextStyle}>{defibrillator.tags['emergency:phone']}</Text>
+          <Feather style={styles.inlineIconStyle} name='clock' />
+          <Text>{defibrillator.tags.opening_hours}</Text>
         </View>
       </View>
     </TouchableOpacity>
