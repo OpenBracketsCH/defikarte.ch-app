@@ -11,15 +11,19 @@ const ListScreen = ({ navigation }) => {
   const [state, getUserLocation] = useLocation();
 
   const defisNearLocation = () => {
-    return defibrillators.filter(d => {
-      const dist = distanceBetweenPoints(d.lat, d.lon, state.location.latitude, state.location.longitude);
-      if (dist < 2000) {
-        d.distance = dist;
-        return true;
-      }
+    return defibrillators
+      .filter(d => {
+        const dist = distanceBetweenPoints(d.lat, d.lon, state.location.latitude, state.location.longitude);
+        if (dist < 2000) {
+          d.distance = dist;
+          return true;
+        }
 
-      return false;
-    });
+        return false;
+      })
+      .sort((d1, d2) => {
+        return d1.distance - d2.distance;
+      });
   };
 
   useEffect(() => {
@@ -41,7 +45,7 @@ const ListScreen = ({ navigation }) => {
         />
       );
     }
-    else if (defiNearLocCount <= 0 && state.location){
+    else if (defiNearLocCount <= 0 && state.location) {
       return (
         <Text style={styles.noLocationTextStyle}>Keine Defibrillatoren in deiner Nähe (2km) verfügbar .</Text>
       );
@@ -50,12 +54,12 @@ const ListScreen = ({ navigation }) => {
       // ToDo: Probably change text, while searching
       const locationIcon = !state.enabled ? 'location-disabled' : !state.location ? 'location-searching' : 'my-location';
 
-      return ( 
+      return (
         <>
           <MaterialIcons style={styles.noLocationIconStyle} name='location-disabled' />
           <Text style={styles.noLocationTextStyle}>Aktiviere deinen Standort um Defibrillatoren in deiner Nähe anzuzeigen.</Text>
           <TouchableOpacity onPress={() => getUserLocation()}>
-            <MaterialIcons style={styles.actLocationIconStyle} name={locationIcon}/>
+            <MaterialIcons style={styles.actLocationIconStyle} name={locationIcon} />
           </TouchableOpacity>
         </>
       )
