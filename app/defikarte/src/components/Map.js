@@ -14,7 +14,6 @@ const Map = ({ initCoords, mapRef, defibrillators }) => {
         showsUserLocation
         followsUserLocation={false}
       >
-        
         {defibrillators.map((defibrillator) => {
           return (
             <DefiMarker
@@ -25,11 +24,6 @@ const Map = ({ initCoords, mapRef, defibrillators }) => {
           );
         }
         )}
-
-        <Marker style={{ zIndex: 1000}}
-          coordinate={{ latitude: 47.34066,
-          longitude: 8.52787,}}
-         />
       </MapView>
     </View>
   );
