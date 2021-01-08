@@ -1,13 +1,16 @@
-import React, { useRef, useContext } from 'react';
+import React, { useRef, useContext, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { Context as LocationContext } from '../context/LocationContext';
 import useDefibrillators from '../hooks/useDefibrillators';
+import useLocation from '../hooks/useLocation';
 import Map from '../components/Map';
+import LocationError from '../components/LocationError';
 
 const MainScreen = ({ navigation }) => {
   const [state] = useDefibrillators(navigation);
-  const { state: userLocation, enableLocationTracking, debouncedLocationTracking } = useContext(LocationContext);
+  const { state: userLocation, updateLocation, enableLocationTracking, setLocationTracker } = useContext(LocationContext);
+  const [locationErr, resetErr] = useLocation(userLocation, updateLocation, enableLocationTracking, setLocationTracker);
   const mapRef = useRef(null);
 
   const animateToRegion = ({ latitude, longitude }) => {
@@ -23,6 +26,13 @@ const MainScreen = ({ navigation }) => {
   if (latlng) {
     animateToRegion(latlng);
   }
+
+  useEffect(() => {
+    if (locationErr) {
+      LocationError({ title: "Standort Zugriff verweigert", message: "Um die Standortfunktion zu nutzen, aktiviere den Zugriff in den Einstellungen." });
+      resetErr();
+    }
+  }, [locationErr]);
 
   const locationIcon = !userLocation.enabled ? 'location-disabled' : !userLocation.location ? 'location-searching' : 'my-location';
   return (
@@ -42,14 +52,14 @@ const MainScreen = ({ navigation }) => {
           <Feather name='list' style={styles.iconStyle} />
         </TouchableOpacity>
         <TouchableOpacity onPress={async () => {
+          enableLocationTracking(true)
           if (userLocation.location) {
             animateToRegion(userLocation.location);
           }
-          debouncedLocationTracking()
         }}>
           <MaterialIcons name={locationIcon} style={styles.iconStyle} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log('add defi')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Create')}>
           <Feather name='plus-circle' style={styles.iconStyle} />
         </TouchableOpacity>
       </View>

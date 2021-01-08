@@ -1,15 +1,14 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
-import distanceBetweenPoints from '../helpers/coordinateCalc.js'
 import { Context as LocationContext } from '../context/LocationContext';
-import useDefibrillators from '../hooks/useDefibrillators';
+import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import DefiItem from '../components/DefiItem';
 
 const ListScreen = ({ navigation }) => {
-  const [defibrillators, defisNearLocation, setDefisNearLocation] = useDefibrillators(navigation);
-  const { state: userLocation, enableLocationTracking, debouncedLocationTracking } = useContext(LocationContext);
-  const [currentConfig, setCurrentConfig] = useState(defisNearLocation > 0 ? 'location' : 'loading');
+  const { state: userLocation, enableLocationTracking } = useContext(LocationContext);
+  const { state: { defisNearLocation } } = useContext(DefibrillatorContext);
+  const [currentConfig, setCurrentConfig] = useState(defisNearLocation.length > 0 ? 'location' : 'loading');
 
   const locationConfig = {
     loading: {
@@ -26,7 +25,7 @@ const ListScreen = ({ navigation }) => {
           <>
             <MaterialIcons style={styles.noLocationIconStyle} name='location-disabled' />
             <Text style={styles.noLocationTextStyle}>Aktiviere deinen Standort um Defibrillatoren in deiner Nähe anzuzeigen.</Text>
-            <TouchableOpacity onPress={() => debouncedLocationTracking()}>
+            <TouchableOpacity onPress={() => enableLocationTracking(true)}>
               <MaterialIcons style={styles.actLocationIconStyle} name={locationIcon} />
             </TouchableOpacity>
           </>
@@ -57,24 +56,6 @@ const ListScreen = ({ navigation }) => {
     }
   }
 
-  const getDefisNearLocation = () => {
-    return defibrillators
-      .filter(d => {
-        if (userLocation.location) {
-          const dist = distanceBetweenPoints(d.lat, d.lon, userLocation.location.latitude, userLocation.location.longitude);
-          if (dist < 2000) {
-            d.distance = dist;
-            return true;
-          }
-        }
-
-        return false;
-      })
-      .sort((d1, d2) => {
-        return d1.distance - d2.distance;
-      });
-  };
-
   const getLocationState = () => {
     const defiNearLocCount = userLocation.location ? defisNearLocation.length : 0;
     return !userLocation.enabled ? 'locationDisabled' : !userLocation.location || defiNearLocCount < 1 ? 'noDefisNearYou' : 'location';
@@ -85,12 +66,8 @@ const ListScreen = ({ navigation }) => {
   }, [userLocation, defisNearLocation]);
 
   useEffect(() => {
-    enableLocationTracking();
+    enableLocationTracking(true);
   }, []);
-
-  useEffect(() => {
-    setDefisNearLocation(getDefisNearLocation());
-  }, [defibrillators, userLocation]);
 
   return (
     <View style={styles.containerStyle}>
