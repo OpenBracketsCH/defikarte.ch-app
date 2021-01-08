@@ -1,5 +1,5 @@
 import createDataContext from './createDataContext';
-import defikarteBackendMock from '../api/defikarteBackendMock';
+import defikarteBackendMock from '../api/defikarteBackend';
 
 const reducer = (state, action) => {
   switch (action.type) {

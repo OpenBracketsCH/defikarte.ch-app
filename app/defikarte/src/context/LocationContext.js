@@ -1,5 +1,6 @@
 import createDataContext from './createDataContext';
 import * as Location from 'expo-location';
+import LocationError from '../components/LocationError';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -19,11 +20,19 @@ const reducer = (state, action) => {
 const enableLocationTracking = dispatch => {
   return async () => {
     try {
-      await Location.enableNetworkProviderAsync();
+      let locEnabled = await Location.hasServicesEnabledAsync();
+      if (!locEnabled) {
+        dispatch({ type: 'update_errorMessage', payload: "Location services are not enabled" });
+        dispatch({ type: 'update_enabled', payload: false });
+        LocationError({ title: "Standort deaktiviert", message: "Um die Standortfunktion zu nutzen, aktivieren diese in den Einstellungen." });
+        return;
+      }
+
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         dispatch({ type: 'update_errorMessage', payload: "Permission to access location was denied" });
         dispatch({ type: 'update_enabled', payload: false });
+        LocationError({ title: "Standort Zugriff verweigert", message: "Um die Standortfunktion zu nutzen, aktiviere den Zugriff in den Einstellungen für die Defikarte." });
         return;
       }
 

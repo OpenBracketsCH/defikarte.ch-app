@@ -24,10 +24,10 @@ const ListScreen = ({ navigation }) => {
               <MaterialIcons style={styles.actLocationIconStyle} name={locationIcon} />
             </TouchableOpacity>
           </>
-        )
+        );
       }
     },
-    locationSearching: {
+    noDefisNearYou: {
       render: () => {
         return (
           <Text style={styles.noLocationTextStyle}>Keine Defibrillatoren in deiner Nähe (2km) verfügbar .</Text>
@@ -71,7 +71,7 @@ const ListScreen = ({ navigation }) => {
 
   const getLocationState = () => {
     const defiNearLocCount = userLocation.location ? defisNearLocation.length : 0;
-    return !userLocation.enabled ? 'locationDisabled' : !userLocation.location && defiNearLocCount < 1 ? 'locationSearching' : 'location';
+    return !userLocation.enabled ? 'locationDisabled' : !userLocation.location || defiNearLocCount < 1 ? 'noDefisNearYou' : 'location';
   };
 
   useEffect(() => {

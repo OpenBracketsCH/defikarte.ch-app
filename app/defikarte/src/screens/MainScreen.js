@@ -41,8 +41,8 @@ const MainScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate('List')}>
           <Feather name='list' style={styles.iconStyle} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {
-          enableLocationTracking();
+        <TouchableOpacity onPress={async () => {
+          await enableLocationTracking();
           if (userLocation.location) {
             animateToRegion(userLocation.location);
           }
