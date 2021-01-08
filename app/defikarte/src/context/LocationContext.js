@@ -12,6 +12,13 @@ const reducer = (state, action) => {
       return { ...state, enabled: action.payload };
     case 'add_locationTracker':
       return { ...state, locationTracker: action.payload };
+    case 'debounced_enable':
+      if (!state.searching) {
+        enableLocationTracking(action.payload)()
+      }
+      return { ...state };
+    case 'update_searching':
+      return { ...state, searching: action.payload };
     default:
       return state;
   }
@@ -19,12 +26,14 @@ const reducer = (state, action) => {
 
 const enableLocationTracking = dispatch => {
   return async () => {
+    dispatch({ type: 'update_searching', payload: true });
     try {
       let locEnabled = await Location.hasServicesEnabledAsync();
       if (!locEnabled) {
         dispatch({ type: 'update_errorMessage', payload: "Location services are not enabled" });
         dispatch({ type: 'update_enabled', payload: false });
         LocationError({ title: "Standort deaktiviert", message: "Um die Standortfunktion zu nutzen, aktivieren diese in den Einstellungen." });
+        dispatch({ type: 'update_searching', payload: false });
         return;
       }
 
@@ -33,6 +42,7 @@ const enableLocationTracking = dispatch => {
         dispatch({ type: 'update_errorMessage', payload: "Permission to access location was denied" });
         dispatch({ type: 'update_enabled', payload: false });
         LocationError({ title: "Standort Zugriff verweigert", message: "Um die Standortfunktion zu nutzen, aktiviere den Zugriff in den Einstellungen für die Defikarte." });
+        dispatch({ type: 'update_searching', payload: false });
         return;
       }
 
@@ -57,12 +67,18 @@ const enableLocationTracking = dispatch => {
       dispatch({ type: 'update_errorMessage', payload: "Cannot access location" });
       dispatch({ type: 'update_enabled', payload: false });
     }
+
+    dispatch({ type: 'update_searching', payload: false });
   };
 };
 
+const debouncedLocationTracking = dispatch => {
+  return () => dispatch({ type: 'debounced_enable', payload: dispatch });
+}
+
 export const { Context, Provider } = createDataContext(
   reducer,
-  { enableLocationTracking },
+  { enableLocationTracking, debouncedLocationTracking },
   {
     location: null,
     enabled: false,

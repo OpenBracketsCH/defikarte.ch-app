@@ -7,7 +7,7 @@ import Map from '../components/Map';
 
 const MainScreen = ({ navigation }) => {
   const [state] = useDefibrillators(navigation);
-  const { state: userLocation, enableLocationTracking } = useContext(LocationContext);
+  const { state: userLocation, enableLocationTracking, debouncedLocationTracking } = useContext(LocationContext);
   const mapRef = useRef(null);
 
   const animateToRegion = ({ latitude, longitude }) => {
@@ -42,10 +42,10 @@ const MainScreen = ({ navigation }) => {
           <Feather name='list' style={styles.iconStyle} />
         </TouchableOpacity>
         <TouchableOpacity onPress={async () => {
-          await enableLocationTracking();
           if (userLocation.location) {
             animateToRegion(userLocation.location);
           }
+          debouncedLocationTracking()
         }}>
           <MaterialIcons name={locationIcon} style={styles.iconStyle} />
         </TouchableOpacity>

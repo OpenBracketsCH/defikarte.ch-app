@@ -4,7 +4,9 @@ import defikarteBackendMock from '../api/defikarteBackend';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'get':
-      return action.payload;
+      return { ...state, defibrillators: action.payload };
+    case 'set_nearLocation':
+      return { ...state, defisNearLocation: action.payload };
   }
 };
 
@@ -14,6 +16,12 @@ const getDefibrillators = dispatch => {
 
     dispatch({ type: 'get', payload: response.data })
   };
+};
+
+const setDefisNearLocation = dispatch => {
+  return defibrillators => {
+    dispatch({ type: 'set_nearLocation', payload: defibrillators })
+  }
 };
 
 const addDefibrillator = () => {
@@ -27,6 +35,6 @@ const addDefibrillator = () => {
 
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getDefibrillators, addDefibrillator },
-  []
+  { getDefibrillators, addDefibrillator, setDefisNearLocation },
+  { defibrillators: [], defisNearLocation: [] }
 );
