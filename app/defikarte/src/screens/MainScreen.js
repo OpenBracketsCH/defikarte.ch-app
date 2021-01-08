@@ -59,7 +59,7 @@ const MainScreen = ({ navigation }) => {
         }}>
           <MaterialIcons name={locationIcon} style={styles.iconStyle} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Create')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Create', { latlon: { latitude: 47.7, longitude: 7.8 } })}>
           <Feather name='plus-circle' style={styles.iconStyle} />
         </TouchableOpacity>
       </View>

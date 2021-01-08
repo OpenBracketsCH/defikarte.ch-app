@@ -1,8 +1,9 @@
-import React, { useRef, useContext, useReducer } from 'react';
-import { View, Text, TextInput, Switch, Button, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import React, { useContext, useReducer } from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import TextForm from '../components/TextForm';
 import SwitchForm from '../components/SwitchForm';
+import { useEffect } from 'react';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -32,6 +33,7 @@ const reducer = (state, action) => {
 };
 
 const CreateScreen = ({ navigation }) => {
+  const { addDefibrillator } = useContext(DefibrillatorContext);
   const [state, dispatch] = useReducer(reducer, {});
   const defiForm = [
     {
@@ -84,13 +86,22 @@ const CreateScreen = ({ navigation }) => {
     },
   ]
 
+  useEffect(() => {
+    const latlon = navigation.getParam('latlon');
+    if (latlon) {
+      dispatch({ type: 'latitude', payload: latlon.latitude });
+      dispatch({ type: 'longitude', payload: latlon.longitude });
+    }
+  }, [])
+
+
   const renderFormComponent = () => {
-    return defiForm.map(formComp => {
+    return defiForm.map((formComp, index) => {
       if (formComp.type === 'Text') {
-        return <TextForm labelText={formComp.label} value={formComp.value} setValue={formComp.setValue} />
+        return <TextForm key={index} labelText={formComp.label} value={formComp.value} setValue={formComp.setValue} />
       }
       else if (formComp.type === 'Switch') {
-        return <SwitchForm labelText={formComp.label} value={formComp.value} setValue={formComp.setValue} />
+        return <SwitchForm key={index} labelText={formComp.label} value={formComp.value} setValue={formComp.setValue} />
       }
       else {
         return null;
@@ -98,13 +109,12 @@ const CreateScreen = ({ navigation }) => {
     })
   }
 
-  console.log(state);
   return (
     <View style={styles.containerStyle} >
       <Text style={styles.titleStyle}>Einen Defibrillator melden</Text>
       {renderFormComponent()}
       <Text style={styles.labelStyle}>Koordinaten: {state.latitude}, {state.longitude}</Text>
-      <Button title='Erstellen' />
+      <Button title='Erstellen' onPress={() => addDefibrillator(state, () => navigation.navigate('Main'))} />
     </View>
   );
 };

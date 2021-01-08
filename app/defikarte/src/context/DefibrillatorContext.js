@@ -14,19 +14,20 @@ const getDefibrillators = dispatch => {
   return async () => {
     const response = await defikarteBackendMock.get('/defibrillator');
 
-    dispatch({ type: 'get', payload: response.data })
+    dispatch({ type: 'get', payload: response.data });
   };
 };
 
 const setDefisNearLocation = dispatch => {
   return defibrillators => {
-    dispatch({ type: 'set_nearLocation', payload: defibrillators })
+    dispatch({ type: 'set_nearLocation', payload: defibrillators });
   }
 };
 
-const addDefibrillator = () => {
+const addDefibrillator = dispatch => {
   return async (defibrillator, callback) => {
-    await defikarteBackendMock.post('/defibrillator', defibrillator)
+    const response = await defikarteBackendMock.post('/defibrillator', defibrillator);
+    console.log(response.data);
     if (callback) {
       callback();
     }
