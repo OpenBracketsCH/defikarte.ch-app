@@ -1,71 +1,78 @@
-import React, { useEffect, useContext } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useContext, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
-import distanceBetweenPoints from '../helpers/coordinateCalc.js'
-import useLocation from '../hooks/useLocation'
-import useDefibrillators from '../hooks/useDefibrillators';
+import { Context as LocationContext } from '../context/LocationContext';
+import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import DefiItem from '../components/DefiItem';
 
 const ListScreen = ({ navigation }) => {
-  const [defibrillators] = useDefibrillators(navigation);
-  const [state, getUserLocation] = useLocation();
+  const { state: userLocation, enableLocationTracking } = useContext(LocationContext);
+  const { state: { defisNearLocation } } = useContext(DefibrillatorContext);
+  const [currentConfig, setCurrentConfig] = useState(defisNearLocation.length > 0 ? 'location' : 'loading');
 
-  const defisNearLocation = () => {
-    return defibrillators.filter(d => {
-      const dist = distanceBetweenPoints(d.lat, d.lon, state.location.latitude, state.location.longitude);
-      if (dist < 2000) {
-        d.distance = dist;
-        return true;
+  const locationConfig = {
+    loading: {
+      render: () => {
+        return (
+          <ActivityIndicator style={styles.spinnerStyle} size="large" />
+        );
       }
+    },
+    locationDisabled: {
+      render: () => {
+        const locationIcon = !userLocation.enabled ? 'location-disabled' : !userLocation.location ? 'location-searching' : 'my-location';
+        return (
+          <>
+            <MaterialIcons style={styles.noLocationIconStyle} name='location-disabled' />
+            <Text style={styles.noLocationTextStyle}>Aktiviere deinen Standort um Defibrillatoren in deiner Nähe anzuzeigen.</Text>
+            <TouchableOpacity onPress={() => enableLocationTracking(true)}>
+              <MaterialIcons style={styles.actLocationIconStyle} name={locationIcon} />
+            </TouchableOpacity>
+          </>
+        );
+      }
+    },
+    noDefisNearYou: {
+      render: () => {
+        return (
+          <Text style={styles.noLocationTextStyle}>Keine Defibrillatoren in deiner Nähe (2km) verfügbar.</Text>
+        );
+      }
+    },
+    location: {
+      render: () => {
+        return (
+          <FlatList
+            data={defisNearLocation}
+            keyExtractor={(def) => def.id.toString()}
+            renderItem={({ item }) => {
+              return (
+                <DefiItem defibrillator={item} />
+              );
+            }}
+          />
+        );
+      }
+    }
+  }
 
-      return false;
-    });
+  const getLocationState = () => {
+    const defiNearLocCount = userLocation.location ? defisNearLocation.length : 0;
+    return !userLocation.enabled ? 'locationDisabled' : !userLocation.location || defiNearLocCount < 1 ? 'noDefisNearYou' : 'location';
   };
 
   useEffect(() => {
-    getUserLocation();
+    setCurrentConfig(getLocationState());
+  }, [userLocation, defisNearLocation]);
+
+  useEffect(() => {
+    enableLocationTracking(true);
   }, []);
-
-  const getContent = () => {
-    const defiNearLocCount = state.location ? defisNearLocation().length : 0;
-    if (defiNearLocCount > 0) {
-      return (
-        <FlatList
-          data={defisNearLocation()}
-          keyExtractor={(def) => def.id.toString()}
-          renderItem={({ item }) => {
-            return (
-              <DefiItem defibrillator={item} />
-            );
-          }}
-        />
-      );
-    }
-    else if (defiNearLocCount <= 0 && state.location){
-      return (
-        <Text style={styles.noLocationTextStyle}>Keine Defibrillatoren in deiner Nähe (2km) verfügbar .</Text>
-      );
-    }
-    else {
-      // ToDo: Probably change text, while searching
-      const locationIcon = !state.enabled ? 'location-disabled' : !state.location ? 'location-searching' : 'my-location';
-
-      return ( 
-        <>
-          <MaterialIcons style={styles.noLocationIconStyle} name='location-disabled' />
-          <Text style={styles.noLocationTextStyle}>Aktiviere deinen Standort um Defibrillatoren in deiner Nähe anzuzeigen.</Text>
-          <TouchableOpacity onPress={() => getUserLocation()}>
-            <MaterialIcons style={styles.actLocationIconStyle} name={locationIcon}/>
-          </TouchableOpacity>
-        </>
-      )
-    }
-  }
 
   return (
     <View style={styles.containerStyle}>
       <Text style={styles.titleStyle}>Defibrillatoren in deiner Nähe</Text>
-      {getContent()}
+      <>{locationConfig[currentConfig].render()}</>
       <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Main')}>
         <Feather name='map' style={styles.iconStyle} />
       </TouchableOpacity>
@@ -117,6 +124,10 @@ const styles = StyleSheet.create({
     margin: 20,
     color: '#007AFF',
     fontSize: 50,
+  },
+  spinnerStyle: {
+    alignSelf: 'center',
+    margin: 200,
   },
   containerStyle: {
     ...StyleSheet.absoluteFillObject,

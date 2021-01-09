@@ -1,23 +1,45 @@
-import { useContext, useState, useEffect } from 'react';
-import { Context } from '../context/LocationContext';
+import { useState, useEffect } from 'react';
+import {
+  Accuracy,
+  requestPermissionsAsync,
+  watchPositionAsync,
+} from 'expo-location';
 
-export default () => {
-  const { state, getUserLocation } = useContext(Context);
+export default (userLocation, callback, enableLocationTracking, setLocationTracker) => {
+  const [err, setErr] = useState(null);
+
+  const startWatching = async () => {
+    try {
+      const { granted } = await requestPermissionsAsync();
+      if (!granted) {
+        throw new Error('Location permission not granted');
+      }
+
+      const sub = await watchPositionAsync(
+        {
+          accuracy: Accuracy.BestForNavigation,
+          timeInterval: 5000,
+          distanceInterval: 15,
+        },
+        callback
+      );
+      setLocationTracker(sub);
+    } catch (e) {
+      enableLocationTracking(false);
+      setErr(e);
+    }
+  };
 
   useEffect(() => {
-    let timerId = null;
-    if (state.enabled) {
-      timerId = setTimeout(() => {
-        getUserLocation();
-      }, 10000)
-    }
-
-    return () => {
-      if (timerId){
-        clearTimeout(timerId);
+    if (userLocation.enabled && !userLocation.locationTracker) {
+      startWatching();
+    } else {
+      if (userLocation.locationTracker) {
+        userLocation.locationTracker.remove();
       }
+      setLocationTracker(null);
     }
-  }, [state.enabled]);
+  }, [userLocation.enabled]);
 
-  return [state, getUserLocation];
-}
+  return [err, () => setErr(null)];
+};
