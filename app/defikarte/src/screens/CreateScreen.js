@@ -34,7 +34,7 @@ const reducer = (state, action) => {
 
 const CreateScreen = ({ navigation }) => {
   const { addDefibrillator } = useContext(DefibrillatorContext);
-  const [state, dispatch] = useReducer(reducer, {});
+  const [state, dispatch] = useReducer(reducer, { latitude: 0, longitude: 0 });
   const defiForm = [
     {
       type: 'Text',
@@ -113,8 +113,15 @@ const CreateScreen = ({ navigation }) => {
     <View style={styles.containerStyle} >
       <Text style={styles.titleStyle}>Einen Defibrillator melden</Text>
       {renderFormComponent()}
-      <Text style={styles.labelStyle}>Koordinaten: {state.latitude}, {state.longitude}</Text>
-      <Button title='Erstellen' onPress={() => addDefibrillator(state, () => navigation.navigate('Main'))} />
+      <Text style={styles.inputStyle}><Text style={styles.labelStyle}>Koordinaten:</Text> {state.latitude.toFixed(4)}, {state.longitude.toFixed(4)}</Text>
+      <View style={styles.buttonContainerStyle}>
+        <Button
+          title='Erstellen'
+          onPress={() => addDefibrillator(state, () => navigation.navigate('Main'))} />
+        <Button
+          title='Abbrechen'
+          onPress={() => navigation.navigate('Main')} />
+      </View>
     </View>
   );
 };
@@ -138,13 +145,15 @@ const styles = StyleSheet.create({
   labelStyle: {
     fontSize: 18,
     fontWeight: 'bold',
+    width: 140,
   },
   inputStyle: {
-    borderColor: 'grey',
-    borderWidth: 1,
-    borderRadius: 5,
     fontSize: 18,
-  }
+  },
+  buttonContainerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
 });
 
 export default CreateScreen;

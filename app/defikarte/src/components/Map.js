@@ -19,13 +19,10 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
   const renderMarkers = (createMode, defibrillators, latlon, setLatLng) => {
     if (createMode) {
       return (
-        <>
-          <Marker draggable
-            coordinate={latlon}
-            onDragEnd={(e) => setLatLng(e.nativeEvent.coordinate)}
-          >
-          </Marker>
-        </>
+        <Marker draggable
+          coordinate={latlon}
+          onDragEnd={(e) => setLatLng(e.nativeEvent.coordinate)}
+        />
       );
     }
     else {
@@ -53,7 +50,10 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
             <Text style={styles.createSubTextStyle}>(Marker halten und verschieben)</Text>
           </View>
           <View style={styles.createIconsContainerStyle}>
-            <TouchableOpacity onPress={() => navigation.navigate('Create', { latlon: newDefiCoords })} >
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('Create', { latlon: newDefiCoords });
+              setIsCreateMode(false);
+            }} >
               <AntDesign name="checkcircleo" size={48} color="green" />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setIsCreateMode(false)} style={styles.createIconsStyle}>
