@@ -19,11 +19,13 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
   const renderMarkers = (createMode, defibrillators, latlon, setLatLng) => {
     if (createMode) {
       return (
-        <Marker draggable
-          coordinate={latlon}
-          onDragEnd={(e) => setLatLng(e.nativeEvent.coordinate)}
-        >
-        </Marker>
+        <>
+          <Marker draggable
+            coordinate={latlon}
+            onDragEnd={(e) => setLatLng(e.nativeEvent.coordinate)}
+          >
+          </Marker>
+        </>
       );
     }
     else {
@@ -125,6 +127,12 @@ const styles = StyleSheet.create({
   },
   createIconsStyle: {
     paddingLeft: 20,
+  },
+  simpleMarkerStyle: {
+    height: 10,
+    width: 10,
+    backgroundColor: 'rgba(0, 153, 57, .4)',
+    borderRadius: 50,
   }
 });
 
