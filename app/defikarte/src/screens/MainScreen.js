@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect } from 'react';
+import React, { useRef, useContext, useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { Context as LocationContext } from '../context/LocationContext';
@@ -12,6 +12,7 @@ const MainScreen = ({ navigation }) => {
   const { state: userLocation, updateLocation, enableLocationTracking, setLocationTracker } = useContext(LocationContext);
   const [locationErr, resetErr] = useLocation(userLocation, updateLocation, enableLocationTracking, setLocationTracker);
   const mapRef = useRef(null);
+  const [isCreateMode, setIsCreateMode] = useState(false);
 
   const animateToRegion = ({ latitude, longitude }) => {
     mapRef.current.animateToRegion({
@@ -46,6 +47,8 @@ const MainScreen = ({ navigation }) => {
           longitudeDelta: 1.5,
         }}
         defibrillators={state}
+        isCreateMode={isCreateMode}
+        setIsCreateMode={setIsCreateMode}
       />
       <View style={styles.bottomBar}>
         <TouchableOpacity onPress={() => navigation.navigate('List')}>
@@ -59,11 +62,11 @@ const MainScreen = ({ navigation }) => {
         }}>
           <MaterialIcons name={locationIcon} style={styles.iconStyle} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Create', { latlon: { latitude: 47.7, longitude: 7.8 } })}>
+        <TouchableOpacity onPress={() => setIsCreateMode(true)}>
           <Feather name='plus-circle' style={styles.iconStyle} />
         </TouchableOpacity>
       </View>
-    </View>
+    </View >
   );
 };
 
