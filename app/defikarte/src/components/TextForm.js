@@ -1,38 +1,101 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Switch, TextInput, StyleSheet } from 'react-native';
 
-const TextForm = ({ labelText, value, setValue }) => {
+const TextForm = ({ labelText, value, setValue, keyboardType, defaultValue, multiline, placeholder, useSwitch = false }) => {
+  const [switchValue, setSwitchValue] = useState(false);
+
+  const onSwitchChange = (newVal) => {
+    if (newVal) {
+      setValue(defaultValue);
+    }
+    setSwitchValue(newVal);
+  }
+
+  const defaultWithSwitch = () => {
+    const textStyle = switchValue ? styles.switchActiveLabelStyle : styles.switchLabelStyle;
+    if (useSwitch) {
+      return (
+        <View style={styles.switchContainerStyle}>
+          <Switch
+            style={styles.switchStyle}
+            onValueChange={onSwitchChange}
+            value={switchValue}
+          />
+          <Text style={textStyle}>{defaultValue}</Text>
+        </View>
+      );
+    }
+
+    return null;
+  }
+
+  const showTextInput = () => {
+    if (!switchValue) {
+      return (
+        <TextInput
+          style={styles.inputStyle}
+          value={value}
+          onChangeText={setValue}
+          autoCapitalize='none'
+          keyboardType={keyboardType}
+          defaultValue={useSwitch ? '' : defaultValue}
+          multiline={multiline}
+          placeholder={placeholder}
+          autoCorrect={false}
+          editable={!switchValue}
+          returnKeyType='done'
+        />
+      );
+    }
+  };
+
   return (
     <View style={styles.inlineForm} >
-      <Text style={styles.labelStyle}>{labelText}</Text>
-      <TextInput
-        style={styles.inputStyle}
-        value={value}
-        onChangeText={setValue}
-        autoCapitalize='none'
-        autoCorrect={false} />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={styles.labelStyle}>{labelText}</Text>
+        {defaultWithSwitch()}
+      </View>
+
+      {showTextInput()}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   inlineForm: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flex: 1,
+    marginHorizontal: 20,
+    marginVertical: 10,
   },
   labelStyle: {
     fontSize: 18,
-    fontWeight: 'bold',
     marginRight: 10,
-    width: 140,
+    color: 'rgba(70, 70, 70, 1)',
   },
   inputStyle: {
-    borderColor: 'lightgrey',
-    borderWidth: 1,
-    borderRadius: 5,
+    borderColor: 'rgba(200, 200, 200, 1)',
+    borderBottomWidth: 1,
     fontSize: 18,
     padding: 5,
-    flex: 1,
+  },
+  switchContainerStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  switchStyle: {
+    marginRight: 10,
+    marginVertical: 5,
+  },
+  switchLabelStyle: {
+    fontSize: 16,
+    marginRight: 10,
+    color: 'rgba(140, 140, 140, 1)',
+  },
+  switchActiveLabelStyle: {
+    fontSize: 16,
+    marginRight: 10,
+    color: '#007AFF',
+    fontWeight: 'bold'
   }
 });
 

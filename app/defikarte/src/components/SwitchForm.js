@@ -17,12 +17,14 @@ const styles = StyleSheet.create({
   inlineForm: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginHorizontal: 20,
+    marginVertical: 10,
   },
   labelStyle: {
     fontSize: 18,
-    fontWeight: 'bold',
     marginRight: 10,
-    width: 150,
+    minWidth: 120,
+    color: 'rgba(70, 70, 70, 1)',
   },
 });
 
