@@ -1,20 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Marker } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
-import { AntDesign } from '@expo/vector-icons';
 import DefiMarker from './DefiMarker';
+import CreateMapOverlay from './CreateMapOverlay';
+import MapInfoPanel from './MapInfoPanel';
 
 const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode, navigation }) => {
   const [region, setRegion] = useState(initCoords);
   const [newDefiCoords, setNewDefiCoords] = useState(initCoords);
+  const [defisOnMap, setDefisOnMap] = useState([]);
+
+  const currentDefisOnMap = (defibrillators, region) => {
+    return defibrillators.filter(defibrillator => {
+      const lat = defibrillator.lat;
+      const lon = defibrillator.lon;
+
+      const maxLat = region.latitude + region.latitudeDelta;
+      const minLat = region.latitude - region.latitudeDelta;
+      const maxLon = region.longitude + region.longitudeDelta;
+      const minLon = region.longitude - region.longitudeDelta;
+
+      return lat > minLat && lat < maxLat && lon > minLon && lon < maxLon;
+    });
+  };
 
   useEffect(() => {
     if (isCreateMode) {
       setNewDefiCoords({ latitude: region.latitude, longitude: region.longitude });
     }
   }, [isCreateMode]);
+
+  useEffect(() => {
+    // debounce defis on map claculation for performance optimization
+    const timerId = setTimeout(() => {
+      setDefisOnMap(currentDefisOnMap(defibrillators, region));
+    }, 500);
+
+    return () => {
+      clearTimeout(timerId);
+    }
+  }, [region, defibrillators])
 
   const renderMarkers = (createMode, defibrillators, latlon, setLatLng) => {
     if (createMode) {
@@ -26,6 +53,9 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
       );
     }
     else {
+      if (defibrillators.length > 1000) {
+        return null;
+      }
       return defibrillators.map((defibrillator) => {
         return (
           <DefiMarker
@@ -39,32 +69,14 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
     }
   };
 
-  const renderCreateItems = (createMode) => {
-    if (createMode) {
+  const renderInfoPanel = (defibrillators) => {
+    if (defibrillators.length > 1000) {
       return (
-        <>
-          <View style={styles.createTextContainerStyle}>
-            <Text style={styles.createTextStyle}>
-              Ziehe den Marker an den Standort des neuen Defibrillators
-            </Text>
-            <Text style={styles.createSubTextStyle}>(Marker halten und verschieben)</Text>
-          </View>
-          <View style={styles.createIconsContainerStyle}>
-            <TouchableOpacity onPress={() => {
-              navigation.navigate('Create', { latlon: newDefiCoords });
-              setIsCreateMode(false);
-            }} >
-              <AntDesign name="checkcircleo" size={48} color="green" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setIsCreateMode(false)} style={styles.createIconsStyle}>
-              <AntDesign name="closecircleo" size={48} color="red" />
-            </TouchableOpacity>
-          </View>
-        </>
+        <MapInfoPanel
+          text='Zoome in eine bestimmte Region um Defibrillatoren anzuzeigen.'
+          subText={`(${defibrillators.length} Defis geladen, Anzeige ab < 1000)`} />
       );
     }
-
-    return null;
   }
 
   return (
@@ -76,10 +88,12 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
         showsUserLocation
         followsUserLocation={false}
         onRegionChangeComplete={setRegion}
+        spiralEnabled={false}
       >
-        {renderMarkers(isCreateMode, defibrillators, newDefiCoords, setNewDefiCoords)}
+        {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
-      {renderCreateItems(isCreateMode)}
+      <CreateMapOverlay createMode={isCreateMode} setIsCreateMode={setIsCreateMode} />
+      {renderInfoPanel(defisOnMap)}
     </View >
   );
 };
@@ -93,40 +107,6 @@ const styles = StyleSheet.create({
   mapStyle: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 50,
-  },
-  createIconsContainerStyle: {
-    flexDirection: 'row',
-    height: 70,
-    borderRadius: 10,
-    zIndex: 100,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: 'rgba(254, 254, 254, .6)',
-    borderWidth: 1,
-    borderColor: 'rgba(200, 200, 200, 1)',
-    position: 'absolute',
-    bottom: 20,
-  },
-  createTextContainerStyle: {
-    borderRadius: 10,
-    zIndex: 100,
-    marginTop: 30,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: 'rgba(254, 254, 254, .6)',
-    borderWidth: 1,
-    borderColor: 'rgba(200, 200, 200, 1)',
-  },
-  createTextStyle: {
-    textAlign: 'center',
-    fontSize: 20,
-  },
-  createSubTextStyle: {
-    textAlign: 'center',
-    marginTop: 5,
-  },
-  createIconsStyle: {
-    paddingLeft: 20,
   },
   simpleMarkerStyle: {
     height: 10,

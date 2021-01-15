@@ -3,12 +3,15 @@ import { View, Text, Switch, TextInput, StyleSheet } from 'react-native';
 
 const TextForm = ({ labelText, value, setValue, keyboardType, defaultValue, multiline, placeholder, useSwitch = false }) => {
   const [switchValue, setSwitchValue] = useState(false);
+  const [tempValue, setTempValue] = useState('');
 
   const onSwitchChange = (newVal) => {
     if (newVal) {
+      setTempValue(value);
       setValue(defaultValue);
     }
     setSwitchValue(newVal);
+    setValue(tempValue);
   }
 
   const defaultWithSwitch = () => {

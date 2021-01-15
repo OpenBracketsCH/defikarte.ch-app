@@ -1,5 +1,5 @@
 import React, { useContext, useReducer } from 'react';
-import { View, Text, Button, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { View, Text, Button, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import TextForm from '../components/TextForm';
@@ -137,9 +137,9 @@ const CreateScreen = ({ navigation }) => {
 
   return (
     <View style={styles.containerStyle} >
-      <Text style={styles.titleStyle}>Einen Defibrillator melden</Text>
+      <Text style={styles.titleStyle}>Defibrillator melden</Text>
       <View style={styles.coordStyle}>
-        <MaterialIcons color='green' size='30' name='location-pin' />
+        <MaterialIcons color='green' size={30} name='location-pin' />
         <Text style={styles.inputStyle}>{state.latitude.toFixed(4)}, {state.longitude.toFixed(4)}</Text>
       </View>
       <ScrollView
@@ -150,16 +150,19 @@ const CreateScreen = ({ navigation }) => {
         </KeyboardAvoidingView>
       </ScrollView>
       <View style={styles.bottomBar}>
-        <Button
+        <TouchableOpacity
           color='white'
           title='Erstellen'
-          onPress={() => addDefibrillator(state, () => navigation.navigate('Main'))} />
-        <Button
+          onPress={() => addDefibrillator(state, () => navigation.navigate('Main'))} >
+          <Text style={styles.buttonTextStyle}>Erstellen</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           color='white'
           title='Abbrechen'
-          onPress={() => navigation.navigate('Main')} />
+          onPress={() => navigation.navigate('Main')} >
+          <Text style={styles.buttonTextStyle}>Abbrechen</Text>
+        </TouchableOpacity>
       </View>
-
     </View>
   );
 };
@@ -193,6 +196,10 @@ const styles = StyleSheet.create({
   inputStyle: {
     fontSize: 18,
     paddingHorizontal: 5,
+  },
+  buttonTextStyle: {
+    color: 'white',
+    fontSize: 18,
   },
   buttonContainerStyle: {
     paddingHorizontal: 20,
