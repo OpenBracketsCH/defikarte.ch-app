@@ -1,5 +1,5 @@
 import React, { useContext, useReducer } from 'react';
-import { View, Text, Button, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import TextForm from '../components/TextForm';

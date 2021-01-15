@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { withNavigation } from 'react-navigation';
 import { Marker } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
 import DefiMarker from './DefiMarker';
 import CreateMapOverlay from './CreateMapOverlay';
 import MapInfoPanel from './MapInfoPanel';
 
-const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode, navigation }) => {
+const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode }) => {
   const [region, setRegion] = useState(initCoords);
   const [newDefiCoords, setNewDefiCoords] = useState(initCoords);
   const [defisOnMap, setDefisOnMap] = useState([]);
@@ -92,7 +91,10 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
       >
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
-      <CreateMapOverlay createMode={isCreateMode} setIsCreateMode={setIsCreateMode} />
+      <CreateMapOverlay
+        createMode={isCreateMode}
+        setIsCreateMode={setIsCreateMode}
+        newDefiCoords={newDefiCoords} />
       {renderInfoPanel(defisOnMap)}
     </View >
   );
@@ -116,4 +118,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withNavigation(Map);
+export default Map;

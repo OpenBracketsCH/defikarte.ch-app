@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import { AntDesign } from '@expo/vector-icons';
 import MapInfoPanel from './MapInfoPanel';
 
-const CreateMapOverlay = ({ createMode, setIsCreateMode }) => {
+const CreateMapOverlay = ({ createMode, setIsCreateMode, newDefiCoords, navigation }) => {
   if (createMode) {
     return (
       <>
@@ -47,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateMapOverlay;
+export default withNavigation(CreateMapOverlay);
