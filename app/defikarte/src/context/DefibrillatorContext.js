@@ -7,28 +7,42 @@ const reducer = (state, action) => {
       return { ...state, defibrillators: action.payload };
     case 'set_nearLocation':
       return { ...state, defisNearLocation: action.payload };
+    case 'update_error':
+      return { ...state, error: action.payload };
+    default:
+      return state;
   }
 };
 
 const getDefibrillators = dispatch => {
   return async () => {
-    const response = await defikarteBackendMock.get('/defibrillator');
-
-    dispatch({ type: 'get', payload: response.data })
+    try {
+      const response = await defikarteBackendMock.get('/defibrillator');
+      dispatch({ type: 'get', payload: response.data });
+    } catch (error) {
+      dispatch({ type: 'update_error', payload: 'Defibrillatoren konnten nicht geladen werden.' })
+      console.log(error);
+    }
   };
 };
 
 const setDefisNearLocation = dispatch => {
   return defibrillators => {
-    dispatch({ type: 'set_nearLocation', payload: defibrillators })
+    dispatch({ type: 'set_nearLocation', payload: defibrillators });
   }
 };
 
-const addDefibrillator = () => {
+const addDefibrillator = dispatch => {
   return async (defibrillator, callback) => {
-    await defikarteBackendMock.post('/defibrillator', defibrillator)
-    if (callback) {
-      callback();
+    try {
+      const response = await defikarteBackendMock.post('/defibrillator', defibrillator);
+      console.log(response.data);
+      if (callback) {
+        callback();
+      }
+    } catch (error) {
+      dispatch({ type: 'update_error', payload: 'Defibrillatoren konnten nicht hinzugefügt werden.' });
+      console.log(error);
     }
   };
 };

@@ -3,7 +3,7 @@ import distanceBetweenPoints from '../helpers/coordinateCalc.js'
 import { Context as LocationContext } from '../context/LocationContext';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 
-export default (navigation) => {
+export default () => {
   const { state, getDefibrillators, setDefisNearLocation } = useContext(DefibrillatorContext);
   const { state: userLocation } = useContext(LocationContext);
 
