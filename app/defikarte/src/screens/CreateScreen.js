@@ -68,7 +68,7 @@ const CreateScreen = ({ navigation }) => {
       type: 'Text',
       label: 'Standort',
       value: state.location,
-      setValue: (newValue) => dispatch({ type: 'defibrillatorLocation', payload: newValue }),
+      setValue: (newValue) => dispatch({ type: 'Location', payload: newValue }),
       placeholder: 'Schulhaus Zürich West, neben Eingang'
     },
     /* not required
