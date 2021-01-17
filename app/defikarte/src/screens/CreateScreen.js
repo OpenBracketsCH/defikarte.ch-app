@@ -53,15 +53,22 @@ const CreateScreen = ({ navigation }) => {
       setValue: (newValue) => dispatch({ type: 'emergencyPhone', payload: newValue }),
       defaultValue: '144',
       useSwitch: 'true',
-      placeholder: '117',
+      placeholder: '144',
       keyboardType: 'phone-pad'
     },
     {
       type: 'Text',
       label: 'Standort',
       value: state.location,
-      setValue: (newValue) => dispatch({ type: 'location', payload: newValue }),
+      setValue: (newValue) => dispatch({ type: 'defibrillatorLocation', payload: newValue }),
       placeholder: 'Schulhaus Zürich West, neben Eingang'
+    },
+    {
+      type: 'Text',
+      label: 'Beschreibung',
+      value: state.location,
+      setValue: (newValue) => dispatch({ type: 'description', payload: newValue }),
+      placeholder: 'zum Beispiel: nur während Öffnungszeiten verfügbar'
     },
     {
       type: 'Text',
@@ -78,7 +85,7 @@ const CreateScreen = ({ navigation }) => {
       label: 'Betreiber',
       value: state.operator,
       setValue: (newValue) => dispatch({ type: 'operator', payload: newValue }),
-      placeholder: 'Schutz und Rettung Zürich'
+      placeholder: 'Gemeinde Beispiel'
     },
     {
       type: 'Text',
