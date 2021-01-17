@@ -13,7 +13,7 @@ const reducer = (state, action) => {
       return { ...state, reporter: action.payload };
     case 'emergencyPhone':
       return { ...state, emergencyPhone: action.payload };
-    case 'location':
+    case 'defibrillatorlocation':
       return { ...state, location: action.payload };
     case 'openingHours':
       return { ...state, openingHours: action.payload };
@@ -39,6 +39,8 @@ const CreateScreen = ({ navigation }) => {
   const [state, dispatch] = useReducer(reducer, { latitude: 0, longitude: 0 });
 
   const defiForm = [
+    /* required
+    Melder kann alle Werte enthalten*/
     {
       type: 'Text',
       label: 'Melder',
@@ -46,6 +48,9 @@ const CreateScreen = ({ navigation }) => {
       setValue: (newValue) => dispatch({ type: 'reporter', payload: newValue }),
       placeholder: 'Max Mustermann'
     },
+    /* not required
+    hier ist die Frage ob wir das Feld überhaupt anzeigen lassen wollen? Die Notrufnummer ist ja immer
+    die 144. Können wir dies nicht einfach an die OSM API weitergeben?*/
     {
       type: 'Text',
       label: 'Notrufnummer',
@@ -56,6 +61,9 @@ const CreateScreen = ({ navigation }) => {
       placeholder: '144',
       keyboardType: 'phone-pad'
     },
+    /* *required
+    Textwert, max 200 Zeichen
+    Lat / Lon Prüfung machen wir ja nicth hier */
     {
       type: 'Text',
       label: 'Standort',
@@ -63,6 +71,8 @@ const CreateScreen = ({ navigation }) => {
       setValue: (newValue) => dispatch({ type: 'defibrillatorLocation', payload: newValue }),
       placeholder: 'Schulhaus Zürich West, neben Eingang'
     },
+    /* not required
+    Textwert, max 200 Zeichen */
     {
       type: 'Text',
       label: 'Beschreibung',
@@ -70,6 +80,9 @@ const CreateScreen = ({ navigation }) => {
       setValue: (newValue) => dispatch({ type: 'description', payload: newValue }),
       placeholder: 'zum Beispiel: nur während Öffnungszeiten verfügbar'
     },
+    /* not required 
+    es gibt diverse opening Hour validation tools. problem: es gibt sehr viele kombinationen,
+    automatische opening hours validation wäre gut: https://wiki.openstreetmap.org/wiki/Key:opening_hours#Implementation*/
     {
       type: 'Text',
       label: 'Öffnungszeiten',
@@ -80,6 +93,7 @@ const CreateScreen = ({ navigation }) => {
       useSwitch: true,
       multiline: true,
     },
+    /* not required */
     {
       type: 'Text',
       label: 'Betreiber',
@@ -87,6 +101,7 @@ const CreateScreen = ({ navigation }) => {
       setValue: (newValue) => dispatch({ type: 'operator', payload: newValue }),
       placeholder: 'Gemeinde Beispiel'
     },
+    /* not required */
     {
       type: 'Text',
       label: 'Telefon',
@@ -95,12 +110,16 @@ const CreateScreen = ({ navigation }) => {
       placeholder: '+41 79 000 00 00',
       keyboardType: 'phone-pad'
     },
+    /* required
+    switch passt gut */
     {
       type: 'Switch',
       label: 'Zugänglich',
       value: state.access,
       setValue: (newValue) => dispatch({ type: 'access', payload: newValue })
     },
+        /* required
+    switch passt gut */
     {
       type: 'Switch',
       label: 'Im Gebäude',
