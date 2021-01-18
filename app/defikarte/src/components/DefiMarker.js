@@ -4,11 +4,8 @@ import { Marker, Callout } from 'react-native-maps';
 
 const DefiMarker = ({ defibrillator }) => {
   const tags = defibrillator.tags;
-  if (!tags || !tags.opening_hours) {
-    return null;
-  }
 
-  const dayNightStyle = tags.opening_hours === '24/7' ? styles.markerDayNightStyle : styles.markerDayStyle;
+  const dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.markerDayStyle : styles.markerDayNightStyle;
 
   return (
     <Marker
