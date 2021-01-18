@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
 import DefiMarker from './DefiMarker';
+import SimpleMarker from './SimpleMarker';
 import CreateMapOverlay from './CreateMapOverlay';
 import MapInfoPanel from './MapInfoPanel';
 
@@ -10,7 +11,9 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
   const [region, setRegion] = useState(initCoords);
   const [newDefiCoords, setNewDefiCoords] = useState(initCoords);
   const [defisOnMap, setDefisOnMap] = useState([]);
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
+  // restricts which defis are displayed, if not the map will block the ui
   const currentDefisOnMap = (defibrillators, region) => {
     return defibrillators.filter(defibrillator => {
       const lat = defibrillator.lat;
@@ -56,13 +59,26 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
         return null;
       }
       return defibrillators.map((defibrillator) => {
-        return (
-          <DefiMarker
-            key={defibrillator.id.toString()}
-            defibrillator={defibrillator}
-            coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
-          />
-        );
+        if (selectedMarker == defibrillator.id) {
+          return (
+            <DefiMarker
+              key={defibrillator.id.toString()}
+              defibrillator={defibrillator}
+              coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
+              onMarkerDeselect={setSelectedMarker}
+            />
+          );
+        }
+        else {
+          return (
+            <SimpleMarker
+              key={defibrillator.id.toString()}
+              defibrillator={defibrillator}
+              coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
+              onMarkerSelected={setSelectedMarker}
+            />
+          );
+        }
       }
       );
     }
@@ -78,6 +94,12 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
     }
   }
 
+  const onMapPress = event => {
+    if (event.action !== null && event.action !== 'marker-press') {
+      setSelectedMarker(null);
+    }
+  }
+
   return (
     <View style={styles.containerStyle}>
       <MapView
@@ -88,6 +110,7 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
         followsUserLocation={false}
         onRegionChangeComplete={setRegion}
         spiralEnabled={false}
+        onPress={(e) => onMapPress(e.nativeEvent)}
       >
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
@@ -109,12 +132,6 @@ const styles = StyleSheet.create({
   mapStyle: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 50,
-  },
-  simpleMarkerStyle: {
-    height: 10,
-    width: 10,
-    backgroundColor: 'rgba(0, 153, 57, .4)',
-    borderRadius: 50,
   }
 });
 

@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { Marker, Callout } from 'react-native-maps';
 
 const DefiMarker = ({ defibrillator }) => {
+  const markerRef = useRef(null);
   const tags = defibrillator.tags;
 
   const dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.markerDayStyle : styles.markerDayNightStyle;
 
+  useEffect(() => {
+    if (markerRef != null) {
+      markerRef.current.showCallout();
+    }
+  }, [markerRef])
+
   return (
     <Marker
+      ref={markerRef}
       anchor={{ x: 0.5, y: 1 }}
       centerOffset={{ x: 0, y: -35 }}
       coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
       tracksViewChanges={false}
-    //image={require('../../assets/marker.png')}
     >
       <View style={styles.markerOutsideStyle}>
         <View style={dayNightStyle}>
