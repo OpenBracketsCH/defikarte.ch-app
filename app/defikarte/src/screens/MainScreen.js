@@ -23,10 +23,12 @@ const MainScreen = ({ navigation }) => {
     });
   };
 
-  const latlng = navigation.getParam('latlng');
-  if (latlng) {
-    animateToRegion(latlng);
-  }
+  useEffect(() => {
+    const latlng = navigation.getParam('latlng');
+    if (latlng) {
+      animateToRegion(latlng);
+    }
+  }, [navigation]);
 
   useEffect(() => {
     if (locationErr) {
