@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, Switch, TextInput, StyleSheet } from 'react-native';
+import { Controller } from "react-hook-form";
 
-const TextForm = ({ labelText, value, setValue, keyboardType, defaultValue, multiline, placeholder, useSwitch = false }) => {
+const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholder, useSwitch = false, name, control, rules, errors, errorMsg }) => {
   const [switchValue, setSwitchValue] = useState(false);
   const [tempValue, setTempValue] = useState('');
 
-  const onSwitchChange = (newVal) => {
+  const onSwitchChange = (newVal, value, setValue) => {
     if (newVal) {
       setTempValue(value);
       setValue(defaultValue);
@@ -14,14 +15,14 @@ const TextForm = ({ labelText, value, setValue, keyboardType, defaultValue, mult
     setValue(tempValue);
   }
 
-  const defaultWithSwitch = () => {
+  const defaultWithSwitch = (value, onChange) => {
     const textStyle = switchValue ? styles.switchActiveLabelStyle : styles.switchLabelStyle;
     if (useSwitch) {
       return (
         <View style={styles.switchContainerStyle}>
           <Switch
             style={styles.switchStyle}
-            onValueChange={onSwitchChange}
+            onValueChange={newVal => onSwitchChange(newVal, value, onChange)}
             value={switchValue}
           />
           <Text style={textStyle}>{defaultValue}</Text>
@@ -32,13 +33,14 @@ const TextForm = ({ labelText, value, setValue, keyboardType, defaultValue, mult
     return null;
   }
 
-  const showTextInput = () => {
+  const showTextInput = (onChange, onBlur, value) => {
     if (!switchValue) {
       return (
         <TextInput
           style={styles.inputStyle}
           value={value}
-          onChangeText={setValue}
+          onChangeText={onChange}
+          onBlur={onBlur}
           autoCapitalize='none'
           keyboardType={keyboardType}
           defaultValue={useSwitch ? '' : defaultValue}
@@ -54,12 +56,22 @@ const TextForm = ({ labelText, value, setValue, keyboardType, defaultValue, mult
 
   return (
     <View style={styles.inlineForm} >
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={styles.labelStyle}>{labelText}</Text>
-        {defaultWithSwitch()}
-      </View>
-
-      {showTextInput()}
+      <Controller
+        control={control}
+        name={name}
+        rules={rules}
+        defaultValue={useSwitch ? '' : defaultValue}
+        render={({ onChange, onBlur, value }) => (
+          <>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.labelStyle}>{labelText}</Text>
+              {defaultWithSwitch(value, onChange)}
+            </View>
+            {showTextInput(onChange, onBlur, value)}
+          </>
+        )}
+      />
+      {errors[name] && <Text style={styles.errorTextStyle}>{errorMsg}</Text>}
     </View>
   );
 };
@@ -99,6 +111,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
     color: '#007AFF',
     fontWeight: 'bold'
+  },
+  errorTextStyle: {
+    fontSize: 16,
+    color: 'red',
+    marginTop: 3,
   }
 });
 

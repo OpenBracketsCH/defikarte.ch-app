@@ -1,14 +1,25 @@
 import React from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
+import { Controller } from "react-hook-form";
 
-const SwitchForm = ({ labelText, value, setValue }) => {
+const SwitchForm = ({ labelText, name, control, rules, errors, errorMsg, defaultValue }) => {
   return (
     <View style={styles.inlineForm} >
       <Text style={styles.labelStyle}>{labelText}</Text>
-      <Switch
-        onValueChange={setValue}
-        value={value}
+      <Controller
+        control={control}
+        name={name}
+        rules={rules}
+        defaultValue={defaultValue}
+        render={({ onChange, onBlur, value }) => (
+          <Switch
+            onBlur={onBlur}
+            onValueChange={onChange}
+            value={value}
+          />
+        )}
       />
+      {errors[name] && <Text style={styles.errorTextStyle}>{errorMsg}</Text>}
     </View>
   );
 };
@@ -26,6 +37,11 @@ const styles = StyleSheet.create({
     minWidth: 120,
     color: 'rgba(70, 70, 70, 1)',
   },
+  errorTextStyle: {
+    fontSize: 16,
+    color: 'red',
+    marginTop: 3,
+  }
 });
 
 export default SwitchForm;
