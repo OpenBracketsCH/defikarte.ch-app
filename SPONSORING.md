@@ -1,4 +1,5 @@
 ![Picture of the Logo Defikarte.ch](app/defikarte/assets/logo_defikarte.png)
+
 # Informationen für Sponsoren
 
 ## Entstehung der Karte
