@@ -60,7 +60,7 @@ const CreateScreen = ({ navigation }) => {
       rules: { required: false },
       type: 'Text',
       label: 'Betreiber',
-      placeholder: 'Gemeinde Beispiel',
+      placeholder: 'Gemeinde, Verein, Privatperson',
       defaultValue: '',
     },
     {
