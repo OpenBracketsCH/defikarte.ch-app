@@ -45,7 +45,7 @@ const DefiItem = ({ defibrillator, navigation }) => {
             {openingHours()}
           </View>
         </View>
-        <TouchableOpacity onPress={() => openMap({ latitude: defibrillator.lat, longitude: defibrillator.lon, query: name, travelType: 'walk' })}>
+        <TouchableOpacity onPress={() => openMap({ latitude: defibrillator.lat, longitude: defibrillator.lon, end: `${defibrillator.lat}, ${defibrillator.lon}`, query: name, travelType: 'walk' })}>
           <Feather style={styles.navigationIconStyle} name='navigation' />
         </TouchableOpacity>
       </View>

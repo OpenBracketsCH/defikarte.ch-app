@@ -1,124 +1,123 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useForm } from "react-hook-form";
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import TextForm from '../components/TextForm';
 import SwitchForm from '../components/SwitchForm';
 import { useEffect } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'reporter':
-      return { ...state, reporter: action.payload };
-    case 'emergencyPhone':
-      return { ...state, emergencyPhone: action.payload };
-    case 'location':
-      return { ...state, location: action.payload };
-    case 'openingHours':
-      return { ...state, openingHours: action.payload };
-    case 'operatorPhone':
-      return { ...state, operatorPhone: action.payload };
-    case 'operator':
-      return { ...state, operator: action.payload };
-    case 'access':
-      return { ...state, access: action.payload };
-    case 'indoor':
-      return { ...state, indoor: action.payload };
-    case 'latitude':
-      return { ...state, latitude: action.payload };
-    case 'longitude':
-      return { ...state, longitude: action.payload };
-    default:
-      return state;
-  }
-};
-
 const CreateScreen = ({ navigation }) => {
   const { addDefibrillator } = useContext(DefibrillatorContext);
-  const [state, dispatch] = useReducer(reducer, { latitude: 0, longitude: 0 });
+  const [state, setState] = useState({ latitude: 0, longitude: 0, emergencyPhone: '144' });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { control, handleSubmit, errors } = useForm();
 
   const defiForm = [
     {
+      name: 'reporter',
+      rules: { required: true },
       type: 'Text',
       label: 'Melder',
-      value: state.reporter,
-      setValue: (newValue) => dispatch({ type: 'reporter', payload: newValue }),
-      placeholder: 'Max Mustermann'
+      placeholder: 'Max Mustermann',
+      defaultValue: '',
+      errorMsg: 'Der Melder wird benötigt',
     },
     {
-      type: 'Text',
-      label: 'Notrufnummer',
-      value: state.emergencyPhone,
-      setValue: (newValue) => dispatch({ type: 'emergencyPhone', payload: newValue }),
-      defaultValue: '144',
-      useSwitch: 'true',
-      placeholder: '117',
-      keyboardType: 'phone-pad'
-    },
-    {
+      name: 'location',
+      rules: { required: true, maxLength: 200 },
       type: 'Text',
       label: 'Standort',
-      value: state.location,
-      setValue: (newValue) => dispatch({ type: 'location', payload: newValue }),
-      placeholder: 'Schulhaus Zürich West, neben Eingang'
+      placeholder: 'Schulhaus Zürich West, neben Eingang',
+      defaultValue: '',
+      errorMsg: 'Der Standort wird benötigt, maximale Länge 200 Zeichen',
     },
     {
+      name: 'description',
+      rules: { required: false, maxLength: 200 },
+      type: 'Text',
+      label: 'Beschreibung',
+      placeholder: 'zum Beispiel: nur während Öffnungszeiten verfügbar',
+      defaultValue: '',
+      errorMsg: 'Die maximale Länge beträgt 200 Zeichen',
+    },
+    /* not required 
+    es gibt diverse opening Hour validation tools. problem: es gibt sehr viele kombinationen,
+    automatische opening hours validation wäre gut: https://wiki.openstreetmap.org/wiki/Key:opening_hours#Implementation*/
+    {
+      name: 'openingHours',
+      rules: { required: false },
       type: 'Text',
       label: 'Öffnungszeiten',
-      value: state.openingHours,
-      setValue: (newValue) => dispatch({ type: 'openingHours', payload: newValue }),
       placeholder: 'Mo-Fr: 08:00-17:00',
       defaultValue: '24/7',
       useSwitch: true,
       multiline: true,
     },
     {
+      name: 'operator',
+      rules: { required: false },
       type: 'Text',
       label: 'Betreiber',
-      value: state.operator,
-      setValue: (newValue) => dispatch({ type: 'operator', payload: newValue }),
-      placeholder: 'Schutz und Rettung Zürich'
+      placeholder: 'Gemeinde Beispiel',
+      defaultValue: '',
     },
     {
+      name: 'operatorPhone',
+      rules: { pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/ },
       type: 'Text',
       label: 'Telefon',
-      value: state.operatorPhone,
-      setValue: (newValue) => dispatch({ type: 'operatorPhone', payload: newValue }),
       placeholder: '+41 79 000 00 00',
-      keyboardType: 'phone-pad'
+      keyboardType: 'phone-pad',
+      defaultValue: '',
+      errorMsg: 'Der Wert muss eine gültige Telefonummer sein',
     },
     {
+      name: 'access',
+      rules: { required: true },
       type: 'Switch',
       label: 'Zugänglich',
-      value: state.access,
-      setValue: (newValue) => dispatch({ type: 'access', payload: newValue })
+      defaultValue: false,
     },
     {
+      name: 'indoor',
+      rules: { required: true },
       type: 'Switch',
       label: 'Im Gebäude',
-      value: state.indoor,
-      setValue: (newValue) => dispatch({ type: 'indoor', payload: newValue })
+      defaultValue: false,
     },
   ]
+
+  const onSubmit = (formValues) => {
+    setState({ ...state, ...formValues });
+    setIsSubmitted(true);
+  }
 
   useEffect(() => {
     const latlon = navigation.getParam('latlon');
     if (latlon) {
-      dispatch({ type: 'latitude', payload: latlon.latitude });
-      dispatch({ type: 'longitude', payload: latlon.longitude });
+      setState({ ...state, latitude: latlon.latitude, longitude: latlon.longitude })
     }
   }, [])
 
+  useEffect(() => {
+    if (isSubmitted) {
+      addDefibrillator(state, () => navigation.navigate('Main'));
+    }
+  }, [isSubmitted])
 
   const renderFormComponent = () => {
     return defiForm.map((formComp, index) => {
       if (formComp.type === 'Text') {
         return <TextForm
+          name={formComp.name}
+          rules={formComp.rules}
+          control={control}
+          errors={errors}
+          errorMsg={formComp.errorMsg}
           key={index}
           labelText={formComp.label}
-          value={formComp.value}
-          setValue={formComp.setValue}
           defaultValue={formComp.defaultValue}
           keyboardType={formComp.keyboardType}
           multiline={formComp.multiline}
@@ -127,7 +126,16 @@ const CreateScreen = ({ navigation }) => {
         />
       }
       else if (formComp.type === 'Switch') {
-        return <SwitchForm key={index} labelText={formComp.label} value={formComp.value} setValue={formComp.setValue} />
+        return <SwitchForm
+          name={formComp.name}
+          rules={formComp.rules}
+          control={control}
+          errors={errors}
+          errorMsg={formComp.errorMsg}
+          defaultValue={formComp.defaultValue}
+          key={index}
+          labelText={formComp.label}
+        />
       }
       else {
         return null;
@@ -153,7 +161,7 @@ const CreateScreen = ({ navigation }) => {
         <TouchableOpacity
           color='white'
           title='Erstellen'
-          onPress={() => addDefibrillator(state, () => navigation.navigate('Main'))} >
+          onPress={handleSubmit(onSubmit)} >
           <Text style={styles.buttonTextStyle}>Erstellen</Text>
         </TouchableOpacity>
         <TouchableOpacity
