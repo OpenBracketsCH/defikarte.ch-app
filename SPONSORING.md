@@ -16,7 +16,7 @@ Die App ist auf beiden App-Stores seit Februar 2021 verfügbar und die Downloadz
 
 ## Sponsoring-Möglichkeiten
 
-Seit der Entstehung der App werden durch das Publizieren und das Betreiben der Infrastruktur (u.a. Backend-Dienste) Kosten verursacht. Sinn und Zweck des gesamten Projektes ist es, kostendeckend und nicht gewinnbringend zu operieren, um unabhängig zu bleiben. Dennoch profitieren diverse Organisationen von der Karte und deren Daten. Um unser Projekt am Laufen zu halten wären wir froh, Sponsoren für unser Projekt zu gewinnen.
+Seit der Entstehung der App werden durch das Publizieren und das Betreiben der Infrastruktur (u.a. Backend-Dienste) Kosten verursacht, die aktuell vom Defikarten-Team getragen werden. Sinn und Zweck des gesamten Projektes ist es, kostendeckend und nicht gewinnbringend zu operieren, um unabhängig zu bleiben. Dennoch profitieren diverse Organisationen von der Karte und deren Daten. Um unser Projekt am Laufen zu halten wären wir froh, Sponsoren für unser Projekt zu gewinnen.
 Sie können dies über Github Sponsors, um den Entwicklern Wertschätzung zu zeigen. Oder Sie machen das in Form von Sponsoring von Diensten wie z.B Hosting der Webseite, Diensten wie Azure oder Übernahme der Lizenzgebühr von Apple und Google. Sie sehen, die Möglichkeiten dieses Projekt zu unterstützen sind vielfältig.
 
 Jeder Sponsor, der sich über Github Sponsors beteiligt wird im Repository der Defikarte und der im Repository der App erwähnt und findet Erwähnung auf defikarte.ch. Ab einem Sponsoring Betrag von 10$ kann ein Logo platziert werden, ab 50$ werden Sie als Gold Sponsor erwähnt.
