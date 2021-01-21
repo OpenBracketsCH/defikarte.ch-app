@@ -35,7 +35,7 @@ const DefiMarker = ({ defibrillator }) => {
           <Text><Text style={styles.titleStyle}>Ort: </Text>{tags['defibrillator:location']}</Text>
           <Text><Text style={styles.titleStyle}>Besonderes: </Text>{tags.description}</Text>
           <Text><Text style={styles.titleStyle}>Zugang: </Text>{tags.access}</Text>
-          <Text><Text style={styles.titleStyle}>Nortrufnummer: </Text>{tags['emergency:phone']}</Text>
+          <Text><Text style={styles.titleStyle}>Notrufnummer: </Text>{tags['emergency:phone']}</Text>
         </View>
       </Callout>
     </Marker>
