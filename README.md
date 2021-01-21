@@ -25,6 +25,14 @@ Check [Requirements](Requirements.md) for more information
 
 We are looking for motivated contributors that help us, to make the app better
 
+### Contributors
+
+<a href="https://github.com/chnuessli/defikarte.ch-app/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=chnuessli/defikarte.ch-app" />
+</a>
+
 ## Sponsors
 
-TBD
+Please read SPONSORING.md
+
+[Sponsor us](https://github.com/sponsors/chnuessli)
