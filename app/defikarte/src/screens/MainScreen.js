@@ -82,16 +82,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   bottomBar: {
-    padding: 10,
+    paddingHorizontal: '4%',
+    alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     bottom: 0,
-    height: 50,
+    height:'8%',
     backgroundColor: 'green'
   },
   iconStyle: {
     alignSelf: 'center',
-    fontSize: 30,
+    fontSize: 32,
     color: 'white'
   }
 });

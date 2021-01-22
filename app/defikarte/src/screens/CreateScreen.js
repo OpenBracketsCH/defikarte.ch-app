@@ -188,11 +188,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: 'center',
   },
-  labelStyle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    width: 140,
-  },
   coordStyle: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -209,19 +204,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
   },
-  buttonContainerStyle: {
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderTopWidth: 0.3,
-    borderColor: 'rgba(200, 200, 200, 1)',
-    backgroundColor: 'green'
-  },
   bottomBar: {
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 50,
+    height: '8%',
     backgroundColor: 'green'
   },
 });
