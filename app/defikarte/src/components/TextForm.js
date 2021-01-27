@@ -7,12 +7,11 @@ const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholde
   const [tempValue, setTempValue] = useState('');
 
   const onSwitchChange = (newVal, value, setValue) => {
-    if (newVal) {
-      setTempValue(value);
-      setValue(defaultValue);
-    }
     setSwitchValue(newVal);
-    setValue(tempValue);
+    setTempValue(value);
+    // if newVal from switch (bool) is true, use default value
+    const val = newVal ? defaultValue : tempValue;
+    setValue(val);
   }
 
   const defaultWithSwitch = (value, onChange) => {
@@ -61,15 +60,18 @@ const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholde
         name={name}
         rules={rules}
         defaultValue={useSwitch ? '' : defaultValue}
-        render={({ onChange, onBlur, value }) => (
-          <>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.labelStyle}>{labelText}</Text>
-              {defaultWithSwitch(value, onChange)}
-            </View>
-            {showTextInput(onChange, onBlur, value)}
-          </>
-        )}
+        render={({ onChange, onBlur, value }) => {
+          console.log(value)
+          return (
+            <>
+              <View style={styles.inlineSwitchStyle} >
+                <Text style={styles.labelStyle}>{labelText}</Text>
+                {defaultWithSwitch(value, onChange)}
+              </View>
+              {showTextInput(onChange, onBlur, value)}
+            </>
+          )
+        }}
       />
       {errors[name] && <Text style={styles.errorTextStyle}>{errorMsg}</Text>}
     </View>
@@ -81,6 +83,10 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 20,
     marginVertical: 10,
+  },
+  inlineSwitchStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   labelStyle: {
     fontSize: 18,
