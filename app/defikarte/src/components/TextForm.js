@@ -61,7 +61,6 @@ const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholde
         rules={rules}
         defaultValue={useSwitch ? '' : defaultValue}
         render={({ onChange, onBlur, value }) => {
-          console.log(value)
           return (
             <>
               <View style={styles.inlineSwitchStyle} >
