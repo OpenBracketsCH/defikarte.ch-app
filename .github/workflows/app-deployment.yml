@@ -88,7 +88,7 @@ jobs:
         run: expo build:ios --release-channel beta
         env:
             EXPO_APPLE_ID: ${{secrets.EXPO_APPLE_ID}}
-            EXPO_APPLE_ID_PASSWORD: ${{secrets.EXPO_APPLE_PASSWORD}}    
+            EXPO_APPLE_PASSWORD: ${{secrets.EXPO_APPLE_PASSWORD}}    
   publish-to-testflight:
     needs: [build-for-IOS]
     runs-on: macos-latest
