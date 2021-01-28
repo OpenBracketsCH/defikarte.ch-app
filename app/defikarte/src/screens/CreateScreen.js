@@ -51,8 +51,9 @@ const CreateScreen = ({ navigation }) => {
       rules: { required: false, maxLength: 200 },
       type: 'Text',
       label: 'Beschreibung',
-      placeholder: 'zum Beispiel: nur während Öffnungszeiten verfügbar',
+      placeholder: 'z.B.: während Öffnungszeiten verfügbar',
       defaultValue: '',
+      multiline: true,
       errorMsg: 'Die maximale Länge beträgt 200 Zeichen',
     },
     /* not required 
@@ -167,7 +168,7 @@ const CreateScreen = ({ navigation }) => {
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
-        <KeyboardAvoidingView enabled behavior='position'>
+        <KeyboardAvoidingView enabled keyboardVerticalOffset="1">
           {renderFormComponent()}
         </KeyboardAvoidingView>
       </ScrollView>

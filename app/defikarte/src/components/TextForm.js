@@ -44,10 +44,11 @@ const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholde
           keyboardType={keyboardType}
           defaultValue={useSwitch ? '' : defaultValue}
           multiline={multiline}
+          autoGrow={true}
           placeholder={placeholder}
           autoCorrect={false}
           editable={!switchValue}
-          returnKeyType='done'
+          returnKeyType={multiline ? 'default' : 'done'}
         />
       );
     }
