@@ -4,6 +4,9 @@ on:
   push :
     branches : [main]
 
+env:
+  APP_SRC_PATH: './app/defikarte/'    # set this to the path to your web app project, defaults to the repository root
+
 jobs:
   Build-for-android:
     runs-on: macos-latest
@@ -23,8 +26,10 @@ jobs:
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - name: Install deps
+        working-directory: ${{ env.APP_SRC_PATH }}
         run: npm install
       - name: Build Android APK Bundle
+        working-directory: ${{ env.APP_SRC_PATH }}
         run: expo build:android --release-channel beta
   Push-to-Playstore:
     needs: [Build-for-android]
@@ -45,8 +50,10 @@ jobs:
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - name: Install deps
+        working-directory: ${{ env.APP_SRC_PATH }}
         run: npm install
       - name: Upload to Google Play Console
+        working-directory: ${{ env.APP_SRC_PATH }}
         run: expo upload:android --latest --key ${{ secrets.DEVELOPER_API }}
   build-for-IOS:
     runs-on: macos-latest
@@ -71,8 +78,10 @@ jobs:
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - name: Install deps
+        working-directory: ${{ env.APP_SRC_PATH }}
         run: npm install
       - name: Build iOS app
+        working-directory: ${{ env.APP_SRC_PATH }}
         run: expo build:ios --release-channel beta
         env:
             EXPO_APPLE_ID: ${{secrets.EXPO_APPLE_ID}}
@@ -101,6 +110,7 @@ jobs:
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - name: Install deps
+        working-directory: ${{ env.APP_SRC_PATH }}
         run: npm install
       - uses: jakemwood/expo-apple-2fa@main
         env:
