@@ -23,6 +23,7 @@ jobs:
       - uses: expo/expo-github-action@v5
         with:
           expo-version: 3.x
+          expo-packager: 'npm'
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - name: Install deps
@@ -47,6 +48,7 @@ jobs:
       - uses: expo/expo-github-action@v5
         with:
           expo-version: 3.x
+          expo-packager: 'npm'
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - name: Install deps
@@ -75,6 +77,7 @@ jobs:
       - uses: expo/expo-github-action@v5
         with:
           expo-version: 3.x
+          expo-packager: 'npm'
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - name: Install deps
@@ -107,6 +110,7 @@ jobs:
       - uses: expo/expo-github-action@v5
         with:
           expo-version: 3.x
+          expo-packager: 'npm'
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - name: Install deps
