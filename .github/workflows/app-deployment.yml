@@ -47,7 +47,7 @@ jobs:
       - name: Install deps
         run: npm install
       - name: Upload to Google Play Console
-        run: expo upload:android --latest --key <Path to Google Sevice Account Json>
+        run: expo upload:android --latest --key ${{ secrets.DEVELOPER_API }}
   build-for-IOS:
     runs-on: macos-latest
     steps:
