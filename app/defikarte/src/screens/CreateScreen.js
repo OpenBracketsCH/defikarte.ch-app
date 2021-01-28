@@ -168,7 +168,10 @@ const CreateScreen = ({ navigation }) => {
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
-        <KeyboardAvoidingView enabled keyboardVerticalOffset="1">
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          enabled
+        >
           {renderFormComponent()}
         </KeyboardAvoidingView>
       </ScrollView>
