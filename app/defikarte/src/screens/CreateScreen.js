@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
+import opening_hours from 'opening_hours';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import TextForm from '../components/TextForm';
 import SwitchForm from '../components/SwitchForm';
@@ -13,6 +14,18 @@ const CreateScreen = ({ navigation }) => {
   const [state, setState] = useState({ latitude: 0, longitude: 0, emergencyPhone: '144' });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { control, handleSubmit, errors } = useForm();
+
+  const openingHoursValidation = value => {
+    let valid = false;
+    try {
+      let oh = new opening_hours(value);
+      valid = true;
+    } catch (error) {
+      valid = false;
+    }
+
+    return value == '' || valid;
+  }
 
   const defiForm = [
     {
@@ -38,8 +51,9 @@ const CreateScreen = ({ navigation }) => {
       rules: { required: false, maxLength: 200 },
       type: 'Text',
       label: 'Beschreibung',
-      placeholder: 'zum Beispiel: nur während Öffnungszeiten verfügbar',
+      placeholder: 'z.B.: während Öffnungszeiten verfügbar',
       defaultValue: '',
+      multiline: true,
       errorMsg: 'Die maximale Länge beträgt 200 Zeichen',
     },
     /* not required 
@@ -47,13 +61,14 @@ const CreateScreen = ({ navigation }) => {
     automatische opening hours validation wäre gut: https://wiki.openstreetmap.org/wiki/Key:opening_hours#Implementation*/
     {
       name: 'openingHours',
-      rules: { required: false },
+      rules: { validate: openingHoursValidation },
       type: 'Text',
       label: 'Öffnungszeiten',
       placeholder: 'Mo-Fr: 08:00-17:00',
       defaultValue: '24/7',
       useSwitch: true,
       multiline: true,
+      errorMsg: 'Die eingegebenen Öffnungzeiten entsprechen nicht dem geforderten Format.',
     },
     {
       name: 'operator',
@@ -153,7 +168,10 @@ const CreateScreen = ({ navigation }) => {
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
-        <KeyboardAvoidingView enabled behavior='position'>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          enabled
+        >
           {renderFormComponent()}
         </KeyboardAvoidingView>
       </ScrollView>
@@ -188,11 +206,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: 'center',
   },
-  labelStyle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    width: 140,
-  },
   coordStyle: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -209,19 +222,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
   },
-  buttonContainerStyle: {
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderTopWidth: 0.3,
-    borderColor: 'rgba(200, 200, 200, 1)',
-    backgroundColor: 'green'
-  },
   bottomBar: {
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 50,
+    height: '8%',
     backgroundColor: 'green'
   },
 });

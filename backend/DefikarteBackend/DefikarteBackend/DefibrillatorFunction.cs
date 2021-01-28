@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using DefikarteBackend.Model;
 using DefikarteBackend.OsmOverpassApi;
+using DefikarteBackend.Validation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -50,15 +52,9 @@ namespace DefikarteBackend
 
         [FunctionName("Defibrillators_POST")]
         public async Task<IActionResult> Create(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "Post", Route = "defibrillator")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "Post", Route = "defibrillator")] HttpRequest req,
             ILogger log)
         {
-            var requestBody = await req.Content.ReadAsStringAsync();
-            if (string.IsNullOrEmpty(requestBody))
-            {
-                return new BadRequestObjectResult("body is null or empty. please provide a valid OsmGeo object.");
-            }
-
             try
             {
                 var username = config["osmUsername"];
@@ -71,11 +67,15 @@ namespace DefikarteBackend
                     return new InternalServerErrorResult();
                 }
 
-                log.LogInformation($"Create on {osmApiUrl} new node:{requestBody}");
+                var defibrillatorObj = await req.GetJsonBodyAsync<DefibrillatorRequest, DefibrillatorRequestValidator>();
 
-                var defibrillatorObj = JsonConvert.DeserializeObject<DefibrillatorRequest>(requestBody);
-                var newNode = CreateNode(defibrillatorObj);
-
+                if (!defibrillatorObj.IsValid)
+                {
+                    log.LogInformation($"Invalid request data.");
+                    return defibrillatorObj.ToBadRequest();
+                }
+                
+                var newNode = CreateNode(defibrillatorObj.Value);
                 var clientFactory = new ClientsFactory(log, new HttpClient(),
                     osmApiUrl);
 
@@ -128,12 +128,21 @@ namespace DefikarteBackend
                     "operator", request.Operator
                 },
                 {
-                    "access", request.Accessible ? "yes" : "no"
+                    "access", request.Access ? "yes" : "no"
                 },
                 {
                     "indoor", request.Indoor ? "yes" : "no"
                 }
             };
+
+            // remove empty values
+            foreach(var keyval in tags)
+            {
+                if (string.IsNullOrEmpty(keyval.Value))
+                {
+                    tags.Remove(keyval.Key);
+                }
+            }
 
             return new Node()
             {

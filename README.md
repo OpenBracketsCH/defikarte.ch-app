@@ -35,4 +35,6 @@ We are looking for motivated contributors that help us, to make the app better
 
 Please read SPONSORING.md
 
+* [Procamed AG](https://www.procamed.ch)
+
 [Sponsor us](https://github.com/sponsors/chnuessli)
