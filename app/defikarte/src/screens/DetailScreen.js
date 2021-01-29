@@ -7,7 +7,6 @@ import DefiMarker from '../components/DefiMarker';
 import AttributeListing from '../components/AttributeListing';
 
 const DetailScreen = ({ navigation }) => {
-  console.log(navigation)
   const defibrillator = navigation.getParam('defibrillator');
 
   const initCoords = {
