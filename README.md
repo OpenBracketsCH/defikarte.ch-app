@@ -37,4 +37,6 @@ Please read SPONSORING.md
 
 * [Procamed AG](https://www.procamed.ch)
 
+* [Ursula Dombrowsky Gesundheitspraxis](http://dombrowsky.ch/)
+
 [Sponsor us](https://github.com/sponsors/chnuessli)
