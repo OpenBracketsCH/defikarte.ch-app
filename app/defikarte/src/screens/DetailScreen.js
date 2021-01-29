@@ -1,6 +1,6 @@
-import React, { useRef, useContext, useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import React from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Linking, StyleSheet } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import DefiMarker from '../components/DefiMarker';
@@ -16,8 +16,19 @@ const DetailScreen = ({ navigation }) => {
     longitudeDelta: 0.001
   };
 
+  makeCall = (phoneNumber) => {
+    if (Platform.OS === 'ios') {
+      phoneNumber = `telprompt:${phoneNumber}`;
+    } else {
+      phoneNumber = `tel:${phoneNumber}`;
+    }
+
+    Linking.openURL(phoneNumber);
+  };
+
   const name = defibrillator.tags['defibrillator:location'] ?? defibrillator.tags.description ?? defibrillator.tags.operator ?? 'n/A';
-  const emergencyPhone = '144';
+  const emergencyPhone = defibrillator.tags['emergency:phone'] ?? '144';
+
   return (
     <View style={styles.containerStyle} >
       <View style={{ height: '25%' }}>
@@ -46,7 +57,7 @@ const DetailScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonStyle}
-            onPress={() => { }}
+            onPress={() => { makeCall(emergencyPhone) }}
           >
             <Feather style={styles.navigationIconStyle} name='phone-call' />
             <Text style={styles.buttonTextStyle}>Notruf ({emergencyPhone})</Text>
