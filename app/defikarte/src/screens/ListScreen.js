@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { View, SafeAreaView, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { Context as LocationContext } from '../context/LocationContext';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
@@ -47,7 +47,9 @@ const ListScreen = ({ navigation }) => {
             keyExtractor={(def) => def.id.toString()}
             renderItem={({ item }) => {
               return (
-                <DefiItem defibrillator={item} />
+                <View style={styles.itemBorderStyle} >
+                  <DefiItem defibrillator={item} />
+                </View>
               );
             }}
           />
@@ -70,15 +72,13 @@ const ListScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.containerStyle}>
-        <Text style={styles.titleStyle}>Defibrillatoren in deiner Nähe</Text>
-        <>{locationConfig[currentConfig].render()}</>
-        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Main')}>
-          <Feather name='map' style={styles.iconStyle} />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={styles.containerStyle}>
+      <Text style={styles.titleStyle}>Defibrillatoren in deiner Nähe</Text>
+      <>{locationConfig[currentConfig].render()}</>
+      <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Main')}>
+        <Feather name='map' style={styles.iconStyle} />
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -126,6 +126,10 @@ const styles = StyleSheet.create({
     margin: 20,
     color: '#007AFF',
     fontSize: 50,
+  },
+  itemBorderStyle: {
+    borderColor: 'lightgrey',
+    borderWidth: 0.3,
   },
   spinnerStyle: {
     alignSelf: 'center',
