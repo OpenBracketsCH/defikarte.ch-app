@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, SafeAreaView, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { Context as LocationContext } from '../context/LocationContext';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
@@ -70,13 +70,15 @@ const ListScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={styles.containerStyle}>
-      <Text style={styles.titleStyle}>Defibrillatoren in deiner Nähe</Text>
-      <>{locationConfig[currentConfig].render()}</>
-      <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Main')}>
-        <Feather name='map' style={styles.iconStyle} />
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.containerStyle}>
+        <Text style={styles.titleStyle}>Defibrillatoren in deiner Nähe</Text>
+        <>{locationConfig[currentConfig].render()}</>
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Main')}>
+          <Feather name='map' style={styles.iconStyle} />
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 
