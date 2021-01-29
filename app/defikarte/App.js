@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Provider as DefibrillatorProvider } from './src/context/DefibrillatorContext';
