@@ -13,7 +13,7 @@ export default () => {
         if (location) {
           const dist = distanceBetweenPoints(d.lat, d.lon, location.latitude, location.longitude);
           d.distance = dist;
-          if (dist < 5000) {
+          if (dist < 2000) {
             return true;
           }
         }

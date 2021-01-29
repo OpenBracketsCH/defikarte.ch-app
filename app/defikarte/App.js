@@ -13,11 +13,11 @@ const navigator = createStackNavigator({
   Main: MainScreen,
   List: ListScreen,
   Create: CreateScreen,
-  Detail: DetailScreen,
+  Detail: { screen: DetailScreen, navigationOptions: { title: 'Detailansicht', headerShown: true } },
 }, {
   initialRouteName: 'Main',
   defaultNavigationOptions: {
-    title: 'defikarte',
+    title: '',
     headerShown: false,
   }
 });

@@ -7,7 +7,7 @@ import DefiMarker from './DefiMarker';
 import SimpleMarker from './SimpleMarker';
 import CreateMapOverlay from './CreateMapOverlay';
 import MapInfoPanel from './MapInfoPanel';
-import DetailMap from './DetailMap';
+import DetailMapOverlay from './DetailMapOverlay';
 
 const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode }) => {
   const [region, setRegion] = useState(initCoords);
@@ -70,6 +70,17 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
     }
   };
 
+  const renderOverlay = (isCreateMode) => {
+    if (isCreateMode) {
+      return <CreateMapOverlay
+        setIsCreateMode={setIsCreateMode}
+        newDefiCoords={newDefiCoords} />
+    }
+    else {
+      return <DetailMapOverlay defibrillator={selectedDefibrillator} />
+    }
+  }
+
   const renderInfoPanel = (defibrillators) => {
     if (defibrillators.length > 1000) {
       return (
@@ -100,12 +111,8 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
       >
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
-      <CreateMapOverlay
-        createMode={isCreateMode}
-        setIsCreateMode={setIsCreateMode}
-        newDefiCoords={newDefiCoords} />
+      {renderOverlay(isCreateMode)}
       {renderInfoPanel(defisOnMap)}
-      <DetailMap defibrillator={selectedDefibrillator} />
     </View >
   );
 };

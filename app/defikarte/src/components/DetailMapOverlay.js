@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import DefiItem from './DefiItem';
 
-const DetailMap = ({ defibrillator }) => {
+const DetailMapOverlay = ({ defibrillator }) => {
   if (defibrillator) {
     return (
       <View style={styles.containerStyle}>
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DetailMap;
+export default DetailMapOverlay;
