@@ -4,29 +4,25 @@ import { withNavigation } from 'react-navigation';
 import { AntDesign } from '@expo/vector-icons';
 import MapInfoPanel from './MapInfoPanel';
 
-const CreateMapOverlay = ({ createMode, setIsCreateMode, newDefiCoords, navigation }) => {
-  if (createMode) {
-    return (
-      <>
-        <MapInfoPanel
-          text='Ziehe den Marker an den Standort des neuen Defibrillators'
-          subText='(Marker halten und verschieben)' />
-        <View style={styles.createIconsContainerStyle}>
-          <TouchableOpacity onPress={() => {
-            navigation.navigate('Create', { latlon: newDefiCoords });
-            setIsCreateMode(false);
-          }} >
-            <AntDesign name="checkcircleo" size={48} color="green" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setIsCreateMode(false)} style={styles.createIconsStyle}>
-            <AntDesign name="closecircleo" size={48} color="red" />
-          </TouchableOpacity>
-        </View>
-      </>
-    );
-  }
-
-  return null;
+const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation }) => {
+  return (
+    <>
+      <MapInfoPanel
+        text='Ziehe den Marker an den Standort des neuen Defibrillators'
+        subText='(Marker halten und verschieben)' />
+      <View style={styles.createIconsContainerStyle}>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('Create', { latlon: newDefiCoords });
+          setIsCreateMode(false);
+        }} >
+          <AntDesign name="checkcircleo" size={48} color="green" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsCreateMode(false)} style={styles.createIconsStyle}>
+          <AntDesign name="closecircleo" size={48} color="red" />
+        </TouchableOpacity>
+      </View>
+    </>
+  );
 }
 
 const styles = StyleSheet.create({

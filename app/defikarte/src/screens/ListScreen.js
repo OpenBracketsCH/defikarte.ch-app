@@ -47,7 +47,9 @@ const ListScreen = ({ navigation }) => {
             keyExtractor={(def) => def.id.toString()}
             renderItem={({ item }) => {
               return (
-                <DefiItem defibrillator={item} />
+                <View style={styles.itemBorderStyle} >
+                  <DefiItem defibrillator={item} />
+                </View>
               );
             }}
           />
@@ -124,6 +126,10 @@ const styles = StyleSheet.create({
     margin: 20,
     color: '#007AFF',
     fontSize: 50,
+  },
+  itemBorderStyle: {
+    borderColor: 'lightgrey',
+    borderWidth: 0.3,
   },
   spinnerStyle: {
     alignSelf: 'center',

@@ -11,7 +11,7 @@ const SimpleMarker = ({ defibrillator, onMarkerSelected }) => {
     <Marker
       coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
       tracksViewChanges={false}
-      onPress={() => onMarkerSelected(defibrillator.id)}
+      onPress={() => onMarkerSelected(defibrillator)}
     >
       <View style={dayNightStyle}>
         <Image style={styles.simpleImageStyle} source={require('../../assets/marker.png')} />

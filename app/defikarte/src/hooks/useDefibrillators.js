@@ -12,8 +12,8 @@ export default () => {
       .filter(d => {
         if (location) {
           const dist = distanceBetweenPoints(d.lat, d.lon, location.latitude, location.longitude);
+          d.distance = dist;
           if (dist < 2000) {
-            d.distance = dist;
             return true;
           }
         }

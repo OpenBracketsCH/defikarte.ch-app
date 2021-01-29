@@ -6,16 +6,16 @@ import openMap from 'react-native-open-maps';
 
 const DefiItem = ({ defibrillator, navigation }) => {
   const latlng = { latitude: defibrillator.lat, longitude: defibrillator.lon };
+
   const openingHours = () => {
-    if (defibrillator.tags.opening_hours) {
-      return (
-        <View style={styles.noWrapStyle}>
-          <Feather style={styles.inlineIconStyle} name='clock' />
-          <Text style={styles.openingHoursTextStyle}>{defibrillator.tags.opening_hours}</Text>
-        </View>
-      );
-    }
-    return null;
+    let openingHoursText = defibrillator.tags.opening_hours ?? 'n/A';
+    openingHoursText = openingHoursText.length > 31 ? openingHoursText.substring(0, 29) + '...' : openingHoursText;
+    return (
+      <View style={styles.noWrapStyle}>
+        <Feather style={styles.inlineIconStyle} name='clock' />
+        <Text style={styles.openingHoursTextStyle}>{openingHoursText}</Text>
+      </View>
+    );
   };
 
   const phone = () => {
@@ -31,21 +31,23 @@ const DefiItem = ({ defibrillator, navigation }) => {
   };
 
   const name = defibrillator.tags['defibrillator:location'] ?? defibrillator.tags.description ?? defibrillator.tags.operator ?? 'n/A';
+  const shortName = name.length > 28 ? name.substring(0, 27) + '...' : name;
+
+  const locationText = defibrillator.distance ? `${defibrillator.distance}m / ${defibrillator.lat.toFixed(4)}, ${defibrillator.lon.toFixed(4)}` : `${defibrillator.lat.toFixed(4)}, ${defibrillator.lon.toFixed(4)}`;
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Main', { latlng })}>
+    <TouchableOpacity onPress={() => navigation.navigate('Detail', { defibrillator })}>
       <View style={styles.outsideContainerStyle}>
         <View style={styles.containerStyle}>
-          <Text style={styles.titleStyle}>{name}</Text>
+          <Text style={styles.titleStyle}>{shortName}</Text>
           <View style={styles.inlineStyle}>
             <MaterialIcons style={styles.inlineIconStyle} name='my-location' />
-            <Text style={styles.inlineTextStyle}>{defibrillator.distance}m
-          / {defibrillator.lat.toFixed(4)}, {defibrillator.lon.toFixed(4)}
-            </Text>
+            <Text style={styles.inlineTextStyle}>{locationText}</Text>
             {phone()}
-            {openingHours()}
           </View>
+          {openingHours()}
         </View>
-        <TouchableOpacity onPress={() => openMap({ latitude: defibrillator.lat, longitude: defibrillator.lon, end: `${defibrillator.lat}, ${defibrillator.lon}`, query: name, travelType: 'walk' })}>
+        <TouchableOpacity
+          onPress={() => openMap({ latitude: defibrillator.lat, longitude: defibrillator.lon, end: `${defibrillator.lat}, ${defibrillator.lon}`, query: name, travelType: 'walk' })}>
           <Feather style={styles.navigationIconStyle} name='navigation' />
         </TouchableOpacity>
       </View>
@@ -56,7 +58,6 @@ const DefiItem = ({ defibrillator, navigation }) => {
 const styles = StyleSheet.create({
   titleStyle: {
     fontSize: 20,
-    fontWeight: 'bold',
     marginLeft: 5,
   },
   inlineIconStyle: {
@@ -86,13 +87,11 @@ const styles = StyleSheet.create({
   },
   outsideContainerStyle: {
     flexDirection: 'row',
-    borderColor: 'lightgrey',
-    borderWidth: 0.3,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   navigationIconStyle: {
-    fontSize: 48,
-    marginRight: 20,
+    fontSize: 36,
+    marginRight: 10,
     color: '#007AFF',
   }
 });

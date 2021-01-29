@@ -2,31 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
+import currentDefisOnMap from '../helpers/markersOnMap.js'
 import DefiMarker from './DefiMarker';
 import SimpleMarker from './SimpleMarker';
 import CreateMapOverlay from './CreateMapOverlay';
 import MapInfoPanel from './MapInfoPanel';
+import DetailMapOverlay from './DetailMapOverlay';
 
 const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode }) => {
   const [region, setRegion] = useState(initCoords);
   const [newDefiCoords, setNewDefiCoords] = useState(initCoords);
   const [defisOnMap, setDefisOnMap] = useState([]);
-  const [selectedMarker, setSelectedMarker] = useState(null);
-
-  // restricts which defis are displayed, if not the map will block the ui
-  const currentDefisOnMap = (defibrillators, region) => {
-    return defibrillators.filter(defibrillator => {
-      const lat = defibrillator.lat;
-      const lon = defibrillator.lon;
-
-      const maxLat = region.latitude + region.latitudeDelta;
-      const minLat = region.latitude - region.latitudeDelta;
-      const maxLon = region.longitude + region.longitudeDelta;
-      const minLon = region.longitude - region.longitudeDelta;
-
-      return lat > minLat && lat < maxLat && lon > minLon && lon < maxLon;
-    });
-  };
+  const [selectedDefibrillator, setSelectedDefibrillator] = useState(null);
 
   useEffect(() => {
     if (isCreateMode) {
@@ -59,13 +46,12 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
         return null;
       }
       return defibrillators.map((defibrillator) => {
-        if (selectedMarker == defibrillator.id) {
+        if (selectedDefibrillator && selectedDefibrillator.id == defibrillator.id) {
           return (
             <DefiMarker
               key={defibrillator.id.toString()}
               defibrillator={defibrillator}
               coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
-              onMarkerDeselect={setSelectedMarker}
             />
           );
         }
@@ -75,7 +61,7 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
               key={defibrillator.id.toString()}
               defibrillator={defibrillator}
               coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
-              onMarkerSelected={setSelectedMarker}
+              onMarkerSelected={setSelectedDefibrillator}
             />
           );
         }
@@ -83,6 +69,17 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
       );
     }
   };
+
+  const renderOverlay = (isCreateMode) => {
+    if (isCreateMode) {
+      return <CreateMapOverlay
+        setIsCreateMode={setIsCreateMode}
+        newDefiCoords={newDefiCoords} />
+    }
+    else {
+      return <DetailMapOverlay defibrillator={selectedDefibrillator} />
+    }
+  }
 
   const renderInfoPanel = (defibrillators) => {
     if (defibrillators.length > 1000) {
@@ -96,7 +93,7 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
 
   const onMapPress = event => {
     if (event.action !== null && event.action !== 'marker-press') {
-      setSelectedMarker(null);
+      setSelectedDefibrillator(null);
     }
   }
 
@@ -114,10 +111,7 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
       >
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
-      <CreateMapOverlay
-        createMode={isCreateMode}
-        setIsCreateMode={setIsCreateMode}
-        newDefiCoords={newDefiCoords} />
+      {renderOverlay(isCreateMode)}
       {renderInfoPanel(defisOnMap)}
     </View >
   );
