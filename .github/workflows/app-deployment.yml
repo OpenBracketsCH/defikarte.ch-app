@@ -22,10 +22,11 @@ jobs:
           architecture: x64 # (x64 or x86) - defaults to x64
       - uses: expo/expo-github-action@v5
         with:
-          expo-version: 3.x
+          expo-version: 4.x
           expo-packager: 'npm'
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          expo-cache: true
       - name: Install deps
         working-directory: ${{ env.APP_SRC_PATH }}
         run: npm install
@@ -47,10 +48,11 @@ jobs:
           architecture: x64 # (x64 or x86) - defaults to x64
       - uses: expo/expo-github-action@v5
         with:
-          expo-version: 3.x
+          expo-version: 4.x
           expo-packager: 'npm'
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          expo-cache: true
       - name: Install deps
         working-directory: ${{ env.APP_SRC_PATH }}
         run: npm install
@@ -76,10 +78,11 @@ jobs:
           apple-id-password: ${{ secrets.EXPO_APPLE_PASSWORD }}
       - uses: expo/expo-github-action@v5
         with:
-          expo-version: 3.x
+          expo-version: 4.x
           expo-packager: 'npm'
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          expo-cache: true
       - name: Install deps
         working-directory: ${{ env.APP_SRC_PATH }}
         run: npm install
@@ -109,10 +112,11 @@ jobs:
           apple-id-password: ${{ secrets.EXPO_APPLE_PASSWORD }}
       - uses: expo/expo-github-action@v5
         with:
-          expo-version: 3.x
+          expo-version: 4.x
           expo-packager: 'npm'
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          expo-cache: true
       - name: Install deps
         working-directory: ${{ env.APP_SRC_PATH }}
         run: npm install
