@@ -42,7 +42,7 @@ const DetailScreen = ({ navigation }) => {
             onPress={() => openMap({ latitude: defibrillator.lat, longitude: defibrillator.lon, end: `${defibrillator.lat}, ${defibrillator.lon}`, query: name, travelType: 'walk' })}
           >
             <Feather style={styles.navigationIconStyle} name='navigation' />
-            <Text style={styles.buttonTextStyle}>navigieren</Text>
+            <Text style={styles.buttonTextStyle}>Navigieren</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonStyle}
