@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
   containerStyle: {
     ...StyleSheet.absoluteFillObject,
     flex: 1,
+    backgroundColor: 'white',
   },
   titleStyle: {
     fontSize: 18,

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { Marker, Callout } from 'react-native-maps';
+import { View, Image, StyleSheet } from 'react-native';
+import { Marker } from 'react-native-maps';
 
 const DefiMarker = ({ defibrillator }) => {
   const markerRef = useRef(null);

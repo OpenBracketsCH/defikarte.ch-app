@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     bottom: 0,
-    height: '8%',
+    height: 55,
     backgroundColor: 'green'
   },
   iconStyle: {

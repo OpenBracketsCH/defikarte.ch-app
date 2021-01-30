@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
 import currentDefisOnMap from '../helpers/markersOnMap.js'
+import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import DefiMarker from './DefiMarker';
 import SimpleMarker from './SimpleMarker';
 import CreateMapOverlay from './CreateMapOverlay';
@@ -10,6 +11,7 @@ import MapInfoPanel from './MapInfoPanel';
 import DetailMapOverlay from './DetailMapOverlay';
 
 const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode }) => {
+  const { state: { loading } } = useContext(DefibrillatorContext);
   const [region, setRegion] = useState(initCoords);
   const [newDefiCoords, setNewDefiCoords] = useState(initCoords);
   const [defisOnMap, setDefisOnMap] = useState([]);
@@ -42,7 +44,7 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
       );
     }
     else {
-      if (defibrillators.length > 1000) {
+      if (defibrillators.length >= 1000) {
         return null;
       }
       return defibrillators.map((defibrillator) => {
@@ -81,12 +83,20 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
     }
   }
 
-  const renderInfoPanel = (defibrillators) => {
-    if (defibrillators.length > 1000) {
+  const renderInfoPanel = (defibrillators, isCreateMode, isLoading) => {
+    if (defibrillators.length > 1000 && !isCreateMode) {
       return (
         <MapInfoPanel
           text='Zoome in eine bestimmte Region um Defibrillatoren anzuzeigen.'
-          subText={`(${defibrillators.length} Defis geladen, Anzeige ab < 1000)`} />
+          subText={`(${defibrillators.length} Defis im Kartenausschnitt, Anzeige ab < 1000)`} />
+      );
+    }
+    else if (defibrillators.length === 0 && isLoading) {
+      return (
+        <MapInfoPanel
+          text="Lade Defibrillatoren..."
+          showLoading={true}
+        />
       );
     }
   }
@@ -112,7 +122,7 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
       {renderOverlay(isCreateMode)}
-      {renderInfoPanel(defisOnMap)}
+      {renderInfoPanel(defisOnMap, isCreateMode, loading)}
     </View >
   );
 };

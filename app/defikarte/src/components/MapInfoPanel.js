@@ -1,37 +1,44 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 
-const MapInfoPanel = ({ text, subText }) => {
+const MapInfoPanel = ({ text, subText, showLoading }) => {
+  const loadingAnimation = showLoading ? <ActivityIndicator style={styles.spinnerStyle} size="small" /> : null;
+  const subTextComp = subText ? <Text style={styles.subTextStyle}>{subText}</Text> : null;
   return (
     <View style={styles.panelContainerStyle}>
-      <Text style={styles.textStyle}>
-        {text}
-      </Text>
-      <Text style={styles.subTextStyle}>{subText}</Text>
+      <View style={styles.inlineStyle}>
+        {loadingAnimation}
+        <Text style={styles.textStyle}>
+          {text}
+        </Text>
+      </View>
+      {subTextComp}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   panelContainerStyle: {
-    borderRadius: 10,
     zIndex: 100,
-    marginTop: 30,
-    marginHorizontal: 10,
-    paddingHorizontal: 20,
+    width: '100%',
     paddingVertical: 10,
-    backgroundColor: 'rgba(254, 254, 254, .6)',
-    borderWidth: 1,
-    borderColor: 'rgba(200, 200, 200, 1)',
+    backgroundColor: 'rgba(40, 40, 40, 0.7)',
+  },
+  inlineStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   textStyle: {
     textAlign: 'center',
     fontSize: 20,
+    color: 'white',
   },
   subTextStyle: {
     textAlign: 'center',
+    fontSize: 14,
     marginTop: 5,
-  },
+    color: 'white',
+  }
 });
 
 export default MapInfoPanel;
