@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { AntDesign } from '@expo/vector-icons';
 import MapInfoPanel from './MapInfoPanel';
@@ -11,14 +11,20 @@ const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation }) => {
         text='Ziehe den Marker an den Standort des neuen Defibrillators'
         subText='(Marker halten und verschieben)' />
       <View style={styles.createIconsContainerStyle}>
-        <TouchableOpacity onPress={() => {
-          navigation.navigate('Create', { latlon: newDefiCoords });
-          setIsCreateMode(false);
-        }} >
-          <AntDesign name="checkcircleo" size={48} color="green" />
+        <TouchableOpacity
+          style={styles.iconStyle}
+          onPress={() => {
+            navigation.navigate('Create', { latlon: newDefiCoords });
+            setIsCreateMode(false);
+          }} >
+          <AntDesign name="checkcircleo" size={48} color="white" />
+          <Text style={styles.descriptionTextStyle}>Position wählen</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setIsCreateMode(false)} style={styles.createIconsStyle}>
-          <AntDesign name="closecircleo" size={48} color="red" />
+        <TouchableOpacity
+          onPress={() => setIsCreateMode(false)}
+          style={styles.iconStyle}>
+          <AntDesign name="closecircleo" size={48} color="white" />
+          <Text style={styles.descriptionTextStyle}>Abbrechen</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -28,20 +34,23 @@ const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation }) => {
 const styles = StyleSheet.create({
   createIconsContainerStyle: {
     flexDirection: 'row',
-    height: 70,
-    borderRadius: 10,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '100%',
     zIndex: 100,
     paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: 'rgba(254, 254, 254, .6)',
-    borderWidth: 1,
-    borderColor: 'rgba(200, 200, 200, 1)',
+    backgroundColor: 'rgba(40, 40, 40, 0.7)',
     position: 'absolute',
-    bottom: 20,
+    bottom: 0,
   },
-  createIconsStyle: {
-    paddingLeft: 20,
+  iconStyle: {
+    marginVertical: 10,
+    alignItems: 'center',
   },
+  descriptionTextStyle: {
+    color: 'white',
+    marginTop: 5,
+  }
 });
 
 export default withNavigation(CreateMapOverlay);

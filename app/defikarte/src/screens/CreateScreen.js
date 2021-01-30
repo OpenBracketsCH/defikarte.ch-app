@@ -160,7 +160,6 @@ const CreateScreen = ({ navigation }) => {
 
   return (
     <View style={styles.containerStyle} >
-      <Text style={styles.titleStyle}>Defibrillator melden</Text>
       <View style={styles.coordStyle}>
         <MaterialIcons color='green' size={30} name='location-pin' />
         <Text style={styles.inputStyle}>{state.latitude.toFixed(4)}, {state.longitude.toFixed(4)}</Text>
@@ -196,21 +195,13 @@ const CreateScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   containerStyle: {
     ...StyleSheet.absoluteFillObject,
-  },
-  titleStyle: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 30,
-    marginHorizontal: 10,
-    marginBottom: 20,
-    alignSelf: 'center',
+    backgroundColor: 'white',
   },
   coordStyle: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 15,
-    paddingBottom: 10,
+    paddingVertical: 10,
     borderBottomWidth: 0.3,
     borderColor: 'rgba(200, 200, 200, 1)'
   },
@@ -226,7 +217,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',
-    height: '8%',
+    height: 55,
     backgroundColor: 'green'
   },
 });
