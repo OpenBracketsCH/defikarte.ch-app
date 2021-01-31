@@ -135,14 +135,17 @@ namespace DefikarteBackend
                 }
             };
 
+            var keysToRemove = new List<string>();
             // remove empty values
             foreach(var keyval in tags)
             {
                 if (string.IsNullOrEmpty(keyval.Value))
                 {
-                    tags.Remove(keyval.Key);
+                    keysToRemove.Add(keyval.Key);
                 }
             }
+
+            keysToRemove.ForEach(r => tags.Remove(r));
 
             return new Node()
             {
