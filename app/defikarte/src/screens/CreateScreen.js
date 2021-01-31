@@ -168,7 +168,9 @@ const CreateScreen = ({ navigation }) => {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          // padding is for ios best, for android it is not the best solution, 
+          // but the best available in this context
+          behavior={Platform.OS === "ios" ? "padding" : "padding"}
           enabled
         >
           {renderFormComponent()}
