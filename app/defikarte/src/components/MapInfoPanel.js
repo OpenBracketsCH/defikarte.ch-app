@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 
 const MapInfoPanel = ({ text, subText, showLoading }) => {
-  const loadingAnimation = showLoading ? <ActivityIndicator style={styles.spinnerStyle} size="small" /> : null;
+  const loadingAnimation = showLoading ? <ActivityIndicator style={styles.spinnerStyle} size="small" color="white" /> : null;
   const subTextComp = subText ? <Text style={styles.subTextStyle}>{subText}</Text> : null;
   return (
     <View style={styles.panelContainerStyle}>

@@ -28,10 +28,10 @@ const DetailScreen = ({ navigation }) => {
 
   const name = defibrillator.tags['defibrillator:location'] ?? defibrillator.tags.description ?? defibrillator.tags.operator ?? 'n/A';
   const emergencyPhone = defibrillator.tags['emergency:phone'] ?? '144';
-
+  const newInfo = defibrillator.new ? <Text>(Temporär in App erfasst, OSM update ausstehend)</Text> : null;
   return (
     <View style={styles.containerStyle} >
-      <View style={{ height: '25%' }}>
+      <View style={{ height: '30%' }}>
         <MapView
           style={styles.mapStyle}
           initialRegion={initCoords}
@@ -47,6 +47,7 @@ const DetailScreen = ({ navigation }) => {
       </View>
       <View style={styles.innerContainerStyle}>
         <Text style={styles.titleStyle}>{name}</Text>
+        {newInfo}
         <View style={styles.buttonContainerStyle}>
           <TouchableOpacity
             style={styles.buttonStyle}
@@ -79,9 +80,8 @@ const DetailScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   containerStyle: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
     backgroundColor: 'white',
+    flex: 1
   },
   titleStyle: {
     fontSize: 18,

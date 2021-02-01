@@ -5,7 +5,10 @@ import { Marker } from 'react-native-maps';
 const SimpleMarker = ({ defibrillator, onMarkerSelected }) => {
   const tags = defibrillator.tags;
 
-  const dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.simpleDayMarkerStyle : styles.simpleDayNightMarkerStyle;
+  let dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.simpleDayMarkerStyle : styles.simpleDayNightMarkerStyle;
+  if (defibrillator.new) {
+    dayNightStyle = { ...dayNightStyle, ...styles.newMarkerStyle }
+  }
 
   return (
     <Marker
@@ -40,6 +43,12 @@ const styles = StyleSheet.create({
     width: 30,
     backgroundColor: 'rgba(0, 153, 57, 1)',
     borderRadius: 50,
+  },
+  newMarkerStyle: {
+    height: 34,
+    width: 34,
+    borderColor: 'rgb(255, 80, 100)',
+    borderWidth: 3,
   }
 });
 

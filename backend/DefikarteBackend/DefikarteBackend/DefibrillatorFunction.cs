@@ -132,6 +132,9 @@ namespace DefikarteBackend
                 },
                 {
                     "indoor", request.Indoor ? "yes" : "no"
+                },
+                {
+                    "description", request.Description
                 }
             };
 
