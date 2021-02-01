@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
 import { Controller } from "react-hook-form";
 
-const SwitchForm = ({ labelText, name, control, rules, errors, errorMsg, defaultValue }) => {
+const SwitchForm = ({ labelText, name, control, rules, errors, errorMsg, defaultValue, disabled }) => {
   return (
     <View style={styles.inlineForm} >
       <Text style={styles.labelStyle}>{labelText}</Text>
@@ -16,6 +16,7 @@ const SwitchForm = ({ labelText, name, control, rules, errors, errorMsg, default
             onBlur={onBlur}
             onValueChange={onChange}
             value={value}
+            disabled={disabled}
           />
         )}
       />

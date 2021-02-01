@@ -17,7 +17,7 @@ const ListScreen = () => {
     loading: {
       render: () => {
         return (
-          <ActivityIndicator style={styles.spinnerStyle} size="large" />
+          <ActivityIndicator style={styles.spinnerStyle} size="large" color="green" />
         );
       }
     },

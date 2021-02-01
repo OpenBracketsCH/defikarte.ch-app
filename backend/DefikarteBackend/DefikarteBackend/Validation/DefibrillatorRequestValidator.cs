@@ -14,9 +14,9 @@ namespace DefikarteBackend.Validation
             RuleFor(x => x.Reporter).NotEmpty();
             RuleFor(x => x.Location).NotEmpty().MaximumLength(200);
             RuleFor(x => x.Description).MaximumLength(200);
-            RuleFor(x => x.OperatorPhone).Matches(phoneNumberPattern);
-            RuleFor(x => x.Access).NotEmpty();
-            RuleFor(x => x.Indoor).NotEmpty();
+            RuleFor(x => x.OperatorPhone).Matches(phoneNumberPattern).When(x => !string.IsNullOrEmpty(x.OperatorPhone));
+            RuleFor(x => x.Access).NotNull();
+            RuleFor(x => x.Indoor).NotNull();
             RuleFor(x => x.EmergencyPhone).NotEmpty().Matches($"({phoneNumberPattern})|112|144|117|118|1414");
             // opening hours validation is missing
         }

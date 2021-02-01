@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Switch, TextInput, StyleSheet } from 'react-native';
 import { Controller } from "react-hook-form";
 
-const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholder, useSwitch = false, name, control, rules, errors, errorMsg }) => {
+const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholder, useSwitch = false, name, control, rules, errors, errorMsg, disabled }) => {
   const [switchValue, setSwitchValue] = useState(false);
   const [tempValue, setTempValue] = useState('');
 
@@ -23,6 +23,7 @@ const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholde
             style={styles.switchStyle}
             onValueChange={newVal => onSwitchChange(newVal, value, onChange)}
             value={switchValue}
+            disabled={disabled}
           />
           <Text style={textStyle}>{defaultValue}</Text>
         </View>
