@@ -41,11 +41,21 @@ jobs:
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release --output ./output
         popd
-    - name: 'Run Azure Functions Action'
+    - name: 'Deploy Function to staging'
       uses: Azure/functions-action@v1
-      id: fa
+      if: github.ref == 'refs/heads/development'
+      id: fa-staging
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-        slot-name: ${{ env.SLOT }}
+        slot-name: 'defikarte-backend-staging'
+    - name: 'Deploy Function to production'
+      uses: Azure/functions-action@v1
+      if: github.ref == 'refs/heads/main'
+      id: fa-prod
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+        slot-name: 'defikarte-backend'
