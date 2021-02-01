@@ -7,8 +7,12 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ development ]
+    paths:
+    - 'backend/**'
   pull_request:
     branches: [ main ]
+    paths:
+    - 'backend/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,6 +21,7 @@ env:
   AZURE_FUNCTIONAPP_NAME: defikarte-backend  # set this to your application's name
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './backend/DefikarteBackend/DefikarteBackend/'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '3.1'              # set this to the dotnet version to use
+  SLOT: ${{ if(GITHUB_REF == "main", "defikarte-backend", "defikarte-backend-staging"}}
 
 jobs:
   build-and-deploy:
@@ -43,3 +48,4 @@ jobs:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+        slot-name: ${{ env.SLOT }}
