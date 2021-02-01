@@ -33,7 +33,10 @@ jobs:
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
           expo-packager: 'npm'
       - run: npm install
+        working-directory: ${{ env.APP_SRC_PATH }}
       - run: expo publish --release-channel beta
+        working-directory: ${{ env.APP_SRC_PATH }}
         if: github.ref == 'refs/heads/development'
       - run: expo publish --release-channel production
+        working-directory: ${{ env.APP_SRC_PATH }}
         if: github.ref == 'refs/heads/main'
