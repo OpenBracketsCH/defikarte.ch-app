@@ -31,9 +31,8 @@ export default () => {
       <LocationProvider>
         <InfoProvider>
           <StatusBar backgroundColor='rgba(255, 255, 255, 0)' barStyle={'dark-content'} />
-          <SafeAreaView style={{ flex: 1 }}>
-            <App />
-          </SafeAreaView>
+          <SafeAreaView style={{ flex: 0, backgroundColor: 'transparent' }} />
+          <App />
         </InfoProvider>
       </LocationProvider>
     </DefibrillatorProvider>

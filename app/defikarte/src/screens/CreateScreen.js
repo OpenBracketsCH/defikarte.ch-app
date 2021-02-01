@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { View, SafeAreaView, Text, TouchableOpacity, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useForm } from 'react-hook-form';
 import opening_hours from 'opening_hours';
@@ -90,14 +90,12 @@ const CreateScreen = ({ navigation }) => {
     },
     {
       name: 'access',
-      rules: { required: true },
       type: 'Switch',
       label: 'Zugänglich',
       defaultValue: false,
     },
     {
       name: 'indoor',
-      rules: { required: true },
       type: 'Switch',
       label: 'Im Gebäude',
       defaultValue: false,
@@ -159,38 +157,40 @@ const CreateScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.containerStyle} >
-      <View style={styles.coordStyle}>
-        <MaterialIcons color='green' size={30} name='location-pin' />
-        <Text style={styles.inputStyle}>{state.latitude.toFixed(4)}, {state.longitude.toFixed(4)}</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'green' }}>
+      <View style={styles.containerStyle} >
+        <View style={styles.coordStyle}>
+          <MaterialIcons color='green' size={30} name='location-pin' />
+          <Text style={styles.inputStyle}>{state.latitude.toFixed(4)}, {state.longitude.toFixed(4)}</Text>
+        </View>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}>
+          <KeyboardAvoidingView
+            // padding is for ios best, for android it is not the best solution, 
+            // but the best available in this context
+            behavior={Platform.OS === "ios" ? "padding" : "padding"}
+            enabled
+          >
+            {renderFormComponent()}
+          </KeyboardAvoidingView>
+        </ScrollView>
+        <View style={styles.bottomBar}>
+          <TouchableOpacity
+            color='white'
+            title='Erstellen'
+            onPress={handleSubmit(onSubmit)} >
+            <Text style={styles.buttonTextStyle}>Erstellen</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            color='white'
+            title='Abbrechen'
+            onPress={() => navigation.navigate('Main')} >
+            <Text style={styles.buttonTextStyle}>Abbrechen</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}>
-        <KeyboardAvoidingView
-          // padding is for ios best, for android it is not the best solution, 
-          // but the best available in this context
-          behavior={Platform.OS === "ios" ? "padding" : "padding"}
-          enabled
-        >
-          {renderFormComponent()}
-        </KeyboardAvoidingView>
-      </ScrollView>
-      <View style={styles.bottomBar}>
-        <TouchableOpacity
-          color='white'
-          title='Erstellen'
-          onPress={handleSubmit(onSubmit)} >
-          <Text style={styles.buttonTextStyle}>Erstellen</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          color='white'
-          title='Abbrechen'
-          onPress={() => navigation.navigate('Main')} >
-          <Text style={styles.buttonTextStyle}>Abbrechen</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

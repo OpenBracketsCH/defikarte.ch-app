@@ -39,12 +39,15 @@ const setDefisNearLocation = dispatch => {
 
 const addDefibrillator = dispatch => {
   return async (defibrillator, callback) => {
+    console.log(defibrillator)
     try {
       const response = await defikarteBackendMock.post('/defibrillator', defibrillator);
+      console.log(response);
       if (callback) {
         callback();
       }
     } catch (error) {
+      console.log(error)
       dispatch({ type: 'update_error', payload: 'Defibrillatoren konnten nicht hinzugefügt werden.' });
     }
   };
