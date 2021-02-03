@@ -4,10 +4,11 @@ import { withNavigation } from 'react-navigation';
 import { AntDesign } from '@expo/vector-icons';
 import MapInfoPanel from './MapInfoPanel';
 
-const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation }) => {
+const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation, isTopView }) => {
   return (
     <>
       <MapInfoPanel
+        isTopView={isTopView}
         text='Ziehe den Marker an den Standort des neuen Defibrillators'
         subText='(Marker halten und verschieben)' />
       <View style={styles.createIconsContainerStyle}>

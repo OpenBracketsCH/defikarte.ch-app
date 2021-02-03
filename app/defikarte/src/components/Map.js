@@ -72,9 +72,10 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
     }
   };
 
-  const renderOverlay = (isCreateMode) => {
+  const renderOverlay = (isCreateMode, isLoading) => {
     if (isCreateMode) {
       return <CreateMapOverlay
+        isTopView={!isLoading}
         setIsCreateMode={setIsCreateMode}
         newDefiCoords={newDefiCoords} />
     }
@@ -87,6 +88,7 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
     if (defibrillators.length > 1000 && !isCreateMode) {
       return (
         <MapInfoPanel
+          isTopView={true}
           text='Zoome in eine bestimmte Region um Defibrillatoren anzuzeigen.'
           subText={`(${defibrillators.length} Defis im Kartenausschnitt, Anzeige ab < 1000)`} />
       );
@@ -94,6 +96,7 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
     else if (defibrillators.length === 0 && isLoading) {
       return (
         <MapInfoPanel
+          isTopView={true}
           text="Lade Defibrillatoren..."
           showLoading={true}
         />
@@ -121,8 +124,8 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
       >
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
-      {renderOverlay(isCreateMode)}
       {renderInfoPanel(defisOnMap, isCreateMode, loading)}
+      {renderOverlay(isCreateMode, loading)}
     </View >
   );
 };
