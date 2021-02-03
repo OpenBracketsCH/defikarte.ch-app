@@ -9,7 +9,7 @@ const MapInfoPanel = ({ text, subText, showLoading }) => {
   const subTextComp = subText ? <Text style={styles.subTextStyle}>{subText}</Text> : null;
 
   let containerStyle = { ...styles.panelContainerStyle };
-  containerStyle.paddingTop = insets.top;
+  containerStyle.marginTop = insets.top;
   return (
     <View style={containerStyle}>
       <View style={styles.inlineStyle}>
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   panelContainerStyle: {
     zIndex: 100,
     width: '100%',
-    paddingBottom: 10,
+    paddingVertical: 10,
     backgroundColor: 'rgba(40, 40, 40, 0.7)',
   },
   inlineStyle: {

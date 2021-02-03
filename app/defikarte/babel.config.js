@@ -5,7 +5,9 @@ module.exports = function (api) {
     "plugins": [
       ["transform-inline-environment-variables", {
         "include": [
-          "NODE_ENV"
+          "NODE_ENV",
+          "REACT_NATIVE_BASE_URL",
+          "REACT_NATIVE_GOOGLE_MAPS_API_KEY"
         ]
       }]
     ],
