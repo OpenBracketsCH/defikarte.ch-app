@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'https://defikarte-backend.azurewebsites.net/api',
+  baseURL: process.env['REACT_NATIVE_BASE_URL'] | 'https://defikarte-backend-staging.azurewebsites.net/api',
 })
