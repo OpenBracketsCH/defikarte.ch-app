@@ -2,6 +2,7 @@ import React from 'react';
 import { SafeAreaView, StatusBar } from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as DefibrillatorProvider } from './src/context/DefibrillatorContext';
 import { Provider as LocationProvider } from './src/context/LocationContext';
 import { Provider as InfoProvider } from './src/context/InfoContext';
@@ -30,9 +31,10 @@ export default () => {
     <DefibrillatorProvider>
       <LocationProvider>
         <InfoProvider>
-          <StatusBar backgroundColor='rgba(255, 255, 255, 0)' barStyle={'dark-content'} />
-          <SafeAreaView style={{ flex: 0, backgroundColor: 'transparent' }} />
-          <App />
+          <SafeAreaProvider>
+            <StatusBar backgroundColor='rgba(255, 255, 255, 0)' barStyle={'dark-content'} />
+            <App />
+          </SafeAreaProvider>
         </InfoProvider>
       </LocationProvider>
     </DefibrillatorProvider>

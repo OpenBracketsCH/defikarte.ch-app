@@ -1,11 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const MapInfoPanel = ({ text, subText, showLoading }) => {
+  const insets = useSafeAreaInsets();
+
   const loadingAnimation = showLoading ? <ActivityIndicator style={styles.spinnerStyle} size="small" color="white" /> : null;
   const subTextComp = subText ? <Text style={styles.subTextStyle}>{subText}</Text> : null;
+
+  let containerStyle = { ...styles.panelContainerStyle };
+  containerStyle.paddingTop = insets.top;
   return (
-    <View style={styles.panelContainerStyle}>
+    <View style={containerStyle}>
       <View style={styles.inlineStyle}>
         {loadingAnimation}
         <Text style={styles.textStyle}>
@@ -21,7 +27,7 @@ const styles = StyleSheet.create({
   panelContainerStyle: {
     zIndex: 100,
     width: '100%',
-    paddingVertical: 10,
+    paddingBottom: 10,
     backgroundColor: 'rgba(40, 40, 40, 0.7)',
   },
   inlineStyle: {

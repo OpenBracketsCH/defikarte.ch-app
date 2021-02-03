@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { View, SafeAreaView, Text, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useForm } from 'react-hook-form';
 import opening_hours from 'opening_hours';
@@ -10,6 +11,7 @@ import { useEffect } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const CreateScreen = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const { state: defiState, addDefibrillator } = useContext(DefibrillatorContext);
   const [state, setState] = useState({ latitude: 0, longitude: 0, emergencyPhone: '144' });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -164,44 +166,45 @@ const CreateScreen = ({ navigation }) => {
     })
   }
 
+  let bottomBar = { ...styles.bottomBar };
+  bottomBar.paddingBottom = insets.bottom * 0.5;
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'green' }}>
+    <View style={styles.containerStyle} >
       <ActivityIndicator style={styles.loadingStyle} size="large" color="green" animating={defiState.creating} />
-      <View style={styles.containerStyle} >
-        <View style={styles.coordStyle}>
-          <MaterialIcons color='green' size={30} name='location-pin' />
-          <Text style={styles.inputStyle}>{state.latitude.toFixed(4)}, {state.longitude.toFixed(4)}</Text>
-        </View>
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}>
-          <KeyboardAvoidingView
-            // padding is for ios best, for android it is not the best solution, 
-            // but the best available in this context
-            behavior={Platform.OS === "ios" ? "padding" : "padding"}
-            enabled
-          >
-            {renderFormComponent()}
-          </KeyboardAvoidingView>
-        </ScrollView>
-        <View style={styles.bottomBar}>
-          <TouchableOpacity
-            disabled={defiState.creating}
-            color='white'
-            title='Erstellen'
-            onPress={handleSubmit(onSubmit)} >
-            <Text style={styles.buttonTextStyle}>Erstellen</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            disabled={defiState.creating}
-            color='white'
-            title='Abbrechen'
-            onPress={() => navigation.navigate('Main')} >
-            <Text style={styles.buttonTextStyle}>Abbrechen</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.coordStyle}>
+        <MaterialIcons color='green' size={30} name='location-pin' />
+        <Text style={styles.inputStyle}>{state.latitude.toFixed(4)}, {state.longitude.toFixed(4)}</Text>
       </View>
-    </SafeAreaView>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}>
+        <KeyboardAvoidingView
+          // padding is for ios best, for android it is not the best solution, 
+          // but the best available in this context
+          behavior={Platform.OS === "ios" ? "padding" : "padding"}
+          enabled
+        >
+          {renderFormComponent()}
+        </KeyboardAvoidingView>
+      </ScrollView>
+      <View style={bottomBar}>
+        <TouchableOpacity
+          disabled={defiState.creating}
+          color='white'
+          title='Erstellen'
+          onPress={handleSubmit(onSubmit)} >
+          <Text style={styles.buttonTextStyle}>Erstellen</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          disabled={defiState.creating}
+          color='white'
+          title='Abbrechen'
+          onPress={() => navigation.navigate('Main')} >
+          <Text style={styles.buttonTextStyle}>Abbrechen</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
