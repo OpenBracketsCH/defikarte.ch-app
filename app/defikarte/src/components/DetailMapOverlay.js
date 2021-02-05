@@ -3,17 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import DefiItem from './DefiItem';
 
 const DetailMapOverlay = ({ defibrillator }) => {
-  if (defibrillator) {
-    return (
-      <View style={styles.containerStyle}>
-        <DefiItem
-          defibrillator={defibrillator}
-        />
-      </View>
-    );
-  }
-
-  return null;
+  return (
+    <View style={styles.containerStyle}>
+      <DefiItem
+        defibrillator={defibrillator}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

@@ -1,12 +1,7 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import distanceBetweenPoints from '../helpers/coordinateCalc.js'
-import { Context as LocationContext } from '../context/LocationContext';
-import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 
-export default () => {
-  const { state, getDefibrillators, setDefisNearLocation } = useContext(DefibrillatorContext);
-  const { state: userLocation } = useContext(LocationContext);
-
+export default (defibrillators, getDefibrillators, setDefisNearLocation, userLocation) => {
   const getDefisNearLocation = (defibrillators, location) => {
     return defibrillators
       .filter(d => {
@@ -35,8 +30,6 @@ export default () => {
   }, [])
 
   useEffect(() => {
-    setDefisNearLocation(getDefisNearLocation(state.defibrillators, userLocation.location))
-  }, [state.defibrillators, userLocation.location])
-
-  return [state.defibrillators];
+    setDefisNearLocation(getDefisNearLocation(defibrillators, userLocation.location))
+  }, [defibrillators, userLocation.location])
 }

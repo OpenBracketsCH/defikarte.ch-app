@@ -56,6 +56,7 @@ const addDefibrillator = dispatch => {
       dispatch({ type: 'update_creating', payload: true });
       const response = await defikarteBackendMock.post('/defibrillator', defibrillator);
       let tags = {}
+      // map osm to overpass model
       response.data.tags.forEach(d => {
         let attr = { [d.key]: d.value };
         tags = { ...tags, ...attr }

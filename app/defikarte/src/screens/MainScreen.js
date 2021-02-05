@@ -2,6 +2,7 @@ import React, { useRef, useContext, useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import { Context as LocationContext } from '../context/LocationContext';
 import useDefibrillators from '../hooks/useDefibrillators';
 import useLocation from '../hooks/useLocation';
@@ -10,8 +11,9 @@ import LocationError from '../components/LocationError';
 
 const MainScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const [state] = useDefibrillators(navigation);
+  const { state: { defibrillators, loading }, getDefibrillators, setDefisNearLocation } = useContext(DefibrillatorContext);
   const { state: userLocation, updateLocation, enableLocationTracking, setLocationTracker } = useContext(LocationContext);
+  useDefibrillators(defibrillators, getDefibrillators, setDefisNearLocation, userLocation);
   const [locationErr, resetErr] = useLocation(userLocation, updateLocation, enableLocationTracking, setLocationTracker);
   const mapRef = useRef(null);
   const [isCreateMode, setIsCreateMode] = useState(false);
@@ -39,6 +41,10 @@ const MainScreen = ({ navigation }) => {
     }
   }, [locationErr]);
 
+  useEffect(() => {
+    enableLocationTracking(true);
+  }, []);
+
   const locationIcon = !userLocation.enabled ? 'location-disabled' : !userLocation.location ? 'location-searching' : 'my-location';
 
   let bottomBar = { ...styles.bottomBar };
@@ -53,7 +59,9 @@ const MainScreen = ({ navigation }) => {
           latitudeDelta: 1.5,
           longitudeDelta: 1.5,
         }}
-        defibrillators={state}
+        defibrillators={defibrillators}
+        defibrillatorsLoading={loading}
+        userLocation={userLocation}
         isCreateMode={isCreateMode}
         setIsCreateMode={setIsCreateMode}
       />

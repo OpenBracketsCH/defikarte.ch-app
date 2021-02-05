@@ -1,17 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
+import { MaterialIcons } from '@expo/vector-icons';
 import currentDefisOnMap from '../helpers/markersOnMap.js'
-import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import DefiMarker from './DefiMarker';
 import SimpleMarker from './SimpleMarker';
 import CreateMapOverlay from './CreateMapOverlay';
 import MapInfoPanel from './MapInfoPanel';
 import DetailMapOverlay from './DetailMapOverlay';
 
-const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode }) => {
-  const { state: { loading } } = useContext(DefibrillatorContext);
+const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, userLocation, isCreateMode, setIsCreateMode }) => {
   const [region, setRegion] = useState(initCoords);
   const [newDefiCoords, setNewDefiCoords] = useState(initCoords);
   const [defisOnMap, setDefisOnMap] = useState([]);
@@ -79,8 +78,10 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
         setIsCreateMode={setIsCreateMode}
         newDefiCoords={newDefiCoords} />
     }
-    else {
+    else if (selectedDefibrillator != null) {
       return <DetailMapOverlay defibrillator={selectedDefibrillator} />
+    } else {
+      return null;
     }
   }
 
@@ -110,6 +111,8 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
     }
   }
 
+  const locationIcon = !userLocation.enabled ? 'location-disabled' : !userLocation.location ? 'location-searching' : 'my-location';
+
   return (
     <View style={styles.containerStyle}>
       <MapView
@@ -124,8 +127,16 @@ const Map = ({ initCoords, mapRef, defibrillators, isCreateMode, setIsCreateMode
       >
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
-      {renderInfoPanel(defisOnMap, isCreateMode, loading)}
-      {renderOverlay(isCreateMode, loading)}
+      <TouchableOpacity onPress={async () => {
+        enableLocationTracking(true)
+        if (userLocation.location) {
+          animateToRegion(userLocation.location);
+        }
+      }}>
+        <MaterialIcons name={locationIcon} style={styles.iconStyle} />
+      </TouchableOpacity>
+      {renderInfoPanel(defisOnMap, isCreateMode, defibrillatorsLoading)}
+      {renderOverlay(isCreateMode, defibrillatorsLoading)}
     </View >
   );
 };

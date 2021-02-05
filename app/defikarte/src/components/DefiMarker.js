@@ -5,14 +5,7 @@ import { Marker } from 'react-native-maps';
 const DefiMarker = ({ defibrillator }) => {
   const markerRef = useRef(null);
   const tags = defibrillator.tags;
-
   const dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.markerDayStyle : styles.markerDayNightStyle;
-
-  useEffect(() => {
-    if (markerRef != null) {
-      markerRef.current.showCallout();
-    }
-  }, [markerRef])
 
   return (
     <Marker

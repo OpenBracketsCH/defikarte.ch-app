@@ -1,14 +1,12 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, ScrollView, Text, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useForm } from 'react-hook-form';
-import opening_hours from 'opening_hours';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import TextForm from '../components/TextForm';
 import SwitchForm from '../components/SwitchForm';
-import { useEffect } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
+import createForm from '../config/createForm';
 
 const CreateScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
@@ -17,93 +15,6 @@ const CreateScreen = ({ navigation }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { control, handleSubmit, errors } = useForm();
 
-  const openingHoursValidation = value => {
-    let valid = false;
-    try {
-      let oh = new opening_hours(value);
-      valid = true;
-    } catch (error) {
-      valid = false;
-    }
-
-    return value == '' || valid;
-  }
-
-  const defiForm = [
-    {
-      name: 'reporter',
-      rules: { required: true },
-      type: 'Text',
-      label: 'Melder',
-      placeholder: 'Max Mustermann',
-      defaultValue: '',
-      errorMsg: 'Der Melder wird benötigt',
-    },
-    {
-      name: 'location',
-      rules: { required: true, maxLength: 200 },
-      type: 'Text',
-      label: 'Standort',
-      placeholder: 'Schulhaus Zürich West, neben Eingang',
-      defaultValue: '',
-      errorMsg: 'Der Standort wird benötigt, maximale Länge 200 Zeichen',
-    },
-    {
-      name: 'description',
-      rules: { required: false, maxLength: 200 },
-      type: 'Text',
-      label: 'Beschreibung',
-      placeholder: 'z.B.: während Öffnungszeiten verfügbar',
-      defaultValue: '',
-      multiline: true,
-      errorMsg: 'Die maximale Länge beträgt 200 Zeichen',
-    },
-    /* not required 
-    es gibt diverse opening Hour validation tools. problem: es gibt sehr viele kombinationen,
-    automatische opening hours validation wäre gut: https://wiki.openstreetmap.org/wiki/Key:opening_hours#Implementation*/
-    {
-      name: 'openingHours',
-      rules: { validate: openingHoursValidation },
-      type: 'Text',
-      label: 'Öffnungszeiten',
-      placeholder: 'Mo-Fr: 08:00-17:00',
-      defaultValue: '24/7',
-      useSwitch: true,
-      multiline: true,
-      errorMsg: 'Die eingegebenen Öffnungzeiten entsprechen nicht dem geforderten Format.',
-    },
-    {
-      name: 'operator',
-      rules: { required: false },
-      type: 'Text',
-      label: 'Betreiber',
-      placeholder: 'Gemeinde, Verein, Privatperson',
-      defaultValue: '',
-    },
-    {
-      name: 'operatorPhone',
-      rules: { pattern: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/ },
-      type: 'Text',
-      label: 'Telefon',
-      placeholder: '+41 79 000 00 00',
-      keyboardType: 'phone-pad',
-      defaultValue: '',
-      errorMsg: 'Der Wert muss eine gültige Telefonummer sein',
-    },
-    {
-      name: 'access',
-      type: 'Switch',
-      label: 'Zugänglich',
-      defaultValue: false,
-    },
-    {
-      name: 'indoor',
-      type: 'Switch',
-      label: 'Im Gebäude',
-      defaultValue: false,
-    },
-  ]
-
   const onSubmit = (formValues) => {
     setState({ ...state, ...formValues });
     setIsSubmitted(true);
@@ -111,8 +22,6 @@ const CreateScreen = ({ navigation }) => {
 
   const add = async () => {
     await addDefibrillator(state, () => navigation.navigate('Main'));
-    console.log(defiState.newDefibrillators)
-    console.log(defiState.creating)
   }
 
   useEffect(() => {
@@ -129,7 +38,7 @@ const CreateScreen = ({ navigation }) => {
   }, [isSubmitted])
 
   const renderFormComponent = () => {
-    return defiForm.map((formComp, index) => {
+    return createForm.map((formComp, index) => {
       if (formComp.type === 'Text') {
         return <TextForm
           name={formComp.name}

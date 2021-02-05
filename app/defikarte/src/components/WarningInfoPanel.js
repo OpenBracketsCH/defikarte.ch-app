@@ -7,7 +7,7 @@ const WarningInfoPanel = ({ text, onButtonClick }) => {
   const insets = useSafeAreaInsets();
 
   let panelContainerStyle = { ...styles.panelContainerStyle };
-  panelContainerStyle.paddingBottom = insets.bottom * 0.5;
+  panelContainerStyle.paddingBottom = insets.bottom * 0.5 + 10;
   return (
     <View style={panelContainerStyle}>
       <Feather name='info' color='white' size={42} />
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingTop: 10,
     backgroundColor: 'rgba(255, 20, 40, 0.7)',
     bottom: 0,
   },
