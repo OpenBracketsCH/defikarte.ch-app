@@ -36,7 +36,7 @@ We are looking for motivated contributors that help us, to make the app better
 Please read SPONSORING.md
 
 * [Procamed AG](https://www.procamed.ch)
-
-* [Ursula Dombrowsky Gesundheitspraxis](http://dombrowsky.ch/)
+* [Ursula Dombrowsky Gesundheitspraxis](http://www.dombrowsky.ch)
+* [Hexagon](http://www.hexagonsi.com)
 
 [Sponsor us](https://github.com/sponsors/chnuessli)
