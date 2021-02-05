@@ -1,20 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
-import { MaterialIcons } from '@expo/vector-icons';
 import currentDefisOnMap from '../helpers/markersOnMap.js'
 import DefiMarker from './DefiMarker';
 import SimpleMarker from './SimpleMarker';
 import CreateMapOverlay from './CreateMapOverlay';
 import MapInfoPanel from './MapInfoPanel';
 import DetailMapOverlay from './DetailMapOverlay';
+import LocationButton from './LocationButton.js';
 
-const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, userLocation, isCreateMode, setIsCreateMode }) => {
+const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCreateMode, setIsCreateMode }) => {
   const [region, setRegion] = useState(initCoords);
   const [newDefiCoords, setNewDefiCoords] = useState(initCoords);
   const [defisOnMap, setDefisOnMap] = useState([]);
   const [selectedDefibrillator, setSelectedDefibrillator] = useState(null);
+  const [mode, setMode] = useState('');
+
+  const animateToRegion = ({ latitude, longitude }) => {
+    mapRef.current.animateToRegion({
+      latitude,
+      longitude,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01
+    });
+  };
 
   useEffect(() => {
     if (isCreateMode) {
@@ -32,6 +42,13 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, userLo
       clearTimeout(timerId);
     }
   }, [region, defibrillators])
+
+  useEffect(() => {
+    const firstload = defibrillators.length === 0 && defibrillatorsLoading;
+    const info = defisOnMap.length > 1000 && !isCreateMode;
+    const top = firstload ? 'load' : info ? 'info' : isCreateMode ? 'create' : 'loc';
+    setMode(top);
+  }, [defisOnMap.length, defibrillators.length, defibrillatorsLoading, isCreateMode])
 
   const renderMarkers = (createMode, defibrillators, latlon, setLatLng) => {
     if (createMode) {
@@ -71,10 +88,10 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, userLo
     }
   };
 
-  const renderOverlay = (isCreateMode, isLoading) => {
-    if (isCreateMode) {
+  const renderOverlay = (mode) => {
+    if (mode === 'create') {
       return <CreateMapOverlay
-        isTopView={!isLoading}
+        isTopView={true}
         setIsCreateMode={setIsCreateMode}
         newDefiCoords={newDefiCoords} />
     }
@@ -85,8 +102,8 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, userLo
     }
   }
 
-  const renderInfoPanel = (defibrillators, isCreateMode, isLoading) => {
-    if (defibrillators.length > 1000 && !isCreateMode) {
+  const renderInfoPanel = (defibrillators, mode) => {
+    if (mode === 'info') { //defibrillators.length > 1000 && !isCreateMode
       return (
         <MapInfoPanel
           isTopView={true}
@@ -94,7 +111,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, userLo
           subText={`(${defibrillators.length} Defis im Kartenausschnitt, Anzeige ab < 1000)`} />
       );
     }
-    else if (defibrillators.length === 0 && isLoading) {
+    else if (mode === 'load') { //defibrillators.length === 0 && isLoading
       return (
         <MapInfoPanel
           isTopView={true}
@@ -111,8 +128,6 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, userLo
     }
   }
 
-  const locationIcon = !userLocation.enabled ? 'location-disabled' : !userLocation.location ? 'location-searching' : 'my-location';
-
   return (
     <View style={styles.containerStyle}>
       <MapView
@@ -124,19 +139,13 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, userLo
         onRegionChangeComplete={setRegion}
         spiralEnabled={false}
         onPress={(e) => onMapPress(e.nativeEvent)}
+        showsMyLocationButton={false}
       >
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
-      <TouchableOpacity onPress={async () => {
-        enableLocationTracking(true)
-        if (userLocation.location) {
-          animateToRegion(userLocation.location);
-        }
-      }}>
-        <MaterialIcons name={locationIcon} style={styles.iconStyle} />
-      </TouchableOpacity>
-      {renderInfoPanel(defisOnMap, isCreateMode, defibrillatorsLoading)}
-      {renderOverlay(isCreateMode, defibrillatorsLoading)}
+      {renderInfoPanel(defisOnMap, mode)}
+      {renderOverlay(mode)}
+      <LocationButton isTopView={mode === 'loc'} animateToRegion={animateToRegion} />
     </View >
   );
 };
@@ -150,7 +159,7 @@ const styles = StyleSheet.create({
   mapStyle: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 50,
-  }
+  },
 });
 
 export default Map;

@@ -18,15 +18,6 @@ const MainScreen = ({ navigation }) => {
   const mapRef = useRef(null);
   const [isCreateMode, setIsCreateMode] = useState(false);
 
-  const animateToRegion = ({ latitude, longitude }) => {
-    mapRef.current.animateToRegion({
-      latitude,
-      longitude,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01
-    });
-  };
-
   useEffect(() => {
     const latlng = navigation.getParam('latlng');
     if (latlng) {
@@ -61,7 +52,6 @@ const MainScreen = ({ navigation }) => {
         }}
         defibrillators={defibrillators}
         defibrillatorsLoading={loading}
-        userLocation={userLocation}
         isCreateMode={isCreateMode}
         setIsCreateMode={setIsCreateMode}
       />
@@ -69,16 +59,11 @@ const MainScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate('List')}>
           <Feather name='list' style={styles.iconStyle} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={async () => {
-          enableLocationTracking(true)
-          if (userLocation.location) {
-            animateToRegion(userLocation.location);
-          }
-        }}>
-          <MaterialIcons name={locationIcon} style={styles.iconStyle} />
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => setIsCreateMode(true)}>
           <Feather name='plus-circle' style={styles.iconStyle} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('About')}>
+          <Feather name='info' style={styles.iconStyle} />
         </TouchableOpacity>
       </View>
     </View >
