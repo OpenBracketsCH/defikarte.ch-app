@@ -10,12 +10,12 @@ const WarningInfoPanel = ({ text, onButtonClick }) => {
   panelContainerStyle.paddingBottom = insets.bottom * 0.5 + 10;
   return (
     <View style={panelContainerStyle}>
-      <Feather name='info' color='white' size={42} />
+      <Feather name='info' color='black' size={42} />
       <Text style={styles.textStyle}>
         {text}
       </Text>
       <TouchableOpacity onPress={() => onButtonClick(false)}>
-        <AntDesign name='closecircleo' color='white' size={24} />
+        <AntDesign name='closecircleo' color='black' size={24} />
       </TouchableOpacity>
     </View>
   );
@@ -27,12 +27,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     paddingTop: 10,
-    backgroundColor: 'rgba(255, 20, 40, 0.7)',
+    backgroundColor: '#ffcc00',//'rgba(255, 20, 40, 0.7)',
     bottom: 0,
   },
   textStyle: {
     fontSize: 14,
-    color: 'white',
+    color: 'black',
     paddingHorizontal: 5,
     width: '75%',
   },

@@ -18,6 +18,15 @@ const MainScreen = ({ navigation }) => {
   const mapRef = useRef(null);
   const [isCreateMode, setIsCreateMode] = useState(false);
 
+  const animateToRegion = ({ latitude, longitude }) => {
+    mapRef.current.animateToRegion({
+      latitude,
+      longitude,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01
+    });
+  };
+
   useEffect(() => {
     const latlng = navigation.getParam('latlng');
     if (latlng) {
@@ -35,8 +44,6 @@ const MainScreen = ({ navigation }) => {
   useEffect(() => {
     enableLocationTracking(true);
   }, []);
-
-  const locationIcon = !userLocation.enabled ? 'location-disabled' : !userLocation.location ? 'location-searching' : 'my-location';
 
   let bottomBar = { ...styles.bottomBar };
   bottomBar.paddingBottom = insets.bottom * 0.5;

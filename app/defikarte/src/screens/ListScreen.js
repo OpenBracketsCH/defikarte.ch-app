@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'white'
   }
 });
 
