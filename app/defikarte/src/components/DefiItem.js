@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
   outsideContainerStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    //backgroundColor: 'white',
   },
   navigationIconStyle: {
     fontSize: 36,

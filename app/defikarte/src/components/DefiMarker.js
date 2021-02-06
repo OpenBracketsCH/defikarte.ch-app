@@ -1,15 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 
 const DefiMarker = ({ defibrillator }) => {
-  const markerRef = useRef(null);
   const tags = defibrillator.tags;
   const dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.markerDayStyle : styles.markerDayNightStyle;
 
   return (
     <Marker
-      ref={markerRef}
       anchor={{ x: 0.5, y: 1 }}
       centerOffset={{ x: 0, y: -35 }}
       coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
