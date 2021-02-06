@@ -6,10 +6,12 @@ const AboutScreen = ({ navigation }) => {
     <ScrollView style={styles.containerStyle}>
       <Image style={styles.imageStyle} source={require('../../assets/logo_defikarte.png')} />
       <Text style={styles.titleStyle}>Das Projekt</Text>
-      <Text style={styles.textStyle}>This App should help find the next AED (Defibrillator) to the person searching for help or willing to reanimate a person in need. The data is ioen source and hosted on openstreetmap. Everyone should be able to reach the next defi with the app. The app gives the next position of a defi to the navigation app you already use.</Text>
+      <Text style={styles.textStyle}>Diese App sollte helfen, den nächsten Defibrillator in der näheren Umgebung zu finden. Dies um möglichst rasch, einer Person in Not oder einer Reanimation helfen zu können.Die Daten sind komplett Open Source und kommen von OpenStreetMap. Mit Hilfe der App sollte jede Person zum nächst besten Defi navigiert werden über die Navigations-App des jeweiligen Handys.</Text>
+      <Text style={styles.titleStyle}>Webseite</Text>
+      <Text style={styles.textStyle}>https://www.defikarte.ch</Text>
       <Text style={styles.titleStyle}>Lizenz</Text>
-      <Text style={styles.textStyle}>MIT</Text>
-      <Text style={styles.titleStyle}>GitHub</Text>
+      <Text style={styles.textStyle}>MIT (https://opensource.org/licenses/MIT)</Text>
+      <Text style={styles.titleStyle}>GitHub & Fehler melden</Text>
       <Text style={styles.textStyle}>https://github.com/chnuessli/defikarte.ch-app</Text>
     </ScrollView>
   );
