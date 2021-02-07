@@ -32,7 +32,7 @@
       ],
       "config": {
         "googleMaps": {
-          "apiKey": "null",	
+          "apiKey": "null"	
         }
       }
     },
