@@ -1,16 +1,16 @@
-# Defikarte.ch - die App
+# Defikarte.ch - the App
 
 ![Picture](/app/defikarte/assets/icons/appstore.png)
 
-This Page is also available in English, please visit: [English 👈🏻](README_en.md)
+## Purpose of the app
 
-## Zweck der App
+This app should help to find the next defibrillator in the vicinity. This to help a person in need or reanimation as quickly as possible.The data are completely open source and come from OpenStreetMap. With the help of the app, each person should be navigated to the next best defi via the navigation app of the respective cell phone.
 
-Diese App sollte helfen, den nächsten Defibrillator in der näheren Umgebung zu finden. Dies um möglichst rasch, einer Person in Not oder einer Reanimation helfen zu können.Die Daten sind komplett Open Source und kommen von OpenStreetMap. Mit Hilfe der App sollte jede Person zum nächst besten Defi navigiert werden über die Navigations-App des jeweiligen Handys.
+The data are all based on OpenStreetMap, so everyone can help to improve the app. This goes directly in the app. A defibrillator can be reported via app and is then available to all.
 
-Die Daten basieren alle auf OpenStreetMap, also kann jeder mithelfen die App zu verbessern. Dies geht direkt in der App. Ein Defibrillator kann via App gemeldet werden und steht dann wieder allen zu Verfügung.
+The app is a project by [Defikarte.ch](https://www.defikarte.ch) and is intended to help capture and visualize defibrillators throughout Switzerland.
 
-Die App ist ein Projekt von [Defikarte.ch](https://www.defikarte.ch)
+**The map is far from complete, the app and the map should help to improve this data base. **
 
 ## Installation
 
@@ -19,12 +19,6 @@ Die App ist ein Projekt von [Defikarte.ch](https://www.defikarte.ch)
 * `npm start`
 * download [iOS App](https://apps.apple.com/ch/app/expo-client/id982107779) ord [Android App](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=de_CH&gl=US)
 * scan qr code
-
-## technical Informations
-
-This app is in development right now
-
-Check [Requirements](Requirements.md) for more information
 
 ## Contribute
 
@@ -38,7 +32,7 @@ We are looking for motivated contributors that help us, to make the app better
 
 ## Sponsors
 
-Please read SPONSORING.md
+Please read [SPONSORING.md](SPONSORING.md)
 
 * [Procamed AG](https://www.procamed.ch)
 * [Ursula Dombrowsky Gesundheitspraxis](http://www.dombrowsky.ch)
