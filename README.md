@@ -1,42 +1,42 @@
 # Defikarte.ch - die App
 
-## Purpose of the app
+![Picture](app/defikarte/assets/icons/appstore.png)
 
-This App should help find the next AED (Defibrillator) to the person searching for help or willing to reanimate a person in need.
-The data is ioen source and hosted on openstreetmap. Everyone should be able to reach the next defi with the app. The app gives the next position of a defi to the navigation app you already use.
+This Page is also available in English, please visit: [English 👈🏻](README_en.md)
 
-(to be continued)
+## Zweck der App
+
+Diese App sollte helfen, den nächsten Defibrillator in der näheren Umgebung zu finden. Dies um möglichst rasch, einer Person in Not oder einer Reanimation helfen zu können.Die Daten sind komplett Open Source und kommen von OpenStreetMap. Mit Hilfe der App sollte jede Person zum nächst besten Defi navigiert werden über die Navigations-App des jeweiligen Handys.
+
+Die Daten basieren alle auf OpenStreetMap, also kann jeder mithelfen die App zu verbessern. Dies geht direkt in der App. Ein Defibrillator kann via App gemeldet werden und steht dann wieder allen zu Verfügung.
+
+Die App ist ein Projekt von [Defikarte.ch](https://www.defikarte.ch) und soll helfen, Defibrillatoren in der ganzen Schweiz zu erfassen und zu visualisieren.
+
+**Die Karte ist bei weitem noch nicht vollständig, die App und die Karte sollen helfen, diesen Datenbestand zu verbessern.**
 
 ## Installation
 
-* It requires node.js on your pc in version 14.
-* then `npm install expo-cli -g` in the directory within the app
-* `npm start`
-* download [iOS App](https://apps.apple.com/ch/app/expo-client/id982107779) ord [Android App](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=de_CH&gl=US)
-* scan qr code
+* Es braucht eine node.js Installation auf deinem PC, mind Version 14.
+* `npm install expo-cli -g` im Verzeichnis der App
+* Download [iOS App](https://apps.apple.com/ch/app/expo-client/id982107779) oder [Android App](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=de_CH&gl=US)
+* Scanne den QR-Code
 
-## technical Informations
+## Mitmachen
 
-This app is in development right now
+Wir sind immer auf der Suche nach motivierten, offenen Mitwirkenden die unser Projekt unterstützen wollen. Löse ein Issue, erfasse ein Issue usw.
 
-Check [Requirements](Requirements.md) for more information
-
-## Contribute
-
-We are looking for motivated contributors that help us, to make the app better
-
-### Contributors
+### Mitwirkende
 
 <a href="https://github.com/chnuessli/defikarte.ch-app/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=chnuessli/defikarte.ch-app" />
 </a>
 
-## Sponsors
+## Sponsoren
 
-Please read SPONSORING.md
+Bitte lese [SPONSORING.md](SPONSORING.md)
 
 * [Procamed AG](https://www.procamed.ch)
 * [Ursula Dombrowsky Gesundheitspraxis](http://www.dombrowsky.ch)
 * [Hexagon](http://www.hexagonsi.com)
 
-[Sponsor us](https://github.com/sponsors/chnuessli)
+[Sponsore uns](https://github.com/sponsors/chnuessli)
