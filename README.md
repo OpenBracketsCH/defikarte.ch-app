@@ -1,3 +1,6 @@
+![Deploy iOS and Android App (JS only)](https://github.com/chnuessli/defikarte.ch-app/workflows/Deploy%20iOS%20and%20Android%20App%20(JS%20only)/badge.svg?branch=main)
+![Defikarte-Backend](https://github.com/chnuessli/defikarte.ch-app/workflows/Defikarte-Backend/badge.svg?branch=main)
+
 # Defikarte.ch - die App
 
 ![Picture](app/defikarte/assets/icons/appstore.png)
