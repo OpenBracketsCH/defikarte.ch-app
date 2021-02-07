@@ -3,7 +3,7 @@
     "name": "Defikarte.ch",
     "slug": "Defikarte-ch",
     "owner": "defikarte",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
     "primaryColor": "#ffffff",
     "icon": "./assets/icon.png",
@@ -21,27 +21,23 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ch.defikarte.app",
-      "buildNumber": "1.0.1"
+      "buildNumber": "1.0.3"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
       "package": "ch.defikarte.app",
-      "versionCode": 1,
+      "versionCode": 2,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
       ],
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCxZe_nTzoVxI_YgZjF-5krO-3o2pb3SaM"
+          "apiKey": "null"	
         }
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
     }
   }
 }

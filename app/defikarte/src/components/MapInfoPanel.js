@@ -1,11 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const MapInfoPanel = ({ text, subText, showLoading }) => {
+const MapInfoPanel = ({ text, subText, showLoading, isTopView }) => {
+  const insets = useSafeAreaInsets();
+
   const loadingAnimation = showLoading ? <ActivityIndicator style={styles.spinnerStyle} size="small" color="white" /> : null;
   const subTextComp = subText ? <Text style={styles.subTextStyle}>{subText}</Text> : null;
+
+  let containerStyle = { ...styles.panelContainerStyle };
+  if (isTopView) {
+    containerStyle.marginTop = insets.top;
+  }
+
   return (
-    <View style={styles.panelContainerStyle}>
+    <View style={containerStyle}>
       <View style={styles.inlineStyle}>
         {loadingAnimation}
         <Text style={styles.textStyle}>

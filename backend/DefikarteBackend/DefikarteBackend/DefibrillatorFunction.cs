@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using DefikarteBackend.Cache;
 using DefikarteBackend.Model;
 using DefikarteBackend.OsmOverpassApi;
 using DefikarteBackend.Validation;
@@ -22,10 +23,12 @@ namespace DefikarteBackend
     public class DefibrillatorFunction
     {
         private readonly IConfigurationRoot config;
+        private readonly ISimpleCache cache;
 
-        public DefibrillatorFunction(IConfigurationRoot config)
+        public DefibrillatorFunction(IConfigurationRoot config, ISimpleCache cache)
         {
             this.config = config;
+            this.cache = cache;
         }
 
         [FunctionName("Defibrillators_GETALL")]
@@ -33,14 +36,20 @@ namespace DefikarteBackend
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "defibrillator")] HttpRequestMessage req,
             ILogger log)
         {
-            var overpassApiUrl = config["overpassUrl"];
-            log.LogInformation($"Get all AED from {overpassApiUrl}");
-
-            var overpassApiClient = new OverpassClient(overpassApiUrl);
-
+            log.LogInformation("Request AEDs. Try to get from cache.");
             try
             {
-                var response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
+                var response = cache.TryGetLegalCache();
+
+                if (response == null || !response.HasValues)
+                {
+                    var overpassApiUrl = config["overpassUrl"];
+                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache is not available.");
+
+                    var overpassApiClient = new OverpassClient(overpassApiUrl);
+                    response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
+                }
+
                 return new OkObjectResult(response);
             }
             catch (Exception ex)
@@ -60,7 +69,7 @@ namespace DefikarteBackend
                 var username = config["osmUsername"];
                 var password = config["osmUserPassword"];
                 var osmApiUrl = config["osmApiUrl"];
-                
+
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(osmApiUrl))
                 {
                     log.LogWarning("No valid configuration available for eighter username, password or osmApiUrl");
@@ -74,7 +83,7 @@ namespace DefikarteBackend
                     log.LogInformation($"Invalid request data.");
                     return defibrillatorObj.ToBadRequest();
                 }
-                
+
                 var newNode = CreateNode(defibrillatorObj.Value);
                 var clientFactory = new ClientsFactory(log, new HttpClient(),
                     osmApiUrl);
@@ -85,7 +94,7 @@ namespace DefikarteBackend
 
                 newNode.ChangeSetId = changeSetId;
                 var nodeId = await authClient.CreateElement(changeSetId, newNode);
-                
+
                 await authClient.CloseChangeset(changeSetId);
 
                 var createdNode = await authClient.GetNode(nodeId);
@@ -140,7 +149,7 @@ namespace DefikarteBackend
 
             var keysToRemove = new List<string>();
             // remove empty values
-            foreach(var keyval in tags)
+            foreach (var keyval in tags)
             {
                 if (string.IsNullOrEmpty(keyval.Value))
                 {

@@ -16,6 +16,9 @@ on:
 
 env:
   APP_SRC_PATH: './app/defikarte/'    # set this to the path to your web app project, defaults to the repository root
+  RELEASE_CHANNEL: "${{ github.ref == 'refs/heads/main' && 'production' || 'beta' }}"
+  REACT_NATIVE_BASE_URL: "${{ github.ref == 'refs/heads/main' && 'https://defikarte-backend.azurewebsites.net/api' || 'https://defikarte-backend-staging.azurewebsites.net/api' }}"
+  REACT_NATIVE_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
 
 jobs:
   publish:
@@ -34,9 +37,5 @@ jobs:
           expo-packager: 'npm'
       - run: npm install
         working-directory: ${{ env.APP_SRC_PATH }}
-      - run: expo publish --release-channel beta
+      - run: expo publish --release-channel ${{ env.RELEASE_CHANNEL }}
         working-directory: ${{ env.APP_SRC_PATH }}
-        if: github.ref == 'refs/heads/development'
-      - run: expo publish --release-channel production
-        working-directory: ${{ env.APP_SRC_PATH }}
-        if: github.ref == 'refs/heads/main'

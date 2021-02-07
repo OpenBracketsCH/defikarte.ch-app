@@ -5,30 +5,9 @@ import { withNavigation } from 'react-navigation';
 import openMap from 'react-native-open-maps';
 
 const DefiItem = ({ defibrillator, navigation }) => {
-  const latlng = { latitude: defibrillator.lat, longitude: defibrillator.lon };
-
-  const openingHours = () => {
-    let openingHoursText = defibrillator.tags.opening_hours ?? 'n/A';
-    openingHoursText = openingHoursText.length > 31 ? openingHoursText.substring(0, 29) + '...' : openingHoursText;
-    return (
-      <View style={styles.noWrapStyle}>
-        <Feather style={styles.inlineIconStyle} name='clock' />
-        <Text style={styles.openingHoursTextStyle}>{openingHoursText}</Text>
-      </View>
-    );
-  };
-
-  const phone = () => {
-    if (defibrillator.tags['emergency:phone']) {
-      return (
-        <View style={styles.noWrapStyle}>
-          <MaterialIcons style={styles.inlineIconStyle} name='phone' />
-          <Text style={styles.inlineTextStyle}>{defibrillator.tags['emergency:phone']}</Text>
-        </View>
-      );
-    }
-    return null;
-  };
+  const phone = defibrillator.tags['emergency:phone'] ?? '144';
+  let openingHoursText = defibrillator.tags.opening_hours ?? 'n/A';
+  openingHoursText = openingHoursText.length > 31 ? openingHoursText.substring(0, 29) + '...' : openingHoursText;
 
   const name = defibrillator.tags['defibrillator:location'] ?? defibrillator.tags.description ?? defibrillator.tags.operator ?? 'n/A';
   const shortName = name.length > 28 ? name.substring(0, 27) + '...' : name;
@@ -42,9 +21,15 @@ const DefiItem = ({ defibrillator, navigation }) => {
           <View style={styles.inlineStyle}>
             <MaterialIcons style={styles.inlineIconStyle} name='my-location' />
             <Text style={styles.inlineTextStyle}>{locationText}</Text>
-            {phone()}
+            <View style={styles.noWrapStyle}>
+              <MaterialIcons style={styles.inlineIconStyle} name='phone' />
+              <Text style={styles.inlineTextStyle}>{phone}</Text>
+            </View>
           </View>
-          {openingHours()}
+          <View style={styles.noWrapStyle}>
+            <Feather style={styles.inlineIconStyle} name='clock' />
+            <Text style={styles.openingHoursTextStyle}>{openingHoursText}</Text>
+          </View>
         </View>
         <TouchableOpacity
           onPress={() => openMap({ latitude: defibrillator.lat, longitude: defibrillator.lon, end: `${defibrillator.lat}, ${defibrillator.lon}`, query: name, travelType: 'walk' })}>
@@ -88,7 +73,6 @@ const styles = StyleSheet.create({
   outsideContainerStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
   },
   navigationIconStyle: {
     fontSize: 36,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Linking, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import openMap from 'react-native-open-maps';
@@ -7,6 +8,7 @@ import DefiMarker from '../components/DefiMarker';
 import AttributeListing from '../components/AttributeListing';
 
 const DetailScreen = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const defibrillator = navigation.getParam('defibrillator');
 
   const initCoords = {
@@ -29,8 +31,11 @@ const DetailScreen = ({ navigation }) => {
   const name = defibrillator.tags['defibrillator:location'] ?? defibrillator.tags.description ?? defibrillator.tags.operator ?? 'n/A';
   const emergencyPhone = defibrillator.tags['emergency:phone'] ?? '144';
   const newInfo = defibrillator.new ? <Text>(Temporär in App erfasst, OSM update ausstehend)</Text> : null;
+
+  let containerStyle = { ...styles.containerStyle };
+  containerStyle.paddingBottom = insets.bottom * 0.5;
   return (
-    <View style={styles.containerStyle} >
+    <View style={containerStyle} >
       <View style={{ height: '30%' }}>
         <MapView
           style={styles.mapStyle}

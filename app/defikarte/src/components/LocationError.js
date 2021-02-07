@@ -1,5 +1,4 @@
-import React from 'react';
-import { View, Text, Alert, StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 
 const LocationError = ({ title, message }) => {
   return (

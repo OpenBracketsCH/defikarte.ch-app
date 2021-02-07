@@ -1,16 +1,21 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AntDesign, Feather } from '@expo/vector-icons';
 
 const WarningInfoPanel = ({ text, onButtonClick }) => {
+  const insets = useSafeAreaInsets();
+
+  let panelContainerStyle = { ...styles.panelContainerStyle };
+  panelContainerStyle.paddingBottom = insets.bottom * 0.5 + 10;
   return (
-    <View style={styles.panelContainerStyle}>
-      <Feather name='info' color='white' size={42} />
+    <View style={panelContainerStyle}>
+      <Feather name='info' color='black' size={42} />
       <Text style={styles.textStyle}>
         {text}
       </Text>
       <TouchableOpacity onPress={() => onButtonClick(false)}>
-        <AntDesign name='closecircleo' color='white' size={24} />
+        <AntDesign name='closecircleo' color='black' size={24} />
       </TouchableOpacity>
     </View>
   );
@@ -21,13 +26,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    paddingVertical: 10,
-    backgroundColor: 'rgba(255, 20, 40, 0.7)',
+    paddingTop: 10,
+    backgroundColor: '#ffcc00',//'rgba(255, 20, 40, 0.7)',
     bottom: 0,
   },
   textStyle: {
     fontSize: 14,
-    color: 'white',
+    color: 'black',
     paddingHorizontal: 5,
     width: '75%',
   },
