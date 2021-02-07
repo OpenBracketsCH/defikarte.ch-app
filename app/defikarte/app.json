@@ -24,10 +24,6 @@
       "buildNumber": "1.0.1"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
       "package": "ch.defikarte.app",
       "versionCode": 1,
       "permissions": [
@@ -41,7 +37,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
     }
   }
 }
