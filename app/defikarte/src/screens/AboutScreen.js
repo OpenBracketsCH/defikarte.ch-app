@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   wrapperStyle: {
-    margin: 10,
+    marginHorizontal: 10,
+    marginBottom: 10,
   },
   textStyle: {
     fontSize: 16,
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
     height: 150,
     width: '100%',
     alignSelf: 'center',
+    marginBottom: 10,
   }
 });
 
