@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Linking, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
-import MapView from 'react-native-maps';
+import MapView, { UrlTile } from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import DefiMarker from '../components/DefiMarker';
 import AttributeListing from '../components/AttributeListing';
@@ -45,6 +45,11 @@ const DetailScreen = ({ navigation }) => {
           zoomEnabled={false}
           onPress={() => { navigation.navigate('Main', { latlng: { latitude: defibrillator.lat, longitude: defibrillator.lon } }) }}
         >
+          <UrlTile
+            urlTemplate='http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            maximumZ={19}
+            flipY={false}
+          />
           <DefiMarker
             defibrillator={defibrillator}
           />
