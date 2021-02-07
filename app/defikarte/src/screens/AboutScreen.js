@@ -37,6 +37,15 @@ const AboutScreen = ({ navigation }) => {
           https://github.com/chnuessli/defikarte.ch-app
           </Text>
       </View>
+      <View style={styles.wrapperStyle}>
+        <Text style={styles.titleStyle}>Vielen Dank unseren Sponsoren</Text>
+        <Text
+          style={styles.linkStyle}
+          onPress={() => Linking.openURL('https://www.defikarte.ch/sponsors.html')}
+        >
+          https://github.com/chnuessli/defikarte.ch-app
+          </Text>
+      </View>
     </ScrollView>
   );
 }
