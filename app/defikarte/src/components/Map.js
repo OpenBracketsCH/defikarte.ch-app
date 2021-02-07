@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Marker } from 'react-native-maps';
+import { View, StyleSheet, Platform } from 'react-native';
+import { Marker, UrlTile } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
 import currentDefisOnMap from '../helpers/markersOnMap.js'
 import DefiMarker from './DefiMarker';
@@ -39,7 +39,9 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
     }, 500);
 
     return () => {
-      clearTimeout(timerId);
+      if (timerId) {
+        clearTimeout(timerId);
+      }
     }
   }, [region, defibrillators])
 
@@ -140,7 +142,28 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         spiralEnabled={false}
         onPress={(e) => onMapPress(e.nativeEvent)}
         showsMyLocationButton={false}
+        mapType={Platform.OS == "android" ? "none" : "mutedStandard"}
+        maxZoomLevel={19}
+        moveOnMarkerPress={false}
+        showsCompass={false}
       >
+        <UrlTile
+          /**
+           * The url template of the tile server. The patterns {x} {y} {z} will be replaced at runtime
+           * For example, http://c.tile.openstreetmap.org/{z}/{x}/{y}.png
+           */
+          urlTemplate='http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          /**
+           * The maximum zoom level for this tile overlay. Corresponds to the maximumZ setting in
+           * MKTileOverlay. iOS only.
+           */
+          maximumZ={19}
+          /**
+           * flipY allows tiles with inverted y coordinates (origin at bottom left of map)
+           * to be used. Its default value is false.
+           */
+          flipY={false}
+        />
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
       {renderInfoPanel(defisOnMap, mode)}
