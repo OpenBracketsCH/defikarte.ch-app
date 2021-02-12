@@ -9,6 +9,7 @@ import CreateMapOverlay from './CreateMapOverlay';
 import MapInfoPanel from './MapInfoPanel';
 import DetailMapOverlay from './DetailMapOverlay';
 import LocationButton from './LocationButton.js';
+import MapLayerButton from './MapLayersButton.js';
 
 const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCreateMode, setIsCreateMode }) => {
   const [region, setRegion] = useState(initCoords);
@@ -16,6 +17,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
   const [defisOnMap, setDefisOnMap] = useState([]);
   const [selectedDefibrillator, setSelectedDefibrillator] = useState(null);
   const [mode, setMode] = useState('');
+  const [isTileOverlayActive, setIsTileOverlayActive] = useState(false);
 
   const animateToRegion = ({ latitude, longitude }) => {
     mapRef.current.animateToRegion({
@@ -130,6 +132,12 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
     }
   }
 
+  const tileOverlay = isTileOverlayActive ? <UrlTile
+    urlTemplate='http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    maximumZ={19}
+    flipY={false}
+  /> : null;
+
   return (
     <View style={styles.containerStyle}>
       <MapView
@@ -147,16 +155,13 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         moveOnMarkerPress={false}
         showsCompass={false}
       >
-        <UrlTile
-          urlTemplate='http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
-          maximumZ={19}
-          flipY={false}
-        />
+        {tileOverlay}
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
       </MapView>
       {renderInfoPanel(defisOnMap, mode)}
       {renderOverlay(mode)}
       <LocationButton isTopView={mode === 'loc'} animateToRegion={animateToRegion} />
+      <MapLayerButton setLayerActive={setIsTileOverlayActive} layerIsActive={isTileOverlayActive} />
     </View >
   );
 };
