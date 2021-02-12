@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   titleStyle: {
     fontSize: 20,
     alignSelf: 'center',
+    textAlign: 'center',
     fontWeight: '500',
   },
   wrapperStyle: {
