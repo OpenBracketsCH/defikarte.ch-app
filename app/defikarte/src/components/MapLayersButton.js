@@ -16,7 +16,6 @@ const LocationButton = ({ setLayerActive, layerIsActive }) => {
 
 const styles = StyleSheet.create({
   iconStyle: {
-    //alignSelf: 'flex-start',
     top: 0,
     fontSize: 27,
     color: 'white',
@@ -33,13 +32,9 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
   },
   textStyle: {
-    //marginLeft: 4,
-    //marginTop: 1,
     position: 'relative',
     alignSelf: 'center',
     bottom: 1,
-    //bottom: 3,
-    //left: 6,
     color: 'white',
     fontSize: 8,
     fontWeight: '400',
