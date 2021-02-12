@@ -150,7 +150,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         spiralEnabled={false}
         onPress={(e) => onMapPress(e.nativeEvent)}
         showsMyLocationButton={false}
-        mapType={Platform.OS == "android" ? "none" : "mutedStandard"}
+        mapType={Platform.OS == "android" ? "standard" : "mutedStandard"}
         maxZoomLevel={19}
         moveOnMarkerPress={false}
         showsCompass={false}
