@@ -155,8 +155,8 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         moveOnMarkerPress={false}
         showsCompass={false}
       >
-        {tileOverlay}
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
+        {tileOverlay}
       </MapView>
       {renderInfoPanel(defisOnMap, mode)}
       {renderOverlay(mode)}
