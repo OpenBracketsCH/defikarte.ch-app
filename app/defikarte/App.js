@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -11,6 +11,7 @@ import ListScreen from './src/screens/ListScreen';
 import MainScreen from './src/screens/MainScreen';
 import DetailScreen from './src/screens/DetailScreen';
 import AboutScreen from './src/screens/AboutScreen';
+import ErrorBoundary from './src/components/ErrorBoundary';
 
 const navigator = createStackNavigator({
   Main: { screen: MainScreen, navigationOptions: { title: 'Karte', headerShown: false } },
@@ -35,7 +36,9 @@ export default () => {
         <InfoProvider>
           <SafeAreaProvider>
             <StatusBar backgroundColor='rgba(255, 255, 255, 0)' barStyle={'dark-content'} />
-            <App />
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
           </SafeAreaProvider>
         </InfoProvider>
       </LocationProvider>

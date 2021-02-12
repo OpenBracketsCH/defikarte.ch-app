@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Marker } from 'react-native-maps';
+import { View, StyleSheet, Platform } from 'react-native';
+import { Marker, UrlTile } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
 import currentDefisOnMap from '../helpers/markersOnMap.js'
 import DefiMarker from './DefiMarker';
@@ -9,6 +9,7 @@ import CreateMapOverlay from './CreateMapOverlay';
 import MapInfoPanel from './MapInfoPanel';
 import DetailMapOverlay from './DetailMapOverlay';
 import LocationButton from './LocationButton.js';
+import MapLayerButton from './MapLayersButton.js';
 
 const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCreateMode, setIsCreateMode }) => {
   const [region, setRegion] = useState(initCoords);
@@ -16,6 +17,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
   const [defisOnMap, setDefisOnMap] = useState([]);
   const [selectedDefibrillator, setSelectedDefibrillator] = useState(null);
   const [mode, setMode] = useState('');
+  const [isTileOverlayActive, setIsTileOverlayActive] = useState(false);
 
   const animateToRegion = ({ latitude, longitude }) => {
     mapRef.current.animateToRegion({
@@ -39,7 +41,9 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
     }, 500);
 
     return () => {
-      clearTimeout(timerId);
+      if (timerId) {
+        clearTimeout(timerId);
+      }
     }
   }, [region, defibrillators])
 
@@ -128,6 +132,12 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
     }
   }
 
+  const tileOverlay = isTileOverlayActive ? <UrlTile
+    urlTemplate='http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    maximumZ={19}
+    flipY={false}
+  /> : null;
+
   return (
     <View style={styles.containerStyle}>
       <MapView
@@ -140,12 +150,18 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         spiralEnabled={false}
         onPress={(e) => onMapPress(e.nativeEvent)}
         showsMyLocationButton={false}
+        mapType={Platform.OS == "android" ? "standard" : "mutedStandard"}
+        maxZoomLevel={19}
+        moveOnMarkerPress={false}
+        showsCompass={false}
       >
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
+        {tileOverlay}
       </MapView>
       {renderInfoPanel(defisOnMap, mode)}
       {renderOverlay(mode)}
       <LocationButton isTopView={mode === 'loc'} animateToRegion={animateToRegion} />
+      <MapLayerButton setLayerActive={setIsTileOverlayActive} layerIsActive={isTileOverlayActive} />
     </View >
   );
 };

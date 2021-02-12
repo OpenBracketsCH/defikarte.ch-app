@@ -10,7 +10,7 @@ import createForm from '../config/createForm';
 
 const CreateScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const { state: defiState, addDefibrillator } = useContext(DefibrillatorContext);
+  const { state: defiState, addDefibrillator, resetError } = useContext(DefibrillatorContext);
   const [state, setState] = useState({ latitude: 0, longitude: 0, emergencyPhone: '144' });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { control, handleSubmit, errors } = useForm();
@@ -34,8 +34,15 @@ const CreateScreen = ({ navigation }) => {
   useEffect(() => {
     if (isSubmitted) {
       add();
+      setIsSubmitted(false);
+    }
+    else {
+      resetError();
     }
   }, [isSubmitted])
+
+  useEffect(() => {
+  }, [state]);
 
   const renderFormComponent = () => {
     return createForm.map((formComp, index) => {
@@ -95,6 +102,7 @@ const CreateScreen = ({ navigation }) => {
           enabled
         >
           {renderFormComponent()}
+          <Text style={styles.errorTextStyle}>{defiState.error}</Text>
         </KeyboardAvoidingView>
       </ScrollView>
       <View style={bottomBar}>
@@ -150,6 +158,12 @@ const styles = StyleSheet.create({
     marginTop: 200,
     alignSelf: 'center',
     zIndex: 200,
+  },
+  errorTextStyle: {
+    fontSize: 16,
+    color: 'red',
+    marginTop: 3,
+    alignSelf: 'center',
   }
 });
 

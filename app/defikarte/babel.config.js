@@ -7,7 +7,8 @@ module.exports = function (api) {
         "include": [
           "NODE_ENV",
           "REACT_NATIVE_BASE_URL",
-          "REACT_NATIVE_GOOGLE_MAPS_API_KEY"
+          "REACT_NATIVE_GOOGLE_MAPS_API_KEY",
+          "REACT_NATIVE_API_KEY",
         ]
       }]
     ],

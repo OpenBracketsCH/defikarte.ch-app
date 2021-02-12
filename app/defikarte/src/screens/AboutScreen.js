@@ -43,7 +43,7 @@ const AboutScreen = ({ navigation }) => {
           style={styles.linkStyle}
           onPress={() => Linking.openURL('https://www.defikarte.ch/sponsors.html')}
         >
-          https://github.com/chnuessli/defikarte.ch-app
+          https://www.defikarte.ch/sponsors.html
           </Text>
       </View>
     </ScrollView>
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   titleStyle: {
     fontSize: 20,
     alignSelf: 'center',
+    textAlign: 'center',
     fontWeight: '500',
   },
   wrapperStyle: {

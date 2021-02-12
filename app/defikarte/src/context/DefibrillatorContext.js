@@ -74,16 +74,22 @@ const addDefibrillator = dispatch => {
         callback();
       }
     } catch (error) {
-      console.log(error)
-      dispatch({ type: 'update_error', payload: 'Defibrillatoren konnten nicht hinzugefügt werden.' });
+      console.log(error.message)
+      dispatch({ type: 'update_error', payload: 'Defibrillator konnte nicht hinzugefügt werden.' });
     } finally {
       dispatch({ type: 'update_creating', payload: false });
     }
   };
 };
 
+const resetError = dispatch => {
+  return () => {
+    dispatch({ type: 'update_error', payload: '' })
+  }
+}
+
 export const { Context, Provider } = createDataContext(
   reducer,
-  { getDefibrillators, addDefibrillator, setDefisNearLocation },
+  { getDefibrillators, addDefibrillator, setDefisNearLocation, resetError },
   { defibrillators: [], defisNearLocation: [], loading: false, creating: false, error: '' }
 );
