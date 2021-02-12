@@ -61,7 +61,7 @@ namespace DefikarteBackend
 
         [FunctionName("Defibrillators_POST")]
         public async Task<IActionResult> Create(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "Post", Route = "defibrillator")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "defibrillator")] HttpRequest req,
             ILogger log)
         {
             try
