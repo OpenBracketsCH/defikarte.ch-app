@@ -41,5 +41,6 @@ Bitte lese [SPONSORING.md](SPONSORING.md)
 * [Procamed AG](https://www.procamed.ch)
 * [Ursula Dombrowsky Gesundheitspraxis](http://www.dombrowsky.ch)
 * [Hexagon](http://www.hexagonsi.com)
+* [Github-User Malsendif](https://github.com/Malsendif)
 
 [Sponsore uns](https://github.com/sponsors/chnuessli)
