@@ -46,6 +46,10 @@ const AboutScreen = ({ navigation }) => {
           https://www.defikarte.ch/sponsors.html
           </Text>
       </View>
+      <Text>
+      {"\n"}
+      {"\n"}
+      </Text> 
     </ScrollView>
   );
 }
