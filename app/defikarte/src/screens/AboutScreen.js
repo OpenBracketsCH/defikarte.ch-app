@@ -1,7 +1,10 @@
 import React from 'react';
 import { ScrollView, View, Image, Text, Linking, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const AboutScreen = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
+
   return (
     <ScrollView style={styles.containerStyle}>
       <Image style={styles.imageStyle} source={require('../../assets/logo_defikarte.png')} />
@@ -46,10 +49,7 @@ const AboutScreen = ({ navigation }) => {
           https://www.defikarte.ch/sponsors.html
           </Text>
       </View>
-      <Text>
-      {"\n"}
-      {"\n"}
-      </Text> 
+      <View style={{ marginBottom: insets.bottom + 10 }}></View>
     </ScrollView>
   );
 }

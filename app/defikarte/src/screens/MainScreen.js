@@ -1,7 +1,7 @@
 import React, { useRef, useContext, useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import { Context as LocationContext } from '../context/LocationContext';
 import useDefibrillators from '../hooks/useDefibrillators';
