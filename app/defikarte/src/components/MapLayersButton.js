@@ -1,14 +1,16 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 const LocationButton = ({ setLayerActive, layerIsActive }) => {
+
+  const layerIcon = layerIsActive ? 'ios-layers' : 'ios-layers-outline';
 
   return (
     <TouchableOpacity style={styles.layerButtonStyle} onPress={async () => {
       setLayerActive(!layerIsActive)
     }}>
-      <Feather name='layers' style={styles.iconStyle} />
+      <Ionicons name={layerIcon} style={styles.iconStyle} />
       <Text style={styles.textStyle}>OSM</Text>
     </TouchableOpacity>
   );
