@@ -36,10 +36,17 @@ namespace DefikarteBackend.OsmOverpassApi
             try
             {
                 var response = await overpassHttpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var json = JObject.Parse(responseContent);
-                json.TryGetValue("elements", out var osmNodes);
-                return osmNodes;
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var json = JObject.Parse(responseContent);
+                    json.TryGetValue("elements", out var osmNodes);
+                    return osmNodes;
+                }
+                else
+                {
+                    throw new Exception($"OverpassAPI ({this.overpassHttpClient.BaseAddress}) request was not successful. Could not get defibrillators.");
+                }
             }
             catch (Exception ex)
             {
