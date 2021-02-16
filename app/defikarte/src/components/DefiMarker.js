@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 
 const DefiMarker = ({ defibrillator }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const tags = defibrillator.tags;
   const dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.markerDayStyle : styles.markerDayNightStyle;
 
@@ -11,11 +12,14 @@ const DefiMarker = ({ defibrillator }) => {
       anchor={{ x: 0.5, y: 1 }}
       centerOffset={{ x: 0, y: -35 }}
       coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
-      tracksViewChanges={false}
+      tracksViewChanges={imageLoaded}
     >
       <View style={styles.markerOutsideStyle}>
         <View style={dayNightStyle}>
-          <Image style={styles.imageStyle} source={require('../../assets/marker.png')} />
+          <Image
+            style={styles.imageStyle}
+            source={require('../../assets/marker.png')}
+            onLoadEnd={() => setImageLoaded(true)} />
         </View>
       </View>
       <View style={styles.markerPointerStyle} />

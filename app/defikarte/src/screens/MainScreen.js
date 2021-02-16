@@ -1,5 +1,5 @@
 import React, { useRef, useContext, useEffect, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { AppState, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
@@ -10,6 +10,8 @@ import Map from '../components/Map';
 import LocationError from '../components/LocationError';
 
 const MainScreen = ({ navigation }) => {
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const insets = useSafeAreaInsets();
   const { state: { defibrillators, loading }, getDefibrillators, setDefisNearLocation } = useContext(DefibrillatorContext);
   const { state: userLocation, updateLocation, enableLocationTracking, setLocationTracker } = useContext(LocationContext);
@@ -42,8 +44,27 @@ const MainScreen = ({ navigation }) => {
   }, [locationErr]);
 
   useEffect(() => {
-    enableLocationTracking(true);
+    AppState.addEventListener("change", _handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener("change", _handleAppStateChange);
+    };
   }, []);
+
+  useEffect(() => {
+    console.log(`mainscreen init: ${appStateVisible}`)
+    if (appStateVisible === "active") {
+      enableLocationTracking(true);
+    }
+    else {
+      enableLocationTracking(false);
+    }
+  }, [appStateVisible])
+
+  const _handleAppStateChange = (nextAppState) => {
+    appState.current = nextAppState;
+    setAppStateVisible(appState.current);
+  };
 
   let bottomBar = { ...styles.bottomBar };
   bottomBar.paddingBottom = insets.bottom * 0.5;
