@@ -52,7 +52,6 @@ const MainScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    console.log(`mainscreen init: ${appStateVisible}`)
     if (appStateVisible === "active") {
       enableLocationTracking(true);
     }
