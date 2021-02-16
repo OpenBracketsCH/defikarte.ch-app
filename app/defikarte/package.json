@@ -11,6 +11,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.2",
     "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
     "eas": "^0.1.0",
     "expo": "~40.0.0",
     "expo-status-bar": "~1.0.3",
