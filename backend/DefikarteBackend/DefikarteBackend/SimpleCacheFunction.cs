@@ -28,10 +28,8 @@ namespace DefikarteBackend
             try
             {
                 var response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
-                if (response.HasValues)
-                {
-                    cache.Update(response);
-                }
+                var success = cache.TryUpdateCache(response);
+                log.LogInformation($"Updated cache successful:{success}. LastUpdate:{this.cache.LastUpdate}");
             }
             catch (Exception ex)
             {
