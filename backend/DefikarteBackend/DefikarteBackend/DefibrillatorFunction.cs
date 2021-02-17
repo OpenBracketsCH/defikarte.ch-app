@@ -39,12 +39,12 @@ namespace DefikarteBackend
             log.LogInformation("Request AEDs. Try to get from cache.");
             try
             {
-                var response = cache.TryGetLegalCache();
+                var success = cache.TryGetLegalCache(out var response);
 
-                if (response == null || !response.HasValues)
+                if (!success)
                 {
                     var overpassApiUrl = config["overpassUrl"];
-                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache is not available.");
+                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache is not available (LastUpdated:{cache.LastUpdate}).");
 
                     var overpassApiClient = new OverpassClient(overpassApiUrl);
                     response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();

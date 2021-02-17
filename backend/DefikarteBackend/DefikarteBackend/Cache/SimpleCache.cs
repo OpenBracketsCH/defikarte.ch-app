@@ -9,27 +9,41 @@ namespace DefikarteBackend.Cache
 
         public DateTimeOffset LastUpdate { get; private set; }
 
-        public void Update(JToken newCache)
+        public bool TryUpdateCache(JToken newCache)
         {
+            bool success = false;
             if (newCache != null && newCache.HasValues)
             {
                 this.DefibrillatorElementsCache = newCache;
                 this.LastUpdate = DateTimeOffset.Now;
+                success = true;
             }
+
+            return success;
         }
 
         /// <summary>
-        /// Gets the current cache, if it is not older than 5min
+        /// Gets the current cache, if it is not older than 24h
         /// </summary>
-        /// <returns>JSON-Token with all defi-elements (array), null if not up-to-date</returns>
-        public JToken TryGetLegalCache()
+        /// <param name="response">JSON-Token with all defi-elements (array), null if not up-to-date</param>
+        /// <returns>true if a legal cache is available</returns>
+        public bool TryGetLegalCache(out JToken response)
         {
-            if (DateTimeOffset.Now - this.LastUpdate <= new TimeSpan(0, 5, 0))
+            bool success;
+            if (DateTimeOffset.Now - this.LastUpdate <= new TimeSpan(24, 0, 0)
+                && this.DefibrillatorElementsCache != null 
+                && this.DefibrillatorElementsCache.HasValues)
             {
-                return this.DefibrillatorElementsCache;
+                response = this.DefibrillatorElementsCache;
+                success = true;
+            }
+            else
+            {
+                response = null;
+                success = false;
             }
 
-            return null;
+            return success;
         }
     }
 }

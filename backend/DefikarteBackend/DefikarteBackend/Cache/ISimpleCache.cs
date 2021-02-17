@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 
 namespace DefikarteBackend.Cache
 {
     public interface ISimpleCache
     {
-        JToken TryGetLegalCache();
+        DateTimeOffset LastUpdate { get; }
 
-        void Update(JToken newCache);
+        bool TryGetLegalCache(out JToken response);
+
+        bool TryUpdateCache(JToken newCache);
     }
 }

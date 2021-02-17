@@ -152,6 +152,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         showsMyLocationButton={false}
         mapType={Platform.OS == "android" ? "standard" : "mutedStandard"}
         maxZoomLevel={19}
+        maxZoom={17}
         moveOnMarkerPress={false}
         showsCompass={false}
       >

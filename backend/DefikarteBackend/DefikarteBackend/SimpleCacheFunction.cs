@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using DefikarteBackend.Cache;
 using DefikarteBackend.OsmOverpassApi;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -29,7 +28,8 @@ namespace DefikarteBackend
             try
             {
                 var response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
-                cache.Update(response);
+                var success = cache.TryUpdateCache(response);
+                log.LogInformation($"Updated cache successful:{success}. LastUpdate:{this.cache.LastUpdate}");
             }
             catch (Exception ex)
             {

@@ -23,6 +23,7 @@ export default (userLocation, callback, enableLocationTracking, setLocationTrack
         },
         callback
       );
+
       setLocationTracker(sub);
     } catch (e) {
       enableLocationTracking(false);

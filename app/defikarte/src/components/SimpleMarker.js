@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 
 const SimpleMarker = ({ defibrillator, onMarkerSelected }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const tags = defibrillator.tags;
 
   let dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.simpleDayMarkerStyle : styles.simpleDayNightMarkerStyle;
@@ -13,11 +14,14 @@ const SimpleMarker = ({ defibrillator, onMarkerSelected }) => {
   return (
     <Marker
       coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
-      tracksViewChanges={false}
+      tracksViewChanges={imageLoaded}
       onPress={() => onMarkerSelected(defibrillator)}
     >
       <View style={dayNightStyle}>
-        <Image style={styles.simpleImageStyle} source={require('../../assets/marker.png')} />
+        <Image
+          style={styles.simpleImageStyle}
+          source={require('../../assets/marker.png')}
+          onLoadEnd={() => setImageLoaded(true)} />
       </View>
     </Marker>
   );
