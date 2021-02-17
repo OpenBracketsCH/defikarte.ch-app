@@ -14,7 +14,7 @@ namespace DefikarteBackend.Cache
 
         public DateTimeOffset LastUpdate { get; private set; }
 
-        public Guid CacheId { get; private set; };
+        public Guid CacheId { get; private set; }
 
         public bool TryUpdateCache(JToken newCache)
         {
