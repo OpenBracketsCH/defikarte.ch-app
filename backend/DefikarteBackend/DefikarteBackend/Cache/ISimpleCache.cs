@@ -5,6 +5,8 @@ namespace DefikarteBackend.Cache
 {
     public interface ISimpleCache
     {
+        Guid CacheId { get; }
+
         DateTimeOffset LastUpdate { get; }
 
         bool TryGetLegalCache(out JToken response);
