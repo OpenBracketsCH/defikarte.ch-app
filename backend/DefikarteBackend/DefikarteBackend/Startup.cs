@@ -11,7 +11,7 @@ namespace DefikarteBackend
         public override void Configure(IFunctionsHostBuilder builder)
         {
             builder.Services.AddSingleton((s) => { return LoadConfiguration(); });
-            builder.Services.AddSingleton<ISimpleCache, SimpleCache>();
+            builder.Services.AddSingleton<ISimpleCache>((s) => new SimpleCache());
         }
 
         private IConfigurationRoot LoadConfiguration()

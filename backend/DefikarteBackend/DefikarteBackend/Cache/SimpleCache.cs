@@ -5,9 +5,16 @@ namespace DefikarteBackend.Cache
 {
     public class SimpleCache : ISimpleCache
     {
+        public SimpleCache()
+        {
+            this.CacheId = Guid.NewGuid();
+        }
+
         private JToken DefibrillatorElementsCache { get; set; }
 
         public DateTimeOffset LastUpdate { get; private set; }
+
+        public Guid CacheId { get; private set; };
 
         public bool TryUpdateCache(JToken newCache)
         {

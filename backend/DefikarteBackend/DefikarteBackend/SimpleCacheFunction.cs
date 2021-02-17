@@ -29,7 +29,7 @@ namespace DefikarteBackend
             {
                 var response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
                 var success = cache.TryUpdateCache(response);
-                log.LogInformation($"Updated cache successful:{success}. LastUpdate:{this.cache.LastUpdate}");
+                log.LogInformation($"Updated cache({this.cache.CacheId}) successful:{success}. LastUpdate:{this.cache.LastUpdate}");
             }
             catch (Exception ex)
             {

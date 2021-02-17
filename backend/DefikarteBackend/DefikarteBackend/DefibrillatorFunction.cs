@@ -36,7 +36,7 @@ namespace DefikarteBackend
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "defibrillator")] HttpRequestMessage req,
             ILogger log)
         {
-            log.LogInformation("Request AEDs. Try to get from cache.");
+            log.LogInformation($"Request AEDs. Try to get from Cache:{this.cache.CacheId} LastUpdated:{cache.LastUpdate}.");
             try
             {
                 var success = cache.TryGetLegalCache(out var response);
@@ -44,7 +44,7 @@ namespace DefikarteBackend
                 if (!success)
                 {
                     var overpassApiUrl = config["overpassUrl"];
-                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache is not available (LastUpdated:{cache.LastUpdate}).");
+                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache:{this.cache.CacheId} is not available (LastUpdated:{cache.LastUpdate}).");
 
                     var overpassApiClient = new OverpassClient(overpassApiUrl);
                     response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
