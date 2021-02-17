@@ -1,5 +1,5 @@
 import createDataContext from './createDataContext';
-import defikarteBackendMock from '../api/defikarteBackend';
+import defikarteBackend from '../api/defikarteBackend';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -34,7 +34,7 @@ const getDefibrillators = dispatch => {
   return async () => {
     try {
       dispatch({ type: 'update_loading', payload: true });
-      const response = await defikarteBackendMock.get('/defibrillator');
+      const response = await defikarteBackend.get('/defibrillator');
       dispatch({ type: 'update_all', payload: response.data });
     } catch (error) {
       dispatch({ type: 'update_error', payload: 'Defibrillatoren konnten nicht geladen werden.' });
@@ -54,7 +54,7 @@ const addDefibrillator = dispatch => {
   return async (defibrillator, callback) => {
     try {
       dispatch({ type: 'update_creating', payload: true });
-      const response = await defikarteBackendMock.post('/defibrillator', defibrillator);
+      const response = await defikarteBackend.post('/defibrillator', defibrillator);
       let tags = {}
       // map osm to overpass model
       response.data.tags.forEach(d => {
