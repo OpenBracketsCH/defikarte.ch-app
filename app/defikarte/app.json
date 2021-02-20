@@ -21,7 +21,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ch.defikarte.app",
-      "buildNumber": "1.0.8"
+      "buildNumber": "1.0.8",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses your geolocation to show you the next defi."
+      }
     },
     "android": {
       "package": "ch.defikarte.app",
