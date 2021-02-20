@@ -23,7 +23,7 @@
       "bundleIdentifier": "ch.defikarte.app",
       "buildNumber": "1.0.8",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "This app uses your geolocation to show you the next defi."
+        "NSLocationWhenInUseUsageDescription": "Diese App benötigt die Standortdaten deines Telefons um den nächsten Defi anzeigen zu können."
       }
     },
     "android": {
