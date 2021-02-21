@@ -13,7 +13,7 @@ The app is a project by [Defikarte.ch](https://www.defikarte.ch) and is intended
 **The map is far from complete, the app and the map should help to improve this data base. **
 
 ## Development
-The app is developed using (React Native)[https://reactnative.dev/] and [Expo](https://expo.io). The backend API was implemented in .Net using (Azure Functions)[https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview].
+The app is developed using [React Native](https://reactnative.dev/) and [Expo](https://expo.io). The backend API was implemented in .Net using [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview).
 
 System Requirements App (React Native):
 * Node.js version >=14
