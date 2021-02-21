@@ -6,6 +6,10 @@ export default ({ config }) => {
     config.android.config.googleMaps.apiKey = googleMapsApiKey;
   }
   return {
+    extra: {
+      backendBaseUrl: process.env['REACT_NATIVE_BASE_URL'] ?? '',
+      backendApiKey: process.env['REACT_NATIVE_API_KEY'] ?? '',
+    },
     ...config,
   };
 };

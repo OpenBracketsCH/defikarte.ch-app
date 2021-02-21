@@ -1,9 +1,10 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 export default axios.create({
-  baseURL: process.env['REACT_NATIVE_BASE_URL'] ?? '',
+  baseURL: Constants.manifest.extra.backendBaseUrl,
   headers: {
     'x-functions-clientid': 'defikarte-app',
-    'x-functions-key': process.env['REACT_NATIVE_API_KEY'] ?? '',
+    'x-functions-key': Constants.manifest.extra.backendApiKey,
   }
 })
