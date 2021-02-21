@@ -12,13 +12,34 @@ The app is a project by [Defikarte.ch](https://www.defikarte.ch) and is intended
 
 **The map is far from complete, the app and the map should help to improve this data base. **
 
-## Installation
+## Development
+The app is developed using (React Native)[https://reactnative.dev/] and [Expo](https://expo.io). The backend API was implemented in .Net using (Azure Functions)[https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview].
 
-* It requires node.js on your pc in version 14.
-* then `npm install expo-cli -g` in the directory within the app
-* `npm start`
-* download [iOS App](https://apps.apple.com/ch/app/expo-client/id982107779) ord [Android App](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=de_CH&gl=US)
-* scan qr code
+System Requirements App (React Native):
+* Node.js version >=14
+* npm
+* VS Code (recommended).
+* Andorid or iOS device to download [iOS App](https://apps.apple.com/ch/app/expo-client/id982107779) or [Android App](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=de_CH&gl=US)
+* You can also use an iOS or Android simulator (not tested or setup)
+
+Starting the development environment (App/React Native).
+* Install expo-cli: `npm install expo-cli -g` (installs expo globally on your device)
+* Create .env file with necessary environment variables in the defikarte directory
+* First run `npm install` and then run `npm start`
+* scan the QR code on the newly opened website with your smartphone / tablet
+* Open the link with the Expo app
+* Start testing
+
+System Requirements Backend (Azure Functions):
+* .Net Core 3.1
+* Visual Studio 2019 incl. Azure development
+* Postman (recommended)
+
+Starting the development environment (Backend / Azure Functions).
+* Open DeficarteBackend.sln with Visual Studio
+* add local.settings.json (needed for storage emulation)
+* Start project
+* Execute http-requests with Postman (see console for local ports)
 
 ## Contribute
 
