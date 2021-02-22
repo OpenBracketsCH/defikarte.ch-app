@@ -17,6 +17,7 @@ The app is a project by [Defikarte.ch](https://www.defikarte.ch) and is intended
 The App is available in the Appstores.
 
 [![appstore.png](images/appstore.png)](https://apps.apple.com/us/app/defikarte-ch/id1549569525)
+
 [![playstore.png](images/playstore.png)](https://play.google.com/store/apps/details?id=ch.defikarte.app)
 
 ## Development
