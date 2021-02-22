@@ -18,18 +18,17 @@ const AboutScreen = ({ navigation }) => {
           style={styles.linkStyle}
           onPress={() => Linking.openURL('https://www.defikarte.ch')}>
           https://www.defikarte.ch
-          {"\n"}
           </Text>
       </View>
       <View style={styles.wrapperStyle}>
         <Text style={styles.titleStyle}>OpenStreetMap </Text>
-          <Text style={styles.textStyle}>OpenStreetMap Mitwirkende (
+        <Text style={styles.textStyle}>OpenStreetMap Mitwirkende (
           <Text
             style={styles.linkStyle}
             onPress={() => Linking.openURL('https://www.openstreetmap.org/copyright')}>
             https://www.openstreetmap.org/copyright
               </Text>
-          ){"\n"}
+          )
           </Text>
       </View>
       <View style={styles.wrapperStyle}>
@@ -39,7 +38,6 @@ const AboutScreen = ({ navigation }) => {
           onPress={() => Linking.openURL('https://github.com/chnuessli/defikarte.ch-app')}
         >
           https://github.com/chnuessli/defikarte.ch-app
-          {"\n"}
           </Text>
       </View>
       <View style={styles.wrapperStyle}>
@@ -69,7 +67,7 @@ const styles = StyleSheet.create({
   },
   wrapperStyle: {
     marginHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 18,
   },
   textStyle: {
     fontSize: 16,
