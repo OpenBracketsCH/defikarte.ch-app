@@ -19,7 +19,7 @@ namespace DefikarteBackend
         }
 
         [FunctionName("SimpleCacheFunction")]
-        public async Task RunAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer, [DurableClient] IDurableEntityClient client, ILogger log)
+        public async Task RunAsync([TimerTrigger("0 */1 * * * *")] TimerInfo myTimer, [DurableClient(TaskHub = "%BackendTaskHub%")] IDurableEntityClient client, ILogger log)
         {
             var overpassApiUrl = this.config["overpassUrl"];
             var overpassApiClient = new OverpassClient(overpassApiUrl);

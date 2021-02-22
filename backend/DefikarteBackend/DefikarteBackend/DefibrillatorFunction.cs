@@ -33,7 +33,7 @@ namespace DefikarteBackend
         [FunctionName("Defibrillators_GETALL")]
         public async Task<IActionResult> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "defibrillator")] HttpRequestMessage req,
-            [DurableClient] IDurableEntityClient client,
+            [DurableClient(TaskHub = "%BackendTaskHub%")] IDurableEntityClient client,
             ILogger log)
         {
             try
