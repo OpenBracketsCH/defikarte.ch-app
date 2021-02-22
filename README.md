@@ -17,7 +17,15 @@ Die App ist ein Projekt von [Defikarte.ch](https://www.defikarte.ch) und soll he
 
 **Die Karte ist bei weitem noch nicht vollständig, die App und die Karte sollen helfen, diesen Datenbestand zu verbessern.**
 
+### App-Stores
+
+Die App zu Defikarte.ch findet man in den Stores des jeweiligen Anbieters.
+
+[![appstore.png](images/appstore.png)](https://apps.apple.com/us/app/defikarte-ch/id1549569525)
+[![playstore.png](images/playstore.png)](https://play.google.com/store/apps/details?id=ch.defikarte.app)
+
 ## Entwicklung
+
 Die App wird mit [React Native](https://reactnative.dev/) und [Expo](https://expo.io) entwickelt. Die Backend-API wurde in .Net mit [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview) implementiert.
 
 Systemanforderungen App (React Native):

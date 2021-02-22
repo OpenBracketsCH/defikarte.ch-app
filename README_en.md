@@ -12,6 +12,13 @@ The app is a project by [Defikarte.ch](https://www.defikarte.ch) and is intended
 
 **The map is far from complete, the app and the map should help to improve this data base. **
 
+### App-Stores
+
+The App is available in the Appstores.
+
+[![appstore.png](images/appstore.png)](https://apps.apple.com/us/app/defikarte-ch/id1549569525)
+[![playstore.png](images/playstore.png)](https://play.google.com/store/apps/details?id=ch.defikarte.app)
+
 ## Development
 The app is developed using [React Native](https://reactnative.dev/) and [Expo](https://expo.io). The backend API was implemented in .Net using [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview).
 
