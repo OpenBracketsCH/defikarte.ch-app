@@ -10,6 +10,7 @@ using DefikarteBackend.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -23,28 +24,27 @@ namespace DefikarteBackend
     public class DefibrillatorFunction
     {
         private readonly IConfigurationRoot config;
-        private readonly ISimpleCache cache;
 
-        public DefibrillatorFunction(IConfigurationRoot config, ISimpleCache cache)
+        public DefibrillatorFunction(IConfigurationRoot config)
         {
             this.config = config;
-            this.cache = cache;
         }
 
         [FunctionName("Defibrillators_GETALL")]
         public async Task<IActionResult> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "defibrillator")] HttpRequestMessage req,
+            [DurableClient] IDurableEntityClient client,
             ILogger log)
         {
-            log.LogInformation($"Request AEDs. Try to get from Cache:{this.cache.CacheId} LastUpdated:{cache.LastUpdate}.");
             try
             {
-                var success = cache.TryGetLegalCache(out var response);
-
-                if (!success)
+                EntityStateResponse<SimpleCache> stateResponse = await client.ReadEntityStateAsync<SimpleCache>(new EntityId(nameof(SimpleCache), "cache"));
+                log.LogInformation($"Request AEDs. Try to get from Cache:{stateResponse.EntityState?.CacheId} LastUpdated:{stateResponse.EntityState?.LastUpdate}.");
+                var response = stateResponse.EntityExists ? await stateResponse.EntityState.TryGetLegalCache() : null;
+                if (response == null)
                 {
                     var overpassApiUrl = config["overpassUrl"];
-                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache:{this.cache.CacheId} is not available (LastUpdated:{cache.LastUpdate}).");
+                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache:{stateResponse.EntityState?.CacheId} is not available (LastUpdated:{stateResponse.EntityState?.LastUpdate}).");
 
                     var overpassApiClient = new OverpassClient(overpassApiUrl);
                     response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
@@ -85,8 +85,7 @@ namespace DefikarteBackend
                 }
 
                 var newNode = CreateNode(defibrillatorObj.Value);
-                var clientFactory = new ClientsFactory(log, new HttpClient(),
-                    osmApiUrl);
+                var clientFactory = new ClientsFactory(log, new HttpClient(), osmApiUrl);
 
                 var authClient = clientFactory.CreateBasicAuthClient(username, password);
                 var changeSetTags = new TagsCollection() { new Tag("created_by", username), new Tag("comment", "Create new AED.") };

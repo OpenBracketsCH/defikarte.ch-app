@@ -17,7 +17,7 @@ namespace DefikarteBackend.OsmOverpassApi
             };
         }
 
-        public async Task<JToken> GetAllDefibrillatorsInSwitzerland()
+        public async Task<JArray> GetAllDefibrillatorsInSwitzerland()
         {
             var request = new HttpRequestMessage
             {
@@ -41,7 +41,7 @@ namespace DefikarteBackend.OsmOverpassApi
                     var responseContent = await response.Content.ReadAsStringAsync();
                     var json = JObject.Parse(responseContent);
                     json.TryGetValue("elements", out var osmNodes);
-                    return osmNodes;
+                    return osmNodes as JArray;
                 }
                 else
                 {

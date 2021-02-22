@@ -1,8 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DefikarteBackend.Cache
 {
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class SimpleCache : ISimpleCache
     {
         public SimpleCache()
@@ -10,23 +16,26 @@ namespace DefikarteBackend.Cache
             this.CacheId = Guid.NewGuid();
         }
 
-        private JToken DefibrillatorElementsCache { get; set; }
+        [JsonProperty("defibrillators")]
+        public List<object> DefibrillatorElementsCache { get; set; }
 
+        [JsonProperty("lastUpdate")]
         public DateTimeOffset LastUpdate { get; private set; }
 
+        [JsonProperty("id")]
         public Guid CacheId { get; private set; }
 
-        public bool TryUpdateCache(JToken newCache)
+        public Task<bool> TryUpdateCache(JArray newCache)
         {
             bool success = false;
             if (newCache != null && newCache.HasValues)
             {
-                this.DefibrillatorElementsCache = newCache;
+                this.DefibrillatorElementsCache = newCache.ToObject<List<object>>();
                 this.LastUpdate = DateTimeOffset.Now;
                 success = true;
             }
 
-            return success;
+            return Task.FromResult(success);
         }
 
         /// <summary>
@@ -34,23 +43,25 @@ namespace DefikarteBackend.Cache
         /// </summary>
         /// <param name="response">JSON-Token with all defi-elements (array), null if not up-to-date</param>
         /// <returns>true if a legal cache is available</returns>
-        public bool TryGetLegalCache(out JToken response)
+        public Task<JArray> TryGetLegalCache()
         {
-            bool success;
+            JArray response;
             if (DateTimeOffset.Now - this.LastUpdate <= new TimeSpan(24, 0, 0)
-                && this.DefibrillatorElementsCache != null 
-                && this.DefibrillatorElementsCache.HasValues)
+                && this.DefibrillatorElementsCache != null
+                )
             {
-                response = this.DefibrillatorElementsCache;
-                success = true;
+                response = JArray.FromObject(this.DefibrillatorElementsCache);
             }
             else
             {
                 response = null;
-                success = false;
             }
 
-            return success;
+            return Task.FromResult(response);
         }
+
+        [FunctionName(nameof(SimpleCache))]
+        public static Task Run([EntityTrigger] IDurableEntityContext ctx)
+            => ctx.DispatchAsync<SimpleCache>();
     }
 }
