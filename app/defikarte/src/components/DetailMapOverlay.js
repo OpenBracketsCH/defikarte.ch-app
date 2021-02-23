@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   containerStyle: {
     zIndex: 100,
     position: 'absolute',
-    bottom: 20,
+    bottom: 25,
     backgroundColor: 'white',
     borderRadius: 10,
     borderColor: 'lightgrey',

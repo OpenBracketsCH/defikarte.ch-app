@@ -10,6 +10,7 @@ import MapInfoPanel from './MapInfoPanel';
 import DetailMapOverlay from './DetailMapOverlay';
 import LocationButton from './LocationButton.js';
 import MapLayerButton from './MapLayersButton.js';
+import OsmContributerOverlay from './OsmContributerOverlay.js';
 
 const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCreateMode, setIsCreateMode }) => {
   const [region, setRegion] = useState(initCoords);
@@ -159,6 +160,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         {renderMarkers(isCreateMode, defisOnMap, newDefiCoords, setNewDefiCoords)}
         {tileOverlay}
       </MapView>
+      <OsmContributerOverlay show={isTileOverlayActive} />
       {renderInfoPanel(defisOnMap, mode)}
       {renderOverlay(mode)}
       <LocationButton isTopView={mode === 'loc'} animateToRegion={animateToRegion} />

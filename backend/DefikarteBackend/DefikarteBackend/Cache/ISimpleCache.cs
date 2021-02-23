@@ -1,16 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
+using System.Threading.Tasks;
 
 namespace DefikarteBackend.Cache
 {
     public interface ISimpleCache
     {
-        Guid CacheId { get; }
+        Task<JArray> TryGetLegalCache();
 
-        DateTimeOffset LastUpdate { get; }
-
-        bool TryGetLegalCache(out JToken response);
-
-        bool TryUpdateCache(JToken newCache);
+        Task<bool> TryUpdateCache(JArray newCache);
     }
 }

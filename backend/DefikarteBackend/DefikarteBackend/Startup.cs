@@ -1,5 +1,4 @@
-﻿using DefikarteBackend.Cache;
-using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +10,6 @@ namespace DefikarteBackend
         public override void Configure(IFunctionsHostBuilder builder)
         {
             builder.Services.AddSingleton((s) => { return LoadConfiguration(); });
-            builder.Services.AddSingleton<ISimpleCache>((s) => new SimpleCache());
         }
 
         private IConfigurationRoot LoadConfiguration()

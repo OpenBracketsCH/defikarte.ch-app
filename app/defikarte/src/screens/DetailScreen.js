@@ -6,6 +6,7 @@ import MapView, { UrlTile } from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import DefiMarker from '../components/DefiMarker';
 import AttributeListing from '../components/AttributeListing';
+import OsmContributerOverlay from '../components/OsmContributerOverlay';
 
 const DetailScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
@@ -54,6 +55,7 @@ const DetailScreen = ({ navigation }) => {
             defibrillator={defibrillator}
           />
         </MapView>
+        <OsmContributerOverlay show={true} />
       </View>
       <View style={styles.innerContainerStyle}>
         <Text style={styles.titleStyle}>{name}</Text>

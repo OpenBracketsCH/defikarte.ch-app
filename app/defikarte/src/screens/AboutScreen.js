@@ -21,12 +21,12 @@ const AboutScreen = ({ navigation }) => {
           </Text>
       </View>
       <View style={styles.wrapperStyle}>
-        <Text style={styles.titleStyle}>Lizenz</Text>
-        <Text style={styles.textStyle}>MIT (
+        <Text style={styles.titleStyle}>OpenStreetMap </Text>
+        <Text style={styles.textStyle}>OpenStreetMap Mitwirkende (
           <Text
             style={styles.linkStyle}
-            onPress={() => Linking.openURL('https://opensource.org/licenses/MIT')}>
-            https://opensource.org/licenses/MIT
+            onPress={() => Linking.openURL('https://www.openstreetmap.org/copyright')}>
+            https://www.openstreetmap.org/copyright
               </Text>
           )
           </Text>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   wrapperStyle: {
     marginHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 18,
   },
   textStyle: {
     fontSize: 16,
