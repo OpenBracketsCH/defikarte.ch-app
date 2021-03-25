@@ -63,8 +63,16 @@ We are looking for motivated contributors that help us, to make the app better
 
 Please read [SPONSORING.md](SPONSORING.md)
 
+### Gold Sponsors
+
+* [resQShock](https://www.procamed.ch)
+* [First-Responder.ch](https://www.procamed.ch)
+
+### Logo Sponsors
+
 * [Procamed AG](https://www.procamed.ch)
 * [Ursula Dombrowsky Gesundheitspraxis](http://www.dombrowsky.ch)
 * [Hexagon](http://www.hexagonsi.com)
+* [Github-User Malsendif](https://github.com/Malsendif)
 
 [Sponsor us](https://github.com/sponsors/chnuessli)

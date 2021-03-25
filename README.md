@@ -69,6 +69,13 @@ Wir sind immer auf der Suche nach motivierten, offenen Mitwirkenden die unser Pr
 
 Bitte lese [SPONSORING.md](SPONSORING.md)
 
+### Gold Sponsoren
+
+* [resQShock](https://www.procamed.ch)
+* [First-Responder.ch](https://www.procamed.ch)
+
+### Logo Sponsoren
+
 * [Procamed AG](https://www.procamed.ch)
 * [Ursula Dombrowsky Gesundheitspraxis](http://www.dombrowsky.ch)
 * [Hexagon](http://www.hexagonsi.com)
