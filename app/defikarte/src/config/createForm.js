@@ -65,7 +65,7 @@ export default [
   },
   {
     name: 'operatorPhone',
-    rules: { pattern: /^(\+41|0041|0)\s?(\d{2})\s?(\d{3})\s?(\d{2})\s?(\d{2})$/ }, // ^(\+41|0041|0)\s?(\d{2})\s?(\d{3})\s?(\d{2})\s?(\d{2})$
+    rules: { pattern: /^(\+41|0041|0)\s?(\d{2})\s?(\d{3})\s?(\d{2})\s?(\d{2})$/ },
     type: 'Text',
     label: 'Telefon',
     placeholder: '+41 79 000 00 00',

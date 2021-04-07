@@ -5,7 +5,7 @@ namespace DefikarteBackend.Validation
 {
     public class DefibrillatorRequestValidator : AbstractValidator<DefibrillatorRequest>
     {
-        private readonly string phoneNumberPattern = @"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$";
+        private readonly string phoneNumberPattern = @"^(\+41|0041|0)\s?(\d{2})\s?(\d{3})\s?(\d{2})\s?(\d{2})$";
 
         public DefibrillatorRequestValidator()
         {
