@@ -134,7 +134,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
   }
 
   const tileOverlay = isTileOverlayActive ? <UrlTile
-    urlTemplate='https://tile.osm.ch/osm-swiss-style/{z}/{x}/{y}.png'
+    urlTemplate='http://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
     maximumZ={19}
     flipY={false}
   /> : null;
