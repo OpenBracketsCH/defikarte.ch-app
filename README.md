@@ -57,7 +57,7 @@ Starten der Entwicklungsumgebung (Backend / Azure Functions)
 
 ## Mitmachen
 
-Wir sind immer auf der Suche nach motivierten, offenen Mitwirkenden die unser Projekt unterstützen wollen. Löse ein Issue, erfasse ein Issue usw.
+Wir sind immer auf der Suche nach motivierten, offenen Mitwirkenden die unser Projekt unterstützen wollen. Löse ein Issue, erfasse ein Issue, schreibe neue Funktionen usw.
 
 ### Mitwirkende
 

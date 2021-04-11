@@ -51,7 +51,7 @@ Starting the development environment (Backend / Azure Functions).
 
 ## Contribute
 
-We are looking for motivated contributors that help us, to make the app better
+We are looking for motivated contributors that help us, to make the app better. Solve an issue, create an issue, write some new functions.
 
 ### Contributors
 
