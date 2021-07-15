@@ -73,12 +73,14 @@ Bitte lese [SPONSORING.md](SPONSORING.md)
 
 * [resQShock](https://www.procamed.ch)
 * [First-Responder.ch](https://www.procamed.ch)
+* [Nohe.ch](https://www.nohe.ch)
 
 ### Logo Sponsoren
 
 * [Procamed AG](https://www.procamed.ch)
 * [Ursula Dombrowsky Gesundheitspraxis](http://www.dombrowsky.ch)
 * [Hexagon](http://www.hexagonsi.com)
+* [WC-Guide](https://www.wc-guide.com)
 * [Github-User Malsendif](https://github.com/Malsendif)
 
 [Sponsore uns](https://github.com/sponsors/chnuessli)
