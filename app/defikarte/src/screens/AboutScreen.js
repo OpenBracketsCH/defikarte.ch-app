@@ -31,17 +31,18 @@ const AboutScreen = ({ navigation }) => {
           )
           </Text>
       </View>
+      <Image style={styles.imageStyle} source={require('../../assets/procamed.jpg')} />
       <View style={styles.wrapperStyle}>
-        <Text style={styles.titleStyle}>Mitmachen & Fehler melden auf Github</Text>
+        <Text style={styles.titleStyle}>exklusiver Platin Sponsor</Text>
         <Text
           style={styles.linkStyle}
-          onPress={() => Linking.openURL('https://github.com/chnuessli/defikarte.ch-app')}
+          onPress={() => Linking.openURL('https://www.aed.ch')}
         >
-          https://github.com/chnuessli/defikarte.ch-app
+          https://www.aed.ch
           </Text>
       </View>
       <View style={styles.wrapperStyle}>
-        <Text style={styles.titleStyle}>Vielen Dank unseren Sponsoren</Text>
+        <Text style={styles.titleStyle}>Vielen Dank an alle unsere Sponsoren</Text>
         <Text
           style={styles.linkStyle}
           onPress={() => Linking.openURL('https://www.defikarte.ch/sponsors.html')}

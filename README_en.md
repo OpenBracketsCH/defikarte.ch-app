@@ -63,6 +63,10 @@ We are looking for motivated contributors that help us, to make the app better. 
 
 Please read [SPONSORING.md](SPONSORING.md)
 
+### exklusive Platin Sponsor
+
+* [Procamed AG](https://www.procamed.ch)
+
 ### Gold Sponsors
 
 * [resQShock](https://www.procamed.ch)
