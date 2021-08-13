@@ -69,17 +69,21 @@ Wir sind immer auf der Suche nach motivierten, offenen Mitwirkenden die unser Pr
 
 Bitte lese [SPONSORING.md](SPONSORING.md)
 
+### exklusiver Platin Sponsor
+
+* [Procamed AG](https://www.procamed.ch)
+
 ### Gold Sponsoren
 
-* [resQShock](https://www.procamed.ch)
+* [resQShock](https://www.resqshock.ch)
 * [First-Responder.ch](https://www.procamed.ch)
+* [Nohe.ch](https://www.nohe.ch)
 
 ### Logo Sponsoren
 
-* [Procamed AG](https://www.procamed.ch)
 * [Ursula Dombrowsky Gesundheitspraxis](http://www.dombrowsky.ch)
 * [Hexagon](http://www.hexagonsi.com)
-* [WC Guide](https://www.wc-guide.com)
+* [WC-Guide](https://www.wc-guide.com)
 * [Github-User Malsendif](https://github.com/Malsendif)
 
 [Sponsore uns](https://github.com/sponsors/chnuessli)
