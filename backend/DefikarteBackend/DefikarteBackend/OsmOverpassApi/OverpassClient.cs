@@ -24,7 +24,7 @@ namespace DefikarteBackend.OsmOverpassApi
                 Method = HttpMethod.Get,
                 Content = new StringContent(
                     "[out:json][timeout:25]; " +
-                    "(area[\"ISO3166-1\" = \"CH\"][admin_level = 2];)->.searchArea;" +
+                    "(area[\"ISO3166-1\" = \"CH\"][admin_level = 2]; area[\"ISO3166-1\" = \"LI\"][admin_level = 2];)->.searchArea;" +
                     "(node[\"emergency\" = \"defibrillator\"](area.searchArea);" +
                     "way[\"emergency\" = \"defibrillator\"](area.searchArea);" +
                     "relation[\"emergency\" = \"defibrillator\"](area.searchArea);" +
