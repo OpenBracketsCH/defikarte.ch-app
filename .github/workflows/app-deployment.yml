@@ -26,11 +26,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - uses: expo/expo-github-action@v5
+      - uses: expo/expo-github-action@v7
         with:
-          expo-version: 4.x
-          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
-          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+          expo-version: 5.x
+          token: ${{ secrets.EXPO_CLI_TOKEN }}
           expo-packager: 'npm'
       - run: npm install
         working-directory: ${{ env.APP_SRC_PATH }}
