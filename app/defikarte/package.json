@@ -32,7 +32,8 @@
     "react-native-web": "0.17.1",
     "react-navigation": "^4.4.3",
     "react-navigation-stack": "^2.10.2",
-    "expo-location": "~14.0.1"
+    "expo-location": "~14.0.1",
+    "expo-updates": "~0.11.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
