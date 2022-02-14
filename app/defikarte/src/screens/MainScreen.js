@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     bottom: 0,
-    height: 55,
+    height: 70,
     backgroundColor: 'green'
   },
   iconStyle: {

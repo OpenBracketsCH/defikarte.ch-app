@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 55,
+    height: 75,
     backgroundColor: 'green'
   },
   loadingStyle: {
