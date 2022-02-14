@@ -30,7 +30,7 @@ jobs:
         with:
           expo-version: 5.x
           token: ${{ secrets.EXPO_CLI_TOKEN }}
-          expo-packager: 'npm'
+          packager: 'npm'
       - run: npm install
         working-directory: ${{ env.APP_SRC_PATH }}
       - run: expo publish --release-channel ${{ env.RELEASE_CHANNEL }}
