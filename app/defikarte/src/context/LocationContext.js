@@ -8,6 +8,8 @@ const reducer = (state, action) => {
       return { ...state, enabled: action.payload };
     case 'update_locationTracker':
       return { ...state, locationTracker: action.payload };
+    case 'update_initZoom':
+      return { ...state, initZoom: action.payload };
     default:
       return state;
   }
@@ -36,11 +38,19 @@ const setLocationTracker = dispatch => {
   };
 };
 
+const setInitZoom = dispatch => {
+  return (init) => {
+    dispatch({ type: 'update_initZoom', payload: init });
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   reducer,
-  { updateLocation, enableLocationTracking, setLocationTracker },
+  { updateLocation, enableLocationTracking, setLocationTracker, setInitZoom },
   {
     location: null,
     enabled: false,
+    locationTracker: null,
+    initZoom: false,
   }
 );

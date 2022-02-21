@@ -14,7 +14,7 @@ const MainScreen = ({ navigation }) => {
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const insets = useSafeAreaInsets();
   const { state: { defibrillators, loading }, getDefibrillators, setDefisNearLocation } = useContext(DefibrillatorContext);
-  const { state: userLocation, updateLocation, enableLocationTracking, setLocationTracker } = useContext(LocationContext);
+  const { state: userLocation, updateLocation, enableLocationTracking, setLocationTracker, setInitZoom } = useContext(LocationContext);
   useDefibrillators(defibrillators, getDefibrillators, setDefisNearLocation, userLocation);
   const [locationErr, resetErr] = useLocation(userLocation, updateLocation, enableLocationTracking, setLocationTracker);
   const mapRef = useRef(null);
@@ -28,6 +28,13 @@ const MainScreen = ({ navigation }) => {
       longitudeDelta: 0.01
     });
   };
+
+  useEffect(() => {
+    if (userLocation && !userLocation.initZoom && userLocation.location && userLocation.enabled) {
+      animateToRegion({ latitude: userLocation.location.latitude, longitude: userLocation.location.longitude });
+      setInitZoom(true);
+    }
+  }, [userLocation])
 
   useEffect(() => {
     const latlng = navigation.getParam('latlng');
