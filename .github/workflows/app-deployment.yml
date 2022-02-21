@@ -26,12 +26,16 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - uses: expo/expo-github-action@v7
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v7
         with:
           expo-version: 5.x
+          eas-version: latest
           token: ${{ secrets.EXPO_CLI_TOKEN }}
           packager: 'npm'
-      - run: npm install
+      - name: Install dependencies
         working-directory: ${{ env.APP_SRC_PATH }}
-      - run: expo publish --release-channel ${{ env.RELEASE_CHANNEL }}
+        run: npm ci
+      - name: Build on EAS
         working-directory: ${{ env.APP_SRC_PATH }}
+        run: eas build --platform all --non-interactive
