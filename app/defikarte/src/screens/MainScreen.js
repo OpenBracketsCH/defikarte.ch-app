@@ -51,9 +51,15 @@ const MainScreen = ({ navigation }) => {
   }, [locationErr]);
 
   useEffect(() => {
-    AppState.addEventListener("change", _handleAppStateChange);
+    if (Platform.OS === "android") {
+      AppState.addEventListener("focus", _handleAppStateFocus);
+    }
+    else if (Platform.OS === "ios") {
+      AppState.addEventListener("change", _handleAppStateChange);
+    }
 
     return () => {
+      AppState.removeEventListener("focus", _handleAppStateFocus);
       AppState.removeEventListener("change", _handleAppStateChange);
     };
   }, []);
@@ -71,6 +77,10 @@ const MainScreen = ({ navigation }) => {
     appState.current = nextAppState;
     setAppStateVisible(appState.current);
   };
+
+  const _handleAppStateFocus = () => {
+    setAppStateVisible("active");
+  }
 
   let bottomBar = { ...styles.bottomBar };
   bottomBar.paddingBottom = insets.bottom * 0.5;
