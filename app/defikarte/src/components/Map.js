@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { Marker, UrlTile } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
-import currentDefisOnMap from '../helpers/markersOnMap.js'
+import { currentDefisOnMap, isPointInRegion } from '../helpers/markersOnMap.js'
 import DefiMarker from './DefiMarker';
 import SimpleMarker from './SimpleMarker';
 import CreateMapOverlay from './CreateMapOverlay';
@@ -34,6 +34,13 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
       setNewDefiCoords({ latitude: region.latitude, longitude: region.longitude });
     }
   }, [isCreateMode]);
+
+  useEffect(() => {
+    let markerOutsideRegion = !isPointInRegion({ lat: newDefiCoords.latitude, lon: newDefiCoords.longitude }, region);
+    if (isCreateMode && markerOutsideRegion) {
+      setNewDefiCoords({ latitude: region.latitude, longitude: region.longitude });
+    }
+  }, [region, isCreateMode])
 
   useEffect(() => {
     // debounce defis on map claculation for performance optimization

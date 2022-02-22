@@ -1,10 +1,31 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Alert, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { AntDesign } from '@expo/vector-icons';
 import MapInfoPanel from './MapInfoPanel';
 
 const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation, isTopView }) => {
+  const ApprovePosition = () => {
+    Alert.alert(
+      'Position überprüfen',
+      'Ist der rote Marker korrekt positioniert?',
+      [
+        {
+          text: 'Ja',
+          onPress: () => {
+            navigation.navigate('Create', { latlon: newDefiCoords });
+            setIsCreateMode(false);
+          },
+        },
+        {
+          text: 'Nein',
+          style: 'destructive'
+        },
+      ],
+      { cancelable: false },
+    )
+  };
+
   return (
     <>
       <MapInfoPanel
@@ -14,9 +35,8 @@ const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation, isTopVie
       <View style={styles.createIconsContainerStyle}>
         <TouchableOpacity
           style={styles.iconStyle}
-          onPress={() => {
-            navigation.navigate('Create', { latlon: newDefiCoords });
-            setIsCreateMode(false);
+          onPress={async () => {
+            ApprovePosition();
           }} >
           <AntDesign name="checkcircleo" size={48} color="white" />
           <Text style={styles.descriptionTextStyle}>Position wählen</Text>
