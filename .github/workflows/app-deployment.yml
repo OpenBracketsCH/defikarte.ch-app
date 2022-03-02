@@ -1,4 +1,4 @@
-name: Deploy iOS and Android App (JS only)
+name: Build iOS & Android
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -12,7 +12,7 @@ on:
 
 env:
   APP_SRC_PATH: './app/defikarte/'    # set this to the path to your web app project, defaults to the repository root
-  RELEASE_CHANNEL: "${{ github.ref == 'refs/heads/main' && 'production' || 'beta' }}"
+  RELEASE_PROFILE: "${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}"
   REACT_NATIVE_BASE_URL: "${{ github.ref == 'refs/heads/main' && 'https://defikarte-backend.azurewebsites.net/api' || 'https://defikarte-backend-staging.azurewebsites.net/api' }}"
   REACT_NATIVE_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
   REACT_NATIVE_API_KEY: ${{ secrets.AZURE_FUNCTIONAPP_API_KEY }}
@@ -26,13 +26,16 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - uses: expo/expo-github-action@v5
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v7
         with:
           expo-version: 5.x
-          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
-          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
-          expo-packager: 'npm'
-      - run: npm install
+          eas-version: latest
+          token: ${{ secrets.EXPO_CLI_TOKEN }}
+          packager: 'npm'
+      - name: Install dependencies
         working-directory: ${{ env.APP_SRC_PATH }}
-      - run: expo publish --release-channel ${{ env.RELEASE_CHANNEL }}
+        run: npm ci
+      - name: Build on EAS
         working-directory: ${{ env.APP_SRC_PATH }}
+        run: eas build --profile ${{ env.RELEASE_PROFILE }} --platform all --non-interactive

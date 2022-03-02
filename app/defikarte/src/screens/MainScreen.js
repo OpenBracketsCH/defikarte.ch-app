@@ -14,7 +14,7 @@ const MainScreen = ({ navigation }) => {
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const insets = useSafeAreaInsets();
   const { state: { defibrillators, loading }, getDefibrillators, setDefisNearLocation } = useContext(DefibrillatorContext);
-  const { state: userLocation, updateLocation, enableLocationTracking, setLocationTracker } = useContext(LocationContext);
+  const { state: userLocation, updateLocation, enableLocationTracking, setLocationTracker, setInitZoom } = useContext(LocationContext);
   useDefibrillators(defibrillators, getDefibrillators, setDefisNearLocation, userLocation);
   const [locationErr, resetErr] = useLocation(userLocation, updateLocation, enableLocationTracking, setLocationTracker);
   const mapRef = useRef(null);
@@ -28,6 +28,13 @@ const MainScreen = ({ navigation }) => {
       longitudeDelta: 0.01
     });
   };
+
+  useEffect(() => {
+    if (userLocation && !userLocation.initZoom && userLocation.location && userLocation.enabled) {
+      animateToRegion({ latitude: userLocation.location.latitude, longitude: userLocation.location.longitude });
+      setInitZoom(true);
+    }
+  }, [userLocation])
 
   useEffect(() => {
     const latlng = navigation.getParam('latlng');
@@ -44,9 +51,15 @@ const MainScreen = ({ navigation }) => {
   }, [locationErr]);
 
   useEffect(() => {
-    AppState.addEventListener("change", _handleAppStateChange);
+    if (Platform.OS === "android") {
+      AppState.addEventListener("focus", _handleAppStateFocus);
+    }
+    else if (Platform.OS === "ios") {
+      AppState.addEventListener("change", _handleAppStateChange);
+    }
 
     return () => {
+      AppState.removeEventListener("focus", _handleAppStateFocus);
       AppState.removeEventListener("change", _handleAppStateChange);
     };
   }, []);
@@ -64,6 +77,10 @@ const MainScreen = ({ navigation }) => {
     appState.current = nextAppState;
     setAppStateVisible(appState.current);
   };
+
+  const _handleAppStateFocus = () => {
+    setAppStateVisible("active");
+  }
 
   let bottomBar = { ...styles.bottomBar };
   bottomBar.paddingBottom = insets.bottom * 0.5;
@@ -112,7 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     bottom: 0,
-    height: 55,
+    height: 70,
     backgroundColor: 'green'
   },
   iconStyle: {

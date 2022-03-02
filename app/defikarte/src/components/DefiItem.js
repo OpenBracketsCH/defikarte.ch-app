@@ -10,25 +10,24 @@ const DefiItem = ({ defibrillator, navigation }) => {
   openingHoursText = openingHoursText.length > 31 ? openingHoursText.substring(0, 29) + '...' : openingHoursText;
 
   const name = defibrillator.tags['defibrillator:location'] ?? defibrillator.tags.description ?? defibrillator.tags.operator ?? 'n/A';
-  const shortName = name.length > 28 ? name.substring(0, 27) + '...' : name;
 
   const locationText = defibrillator.distance ? `${defibrillator.distance}m / ${defibrillator.lat.toFixed(4)}, ${defibrillator.lon.toFixed(4)}` : `${defibrillator.lat.toFixed(4)}, ${defibrillator.lon.toFixed(4)}`;
   return (
     <TouchableOpacity onPress={() => navigation.navigate('Detail', { defibrillator })}>
       <View style={styles.outsideContainerStyle}>
         <View style={styles.containerStyle}>
-          <Text style={styles.titleStyle}>{shortName}</Text>
+          <Text numberOfLines={1} style={styles.titleStyle}>{name}</Text>
           <View style={styles.inlineStyle}>
             <MaterialIcons style={styles.inlineIconStyle} name='my-location' />
-            <Text style={styles.inlineTextStyle}>{locationText}</Text>
+            <Text numberOfLines={1} style={styles.inlineTextStyle}>{locationText}</Text>
             <View style={styles.noWrapStyle}>
               <MaterialIcons style={styles.inlineIconStyle} name='phone' />
-              <Text style={styles.inlineTextStyle}>{phone}</Text>
+              <Text numberOfLines={1} style={styles.inlineTextStyle}>{phone}</Text>
             </View>
           </View>
           <View style={styles.noWrapStyle}>
             <Feather style={styles.inlineIconStyle} name='clock' />
-            <Text style={styles.openingHoursTextStyle}>{openingHoursText}</Text>
+            <Text numberOfLines={1} style={styles.openingHoursTextStyle}>{openingHoursText}</Text>
           </View>
         </View>
         <TouchableOpacity
