@@ -40,7 +40,7 @@ Starting the development environment (App/React Native).
 
 System Requirements Backend (Azure Functions):
 * .Net Core 3.1
-* Visual Studio 2019 incl. Azure development
+* Visual Studio or Visual Studio Code incl. Azure development
 * Postman (recommended)
 
 Starting the development environment (Backend / Azure Functions).

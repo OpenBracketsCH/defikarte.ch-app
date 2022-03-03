@@ -1,4 +1,4 @@
-![Deploy iOS and Android App (JS only)](https://github.com/chnuessli/defikarte.ch-app/workflows/Deploy%20iOS%20and%20Android%20App%20(JS%20only)/badge.svg?branch=main)
+[![Build iOS & Android](https://github.com/chnuessli/defikarte.ch-app/actions/workflows/app-deployment.yml/badge.svg)](https://github.com/chnuessli/defikarte.ch-app/actions/workflows/app-deployment.yml)
 ![Defikarte-Backend](https://github.com/chnuessli/defikarte.ch-app/workflows/Defikarte-Backend/badge.svg?branch=main)
 
 # Defikarte.ch - die App
@@ -46,7 +46,7 @@ Starten der Entwicklungsumgebung (App/React Native)
 
 Systemanforderungen Backend (Azure Functions):
 * .Net Core 3.1
-* Visual Studio 2019 inkl. Azure Entwicklung
+* Visual Studio oder Visual Studio Code inkl. Azure Entwicklung
 * Postman (empfohlen)
 
 Starten der Entwicklungsumgebung (Backend / Azure Functions)
