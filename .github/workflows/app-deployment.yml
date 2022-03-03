@@ -38,4 +38,4 @@ jobs:
         run: npm ci
       - name: Build on EAS
         working-directory: ${{ env.APP_SRC_PATH }}
-        run: eas build --profile ${{ env.RELEASE_PROFILE }} --platform all --non-interactive
+        run: eas build --profile ${{ env.RELEASE_PROFILE }} --platform all --non-interactive --no-wait
