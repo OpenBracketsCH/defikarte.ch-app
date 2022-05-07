@@ -72,6 +72,7 @@ Bitte lese [SPONSORING.md](SPONSORING.md)
 ### exklusiver Platin Sponsor
 
 * [Procamed AG](https://www.procamed.ch)
+* [Lifetec](https://www.lifetec.ch)
 
 ### Gold Sponsoren
 
@@ -81,9 +82,7 @@ Bitte lese [SPONSORING.md](SPONSORING.md)
 
 ### Logo Sponsoren
 
-* [Ursula Dombrowsky Gesundheitspraxis](http://www.dombrowsky.ch)
 * [Hexagon](http://www.hexagonsi.com)
 * [WC-Guide](https://www.wc-guide.com)
-* [Github-User Malsendif](https://github.com/Malsendif)
 
 [Sponsore uns](https://github.com/sponsors/chnuessli)
