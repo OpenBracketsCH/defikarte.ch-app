@@ -3,8 +3,8 @@
     "name": "Defikarte.ch",
     "slug": "Defikarte-ch",
     "owner": "defikarte",
-    "version": "1.0.16",
-    "orientation": "portrait",
+    "version": "1.0.17",
+    "orientation": "default",
     "primaryColor": "#ffffff",
     "icon": "./assets/icon.png",
     "splash": {
@@ -21,14 +21,14 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ch.defikarte.app",
-      "buildNumber": "1.0.16",
+      "buildNumber": "1.0.17",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Diese App benötigt die Standortdaten deines Gerätes um den nächsten Defi anzeigen zu können."
       }
     },
     "android": {
       "package": "ch.defikarte.app",
-      "versionCode": 16,
+      "versionCode": 17,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
