@@ -4,7 +4,7 @@
     "slug": "Defikarte-ch",
     "owner": "defikarte",
     "version": "1.0.16",
-    "orientation": "portrait",
+    "orientation": "default",
     "primaryColor": "#ffffff",
     "icon": "./assets/icon.png",
     "splash": {
