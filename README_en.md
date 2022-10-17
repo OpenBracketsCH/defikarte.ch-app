@@ -63,22 +63,22 @@ We are looking for motivated contributors that help us, to make the app better. 
 
 Please read [SPONSORING.md](SPONSORING.md)
 
-### exklusive Platin Sponsor
+### Platin Sponsor
 
-* [Procamed AG](https://www.procamed.ch)
+* [Procamed](https://www.procamed.ch)
+* [Lifetec](https://www.lifetec.ch)
 
 ### Gold Sponsors
 
-* [resQShock](https://www.procamed.ch)
 * [First-Responder.ch](https://www.procamed.ch)
 * [Nohe.ch](https://www.nohe.ch)
+* [Notfallsicher.ch](https://www.notfallsicher.ch)
 
 ### Logo Sponsors
 
-* [Procamed AG](https://www.procamed.ch)
-* [Ursula Dombrowsky Gesundheitspraxis](http://www.dombrowsky.ch)
 * [Hexagon](http://www.hexagonsi.com)
-* [WC-Guide](https://www.wc-guide.com)
-* [Github-User Malsendif](https://github.com/Malsendif)
+* [WC Guide](https://www.wc-guide.com)
+* [SIRMED](https://www.sirmed.ch)
+* [Säntis Härzstart](https://saentis-haerzstart.ch/)
 
 [Sponsor us](https://github.com/sponsors/chnuessli)

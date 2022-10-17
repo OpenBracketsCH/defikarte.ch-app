@@ -69,20 +69,21 @@ Wir sind immer auf der Suche nach motivierten, offenen Mitwirkenden die unser Pr
 
 Bitte lese [SPONSORING.md](SPONSORING.md)
 
-### exklusiver Platin Sponsor
+### Platin Sponsoren
 
-* [Procamed AG](https://www.procamed.ch)
+* [Procamed](https://www.procamed.ch)
 * [Lifetec](https://www.lifetec.ch)
 
 ### Gold Sponsoren
 
-* [resQShock](https://www.resqshock.ch)
 * [First-Responder.ch](https://www.procamed.ch)
 * [Nohe.ch](https://www.nohe.ch)
+* [Notfallsicher.ch](https://www.notfallsicher.ch)
 
 ### Logo Sponsoren
 
 * [Hexagon](http://www.hexagonsi.com)
-* [WC-Guide](https://www.wc-guide.com)
-
+* [WC Guide](https://www.wc-guide.com)
+* [SIRMED](https://www.sirmed.ch)
+* [Säntis Härzstart](https://saentis-haerzstart.ch/)
 [Sponsore uns](https://github.com/sponsors/chnuessli)
