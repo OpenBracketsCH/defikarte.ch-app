@@ -32,6 +32,14 @@ export default [
     errorMsg: 'Der Standort wird benötigt, maximale Länge 200 Zeichen',
   },
   {
+    name: 'level',
+    rules: { required: false },
+    type: 'Text',
+    label: 'Stockwerk',
+    placeholder: '6. OG',
+    defaultValue: '',
+  },
+  {
     name: 'description',
     rules: { required: false, maxLength: 200 },
     type: 'Text',
