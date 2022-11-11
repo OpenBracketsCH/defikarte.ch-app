@@ -9,6 +9,9 @@ export default ({ config }) => {
     extra: {
       backendBaseUrl: process.env['REACT_NATIVE_BASE_URL'] ?? '',
       backendApiKey: process.env['REACT_NATIVE_API_KEY'] ?? '',
+      eas: {
+        projectId: "1d176347-a834-4c1c-92e7-c0f4637108a0",
+      },
     },
     ...config,
   };
