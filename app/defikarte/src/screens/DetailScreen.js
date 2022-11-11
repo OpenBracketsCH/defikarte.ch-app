@@ -32,7 +32,7 @@ const DetailScreen = ({ navigation }) => {
   const name = defibrillator.tags['defibrillator:location'] ?? defibrillator.tags.description ?? defibrillator.tags.operator ?? 'n/A';
   const emergencyPhone = defibrillator.tags['emergency:phone'] ?? '144';
   const newInfo = defibrillator.new ? <Text>(Temporär in App erfasst, OSM update ausstehend)</Text> : null;
-  console.log(defibrillator);
+
   let containerStyle = { ...styles.containerStyle };
   containerStyle.paddingBottom = insets.bottom * 0.5;
   return (
