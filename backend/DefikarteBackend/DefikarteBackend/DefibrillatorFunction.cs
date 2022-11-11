@@ -143,6 +143,9 @@ namespace DefikarteBackend
                 },
                 {
                     "description", request.Description
+                },
+                {
+                    "level", request.Level
                 }
             };
 
