@@ -79,6 +79,7 @@ const DetailScreen = ({ navigation }) => {
       </View>
       <ScrollView >
         <AttributeListing title="Standort" iconName="map-pin" value={defibrillator.tags['defibrillator:location']} />
+        <AttributeListing title="Stockwerk" iconName="stairs" value={defibrillator.tags.level} />
         <AttributeListing title="Beschreibung" iconName="list" value={defibrillator.tags.description} />
         <AttributeListing title="Öffnungszeiten" iconName="clock" value={defibrillator.tags.opening_hours} />
         <AttributeListing title="Betreiber" iconName="flag" value={defibrillator.tags.operator} />
