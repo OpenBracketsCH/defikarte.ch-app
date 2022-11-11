@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const AttributeListing = ({ title, iconName, value }) => {
+  const icon = iconName == 'stairs' ? <MaterialCommunityIcons style={styles.iconStyle} name={iconName} /> : <Feather style={styles.iconStyle} name={iconName} />;
   return (
     <View style={styles.containerStyle} >
-      <Feather style={styles.iconStyle} name={iconName} />
+      {icon}
       <View style={styles.innerContainerStyle}>
         <Text style={styles.titleStyle}>{title}</Text>
         <Text style={styles.valueStyle}>{value ?? 'n/A'}</Text>

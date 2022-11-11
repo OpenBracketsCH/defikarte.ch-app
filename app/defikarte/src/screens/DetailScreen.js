@@ -32,7 +32,7 @@ const DetailScreen = ({ navigation }) => {
   const name = defibrillator.tags['defibrillator:location'] ?? defibrillator.tags.description ?? defibrillator.tags.operator ?? 'n/A';
   const emergencyPhone = defibrillator.tags['emergency:phone'] ?? '144';
   const newInfo = defibrillator.new ? <Text>(Temporär in App erfasst, OSM update ausstehend)</Text> : null;
-
+  console.log(defibrillator);
   let containerStyle = { ...styles.containerStyle };
   containerStyle.paddingBottom = insets.bottom * 0.5;
   return (
@@ -79,6 +79,7 @@ const DetailScreen = ({ navigation }) => {
       </View>
       <ScrollView >
         <AttributeListing title="Standort" iconName="map-pin" value={defibrillator.tags['defibrillator:location']} />
+        <AttributeListing title="Stockwerk" iconName="stairs" value={defibrillator.tags.level} />
         <AttributeListing title="Beschreibung" iconName="list" value={defibrillator.tags.description} />
         <AttributeListing title="Öffnungszeiten" iconName="clock" value={defibrillator.tags.opening_hours} />
         <AttributeListing title="Betreiber" iconName="flag" value={defibrillator.tags.operator} />
