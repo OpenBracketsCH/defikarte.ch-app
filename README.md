@@ -77,7 +77,6 @@ Bitte lese [SPONSORING.md](SPONSORING.md)
 ### Gold Sponsoren
 
 * [First-Responder.ch](https://www.procamed.ch)
-* [Nohe.ch](https://www.nohe.ch)
 * [Notfallsicher.ch](https://www.notfallsicher.ch)
 
 ### Logo Sponsoren
@@ -85,5 +84,5 @@ Bitte lese [SPONSORING.md](SPONSORING.md)
 * [Hexagon](http://www.hexagonsi.com)
 * [WC Guide](https://www.wc-guide.com)
 * [SIRMED](https://www.sirmed.ch)
-* [Säntis Härzstart](https://saentis-haerzstart.ch/)
+
 [Sponsore uns](https://github.com/sponsors/chnuessli)
