@@ -78,6 +78,7 @@ Bitte lese [SPONSORING.md](SPONSORING.md)
 
 * [First-Responder.ch](https://www.procamed.ch)
 * [Notfallsicher.ch](https://www.notfallsicher.ch)
+* [Säntis Härzstart](https://www.saentis-haerzstart.ch)
 
 ### Logo Sponsoren
 
