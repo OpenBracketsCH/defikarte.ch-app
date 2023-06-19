@@ -1,5 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DefikarteBackend.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -7,17 +11,17 @@ namespace DefikarteBackend.OsmOverpassApi
 {
     public class OverpassClient
     {
-        private readonly HttpClient overpassHttpClient;
+        private readonly HttpClient _overpassHttpClient;
 
         public OverpassClient(string overpassUrl)
         {
-            overpassHttpClient = new HttpClient
+            _overpassHttpClient = new HttpClient
             {
                 BaseAddress = new Uri(overpassUrl, UriKind.Absolute),
             };
         }
 
-        public async Task<JArray> GetAllDefibrillatorsInSwitzerland()
+        public async Task<IList<OsmNode>> GetAllDefibrillatorsInSwitzerland()
         {
             var request = new HttpRequestMessage
             {
@@ -35,17 +39,18 @@ namespace DefikarteBackend.OsmOverpassApi
 
             try
             {
-                var response = await overpassHttpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+                var response = await _overpassHttpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
                     var json = JObject.Parse(responseContent);
                     json.TryGetValue("elements", out var osmNodes);
-                    return osmNodes as JArray;
+                    var jArray = osmNodes as JArray;
+                    return jArray.Select(x => JsonConvert.DeserializeObject<OsmNode>(x.ToString())).ToList();
                 }
                 else
                 {
-                    throw new Exception($"OverpassAPI ({this.overpassHttpClient.BaseAddress}) request was not successful. Could not get defibrillators.");
+                    throw new Exception($"OverpassAPI ({this._overpassHttpClient.BaseAddress}) request was not successful. Could not get defibrillators.");
                 }
             }
             catch (Exception ex)

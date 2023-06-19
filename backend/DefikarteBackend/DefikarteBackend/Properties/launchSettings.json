@@ -4,7 +4,6 @@
       "commandName": "Project",
       "environmentVariables": {
         "osmApiUrl": "https://master.apis.dev.openstreetmap.org/api/",
-        "BackendTaskHub": "test",
         "overpassUrl": "https://overpass.osm.ch/api/interpreter",
         "osmUserPassword": "userpassword",
         "osmUsername": "username"
