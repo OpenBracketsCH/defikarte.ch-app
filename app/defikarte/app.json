@@ -1,9 +1,11 @@
 {
   "expo": {
-    "name": "defikarte",
-    "slug": "defikarte",
-    "version": "1.0.0",
-    "orientation": "portrait",
+    "name": "Defikarte.ch",
+    "slug": "Defikarte-ch",
+    "owner": "defikarte",
+    "version": "1.0.21",
+    "orientation": "default",
+    "primaryColor": "#ffffff",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -14,19 +16,31 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "assets/*.png"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "ch.defikarte.app",
+      "buildNumber": "1.0.21",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Diese App benötigt die Standortdaten deines Gerätes um den nächsten Defi anzeigen zu können."
+      }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+      "package": "ch.defikarte.app",
+      "versionCode": 21,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": ""
+        }
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
     }
   }
 }

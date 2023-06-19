@@ -1,18 +1,26 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
-import distanceBetweenPoints from '../helpers/coordinateCalc.js'
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Context as LocationContext } from '../context/LocationContext';
-import useDefibrillators from '../hooks/useDefibrillators';
+import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
+import { Context as InfoContext } from '../context/InfoContext';
 import DefiItem from '../components/DefiItem';
+import WarningInfoPanel from '../components/WarningInfoPanel';
 
-const ListScreen = ({ navigation }) => {
-  const [defibrillators] = useDefibrillators(navigation);
+const ListScreen = () => {
   const { state: userLocation, enableLocationTracking } = useContext(LocationContext);
-  const [currentConfig, setCurrentConfig] = useState('locationDisabled');
-  const [defisNearLocation, setDefisNearLocation] = useState([]);
+  const { state: { defisNearLocation, loading } } = useContext(DefibrillatorContext);
+  const { state: { showInfo }, updateShowInfo } = useContext(InfoContext);
+  const [currentConfig, setCurrentConfig] = useState(defisNearLocation.length > 0 ? 'location' : 'loading');
 
   const locationConfig = {
+    loading: {
+      render: () => {
+        return (
+          <ActivityIndicator style={styles.spinnerStyle} size="large" color="green" />
+        );
+      }
+    },
     locationDisabled: {
       render: () => {
         const locationIcon = !userLocation.enabled ? 'location-disabled' : !userLocation.location ? 'location-searching' : 'my-location';
@@ -20,79 +28,63 @@ const ListScreen = ({ navigation }) => {
           <>
             <MaterialIcons style={styles.noLocationIconStyle} name='location-disabled' />
             <Text style={styles.noLocationTextStyle}>Aktiviere deinen Standort um Defibrillatoren in deiner Nähe anzuzeigen.</Text>
-            <TouchableOpacity onPress={() => enableLocationTracking()}>
+            <TouchableOpacity onPress={() => enableLocationTracking(true)}>
               <MaterialIcons style={styles.actLocationIconStyle} name={locationIcon} />
             </TouchableOpacity>
           </>
-        )
+        );
       }
     },
-    locationSearching: {
+    noDefisNearYou: {
       render: () => {
         return (
-          <Text style={styles.noLocationTextStyle}>Keine Defibrillatoren in deiner Nähe (2km) verfügbar .</Text>
+          <Text style={styles.noLocationTextStyle}>Keine Defibrillatoren in deiner Nähe (2km) verfügbar.</Text>
         );
       }
     },
     location: {
       render: () => {
+        const infoPanel = showInfo ?
+          <WarningInfoPanel
+            onButtonClick={updateShowInfo}
+            text="Achtung: Nicht alle Defibrillatoren in der Schweiz sind erfasst, möglicherweise gibt es Defibrillatoren die näher sind als die hier angezeigten." />
+          : null;
         return (
-          <FlatList
-            data={defisNearLocation}
-            keyExtractor={(def) => def.id.toString()}
-            renderItem={({ item }) => {
-              return (
-                <DefiItem defibrillator={item} />
-              );
-            }}
-          />
+          <>
+            <FlatList
+              data={defisNearLocation}
+              keyExtractor={(def) => def.id.toString()}
+              renderItem={({ item }) => {
+                return (
+                  <View style={styles.itemBorderStyle} >
+                    <DefiItem defibrillator={item} />
+                  </View>
+                );
+              }}
+            />
+            {infoPanel}
+          </>
         );
       }
     }
   }
 
-  const getDefisNearLocation = () => {
-    return defibrillators
-      .filter(d => {
-        if (userLocation.location) {
-          const dist = distanceBetweenPoints(d.lat, d.lon, userLocation.location.latitude, userLocation.location.longitude);
-          if (dist < 2000) {
-            d.distance = dist;
-            return true;
-          }
-        }
-
-        return false;
-      })
-      .sort((d1, d2) => {
-        return d1.distance - d2.distance;
-      });
-  };
-
   const getLocationState = () => {
     const defiNearLocCount = userLocation.location ? defisNearLocation.length : 0;
-    return !userLocation.enabled ? 'locationDisabled' : !userLocation.location && defiNearLocCount < 1 ? 'locationSearching' : 'location';
+    return !userLocation.enabled ? 'locationDisabled' : loading ? 'loading' : !userLocation.location || defiNearLocCount < 1 ? 'noDefisNearYou' : 'location';
   };
-
-  useEffect(() => {
-    enableLocationTracking();
-  }, []);
-
-  useEffect(() => {
-    setDefisNearLocation(getDefisNearLocation());
-  }, [defibrillators, userLocation])
 
   useEffect(() => {
     setCurrentConfig(getLocationState());
   }, [userLocation, defisNearLocation]);
 
+  useEffect(() => {
+    enableLocationTracking(true);
+  }, []);
+
   return (
     <View style={styles.containerStyle}>
-      <Text style={styles.titleStyle}>Defibrillatoren in deiner Nähe</Text>
       <>{locationConfig[currentConfig].render()}</>
-      <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Main')}>
-        <Feather name='map' style={styles.iconStyle} />
-      </TouchableOpacity>
     </View>
   );
 };
@@ -106,19 +98,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 10,
     alignSelf: 'center',
-  },
-  textStyle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  buttonStyle: {
-    backgroundColor: 'green',
-    padding: 5,
-    bottom: 0,
-    position: 'absolute',
-    alignSelf: 'baseline',
-    borderRadius: 5,
-    margin: 5,
   },
   iconStyle: {
     alignSelf: 'center',
@@ -142,8 +121,17 @@ const styles = StyleSheet.create({
     color: '#007AFF',
     fontSize: 50,
   },
+  itemBorderStyle: {
+    borderColor: 'grey',
+    borderBottomWidth: 0.5,
+  },
+  spinnerStyle: {
+    alignSelf: 'center',
+    margin: 200,
+  },
   containerStyle: {
     ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'white'
   }
 });
 

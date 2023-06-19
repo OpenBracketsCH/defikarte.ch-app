@@ -6,9 +6,9 @@ name: Defikarte-Backend
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ development ]
-  pull_request:
-    branches: [ main ]
+    branches: [ development, main ]
+    paths:
+    - 'backend/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -16,7 +16,8 @@ on:
 env:
   AZURE_FUNCTIONAPP_NAME: defikarte-backend  # set this to your application's name
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './backend/DefikarteBackend/DefikarteBackend/'    # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '2.1'              # set this to the dotnet version to use
+  DOTNET_VERSION: '6.0.x'              # set this to the dotnet version to use
+  SLOT_NAME: "${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}"
 
 jobs:
   build-and-deploy:
@@ -36,10 +37,11 @@ jobs:
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release --output ./output
         popd
-    - name: 'Run Azure Functions Action'
+    - name: Deploy Function to ${{ env.SLOT_NAME }}
       uses: Azure/functions-action@v1
       id: fa
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+        publish-profile: ${{ github.ref == 'refs/heads/main' && secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE || secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_STAGING }}
+        slot-name: ${{ env.SLOT_NAME }}

@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using DefikarteBackend.Cache;
 using DefikarteBackend.Model;
 using DefikarteBackend.OsmOverpassApi;
+using DefikarteBackend.Validation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -29,16 +33,23 @@ namespace DefikarteBackend
         [FunctionName("Defibrillators_GETALL")]
         public async Task<IActionResult> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "defibrillator")] HttpRequestMessage req,
+            [DurableClient(TaskHub = "%BackendTaskHub%")] IDurableEntityClient client,
             ILogger log)
         {
-            var overpassApiUrl = config["overpassUrl"];
-            log.LogInformation($"Get all AED from {overpassApiUrl}");
-
-            var overpassApiClient = new OverpassClient(overpassApiUrl);
-
             try
             {
-                var response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
+                EntityStateResponse<SimpleCache> stateResponse = await client.ReadEntityStateAsync<SimpleCache>(new EntityId(nameof(SimpleCache), "cache"));
+                log.LogInformation($"Request AEDs. Try to get from Cache:{stateResponse.EntityState?.CacheId} LastUpdated:{stateResponse.EntityState?.LastUpdate}.");
+                var response = stateResponse.EntityExists ? await stateResponse.EntityState.TryGetLegalCache() : null;
+                if (response == null)
+                {
+                    var overpassApiUrl = config["overpassUrl"];
+                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache:{stateResponse.EntityState?.CacheId} is not available (LastUpdated:{stateResponse.EntityState?.LastUpdate}).");
+
+                    var overpassApiClient = new OverpassClient(overpassApiUrl);
+                    response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
+                }
+
                 return new OkObjectResult(response);
             }
             catch (Exception ex)
@@ -50,34 +61,31 @@ namespace DefikarteBackend
 
         [FunctionName("Defibrillators_POST")]
         public async Task<IActionResult> Create(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "Post", Route = "defibrillator")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "defibrillator")] HttpRequest req,
             ILogger log)
         {
-            var requestBody = await req.Content.ReadAsStringAsync();
-            if (string.IsNullOrEmpty(requestBody))
-            {
-                return new BadRequestObjectResult("body is null or empty. please provide a valid OsmGeo object.");
-            }
-
             try
             {
                 var username = config["osmUsername"];
                 var password = config["osmUserPassword"];
                 var osmApiUrl = config["osmApiUrl"];
-                
+
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(osmApiUrl))
                 {
                     log.LogWarning("No valid configuration available for eighter username, password or osmApiUrl");
                     return new InternalServerErrorResult();
                 }
 
-                log.LogInformation($"Create on {osmApiUrl} new node:{requestBody}");
+                var defibrillatorObj = await req.GetJsonBodyAsync<DefibrillatorRequest, DefibrillatorRequestValidator>();
 
-                var defibrillatorObj = JsonConvert.DeserializeObject<DefibrillatorRequest>(requestBody);
-                var newNode = CreateNode(defibrillatorObj);
+                if (!defibrillatorObj.IsValid)
+                {
+                    log.LogInformation($"Invalid request data.");
+                    return defibrillatorObj.ToBadRequest();
+                }
 
-                var clientFactory = new ClientsFactory(log, new HttpClient(),
-                    osmApiUrl);
+                var newNode = CreateNode(defibrillatorObj.Value);
+                var clientFactory = new ClientsFactory(log, new HttpClient(), osmApiUrl);
 
                 var authClient = clientFactory.CreateBasicAuthClient(username, password);
                 var changeSetTags = new TagsCollection() { new Tag("created_by", username), new Tag("comment", "Create new AED.") };
@@ -85,7 +93,7 @@ namespace DefikarteBackend
 
                 newNode.ChangeSetId = changeSetId;
                 var nodeId = await authClient.CreateElement(changeSetId, newNode);
-                
+
                 await authClient.CloseChangeset(changeSetId);
 
                 var createdNode = await authClient.GetNode(nodeId);
@@ -128,12 +136,33 @@ namespace DefikarteBackend
                     "operator", request.Operator
                 },
                 {
-                    "access", request.Accessible ? "yes" : "no"
+                    "access", request.Access ? "yes" : "no"
                 },
                 {
                     "indoor", request.Indoor ? "yes" : "no"
-                }
+                },
+                {
+                    "description", request.Description
+                },
+                {
+                    "level", request.Level
+                },
+                {
+                    "source", request.Source
+                },
             };
+
+            var keysToRemove = new List<string>();
+            // remove empty values
+            foreach (var keyval in tags)
+            {
+                if (string.IsNullOrEmpty(keyval.Value))
+                {
+                    keysToRemove.Add(keyval.Key);
+                }
+            }
+
+            keysToRemove.ForEach(r => tags.Remove(r));
 
             return new Node()
             {

@@ -17,14 +17,14 @@ namespace DefikarteBackend.OsmOverpassApi
             };
         }
 
-        public async Task<JToken> GetAllDefibrillatorsInSwitzerland()
+        public async Task<JArray> GetAllDefibrillatorsInSwitzerland()
         {
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
                 Content = new StringContent(
                     "[out:json][timeout:25]; " +
-                    "(area[\"ISO3166-1\" = \"CH\"][admin_level = 2];)->.searchArea;" +
+                    "(area[\"ISO3166-1\" = \"CH\"][admin_level = 2]; area[\"ISO3166-1\" = \"LI\"][admin_level = 2];)->.searchArea;" +
                     "(node[\"emergency\" = \"defibrillator\"](area.searchArea);" +
                     "way[\"emergency\" = \"defibrillator\"](area.searchArea);" +
                     "relation[\"emergency\" = \"defibrillator\"](area.searchArea);" +
@@ -36,10 +36,17 @@ namespace DefikarteBackend.OsmOverpassApi
             try
             {
                 var response = await overpassHttpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var json = JObject.Parse(responseContent);
-                json.TryGetValue("elements", out var osmNodes);
-                return osmNodes;
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var json = JObject.Parse(responseContent);
+                    json.TryGetValue("elements", out var osmNodes);
+                    return osmNodes as JArray;
+                }
+                else
+                {
+                    throw new Exception($"OverpassAPI ({this.overpassHttpClient.BaseAddress}) request was not successful. Could not get defibrillators.");
+                }
             }
             catch (Exception ex)
             {
