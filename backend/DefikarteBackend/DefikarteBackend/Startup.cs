@@ -17,7 +17,7 @@ namespace DefikarteBackend
             var serivceConfig = ServiceConfiguration.Initialize(configuration);
 
             // Basic database settings & setup
-            var connectionStringOptions = ConnectionStringOptions.Create(configuration.GetConnectionStringOrSetting("COSMOS_DBCONNECTION"));
+            var connectionStringOptions = ConnectionStringOptions.Create(serivceConfig.CosmosDBConnectionString);
             IDocumentClient documentClient = new DocumentClient(connectionStringOptions.ServiceEndpoint, connectionStringOptions.AuthKey);
             
             builder.Services.AddSingleton((s) =>  serivceConfig);

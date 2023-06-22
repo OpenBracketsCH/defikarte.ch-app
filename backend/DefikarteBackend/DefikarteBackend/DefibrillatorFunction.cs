@@ -47,16 +47,18 @@ namespace DefikarteBackend
                 }
 
                 var response = _simpleCache.Get();
-                if (response == null && response.Count > 0)
+                if (response != null && response.Count > 0)
                 {
-                    var overpassApiUrl = _config.OverpassApiUrl;
-                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache is not available.");
-
-                    var overpassApiClient = new OverpassClient(overpassApiUrl);
-                    response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
+                    log.LogInformation($"Get all AED from cache. Count: {response.Count}");
+                    return new OkObjectResult(response);
                 }
 
-                return new OkObjectResult(response);
+                var overpassApiUrl = _config.OverpassApiUrl;
+                log.LogInformation($"Get all AED from {overpassApiUrl}. Cache is not available.");
+
+                var overpassApiClient = new OverpassClient(overpassApiUrl);
+                var overpassResponse = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
+                return new OkObjectResult(overpassResponse);
             }
             catch (Exception ex)
             {

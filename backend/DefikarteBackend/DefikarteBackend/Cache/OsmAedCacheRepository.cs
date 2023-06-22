@@ -64,10 +64,10 @@ namespace DefikarteBackend.Cache
             return success;
         }
 
-        public IList<OsmNode> Get()
+        public IList<Document> Get()
         {
             Uri documentCollectionUri = UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName);
-            return _documentClient.CreateDocumentQuery<OsmNode>(documentCollectionUri, _defaultFeedOptions).ToList();
+            return _documentClient.CreateDocumentQuery(documentCollectionUri, _defaultFeedOptions).ToList();
         }
 
         public async Task<OsmNode> GetByIdAsync(string id)

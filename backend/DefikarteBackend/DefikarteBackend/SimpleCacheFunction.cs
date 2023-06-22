@@ -20,7 +20,7 @@ namespace DefikarteBackend
         }
 
         [FunctionName("SimpleCacheFunction")]
-        public async Task RunAsync([TimerTrigger("0 */5 * * * *")] TimerInfo myTimer, ILogger log)
+        public async Task RunAsync([TimerTrigger("0 */30 * * * *")] TimerInfo myTimer, ILogger log)
         {
             var overpassApiUrl = _config.OverpassApiUrl;
             var overpassApiClient = new OverpassClient(overpassApiUrl);
