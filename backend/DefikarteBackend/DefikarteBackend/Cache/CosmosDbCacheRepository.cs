@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace DefikarteBackend.Cache
 {
-    public class OsmAedCacheRepository : ICacheRepository
+    public class CosmosDbCacheRepository : ICacheRepository<OsmNode>
     {
         private readonly FeedOptions _defaultFeedOptions = new() { EnableCrossPartitionQuery = true };
         private readonly string _databaseName;
         private readonly string _collectionName;
         private readonly IDocumentClient _documentClient;
         private readonly ServiceConfiguration _serviceConfiguration;
-        private readonly ILogger<OsmAedCacheRepository> _log;
+        private readonly ILogger<CosmosDbCacheRepository> _log;
 
-        public OsmAedCacheRepository(IDocumentClient documentClient, ServiceConfiguration serviceConfiguration, ILogger<OsmAedCacheRepository> log)
+        public CosmosDbCacheRepository(IDocumentClient documentClient, ServiceConfiguration serviceConfiguration, ILogger<CosmosDbCacheRepository> log)
         {
             _documentClient = documentClient;
             _serviceConfiguration = serviceConfiguration;
@@ -64,10 +64,11 @@ namespace DefikarteBackend.Cache
             return success;
         }
 
-        public IList<Document> Get()
+        public Task<IList<OsmNode>> GetAsync()
         {
             Uri documentCollectionUri = UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName);
-            return _documentClient.CreateDocumentQuery(documentCollectionUri, _defaultFeedOptions).ToList();
+            var result = _documentClient.CreateDocumentQuery<OsmNode>(documentCollectionUri, _defaultFeedOptions).ToList() as IList<OsmNode>;
+            return Task.FromResult(result);
         }
 
         public async Task<OsmNode> GetByIdAsync(string id)

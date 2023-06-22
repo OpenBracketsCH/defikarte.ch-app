@@ -18,6 +18,8 @@ namespace DefikarteBackend.Configuration
 
         public string CacheCollectionName { get; set; }
 
+        public string TableStoragaConnectionString { get; set; }
+
         public static ServiceConfiguration Initialize(IConfigurationRoot configuration)
         {
             return new ServiceConfiguration
@@ -28,7 +30,8 @@ namespace DefikarteBackend.Configuration
                 OverpassApiUrl = configuration.GetConnectionStringOrSetting("OVERPASS_URL"),
                 CosmosDBConnectionString = configuration.GetConnectionStringOrSetting("COSMOS_DBCONNECTION"),
                 DatabaseName = configuration.GetConnectionStringOrSetting("COSMOS_DBNAME"),
-                CacheCollectionName = configuration.GetConnectionStringOrSetting("COSMOS_CACHE_COLLECTION")
+                CacheCollectionName = configuration.GetConnectionStringOrSetting("COSMOS_CACHE_COLLECTION"),
+                TableStoragaConnectionString = configuration.GetConnectionStringOrSetting("AzureWebJobsStorage"),
             };
         }
     }

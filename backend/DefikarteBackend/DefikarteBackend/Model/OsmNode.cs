@@ -1,10 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace DefikarteBackend.Model
 {
-    public class OsmNode
+    public class OsmNode : TableEntity
     {
+        public OsmNode()
+        {
+            PartitionKey = "id";
+            RowKey = Guid.NewGuid().ToString();
+        }
+
         [JsonProperty("type")]
         public string Type { get; set; }
 

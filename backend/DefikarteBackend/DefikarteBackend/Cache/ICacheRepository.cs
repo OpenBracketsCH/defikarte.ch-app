@@ -1,16 +1,14 @@
-﻿using DefikarteBackend.Model;
-using Microsoft.Azure.Documents;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DefikarteBackend.Cache
 {
-    public interface ICacheRepository
+    public interface ICacheRepository<T>
     {
-        IList<Document> Get();
+        Task<IList<T>> GetAsync();
 
-        Task<OsmNode> GetByIdAsync(string id);
+        Task<T> GetByIdAsync(string id);
 
-        Task<bool> TryUpdateCacheAsync(IList<OsmNode> values);
+        Task<bool> TryUpdateCacheAsync(IList<T> values);
     }
 }

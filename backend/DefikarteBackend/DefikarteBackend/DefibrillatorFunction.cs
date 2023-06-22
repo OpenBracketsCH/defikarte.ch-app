@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OsmSharp;
@@ -25,9 +24,9 @@ namespace DefikarteBackend
     public class DefibrillatorFunction
     {
         private readonly ServiceConfiguration _config;
-        private readonly ICacheRepository _simpleCache;
+        private readonly ICacheRepository<OsmNode> _simpleCache;
 
-        public DefibrillatorFunction(ServiceConfiguration config, ICacheRepository simpleCache)
+        public DefibrillatorFunction(ServiceConfiguration config, ICacheRepository<OsmNode> simpleCache)
         {
             _config = config;
             _simpleCache = simpleCache;
@@ -46,7 +45,7 @@ namespace DefikarteBackend
                     return new OkObjectResult(byIdResponse);
                 }
 
-                var response = _simpleCache.Get();
+                var response = await _simpleCache.GetAsync();
                 if (response != null && response.Count > 0)
                 {
                     log.LogInformation($"Get all AED from cache. Count: {response.Count}");

@@ -5,6 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DefikarteBackend.Cache;
 using DefikarteBackend.Configuration;
+using DefikarteBackend.Model;
+using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.WindowsAzure.Storage;
+using System;
 
 [assembly: FunctionsStartup(typeof(DefikarteBackend.Startup))]
 namespace DefikarteBackend
@@ -19,10 +23,17 @@ namespace DefikarteBackend
             // Basic database settings & setup
             var connectionStringOptions = ConnectionStringOptions.Create(serivceConfig.CosmosDBConnectionString);
             IDocumentClient documentClient = new DocumentClient(connectionStringOptions.ServiceEndpoint, connectionStringOptions.AuthKey);
-            
-            builder.Services.AddSingleton((s) =>  serivceConfig);
+
+            CloudTableClient tableClient = CloudStorageAccount.Parse(serivceConfig.TableStoragaConnectionString).CreateCloudTableClient();
+            CloudTable table = tableClient.GetTableReference("deficache");
+
+            builder.Services.AddSingleton((s) => serivceConfig);
             builder.Services.AddSingleton<IDocumentClient>(s => documentClient);
-            builder.Services.AddTransient<ICacheRepository, OsmAedCacheRepository>();
+            builder.Services.AddSingleton<CloudTable>(s => table);
+
+
+            //builder.Services.AddTransient<ICacheRepository<OsmNode>, CosmosDbCacheRepository>();
+            builder.Services.AddTransient<ICacheRepository<OsmNode>, TableStorageCacheRepository<OsmNode>>();
         }
 
         private IConfigurationRoot LoadConfiguration()
