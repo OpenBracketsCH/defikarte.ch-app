@@ -16,7 +16,7 @@ namespace DefikarteBackend
             var configuration = LoadConfiguration();
             var serviceConfig = ServiceConfiguration.Initialize(configuration);
 
-            BlobContainerClient container = new BlobContainerClient(serviceConfig.BlobStoragaConnectionString, serviceConfig.BlobStorageContainerName);
+            var container = new BlobContainerClient(serviceConfig.BlobStoragaConnectionString, serviceConfig.BlobStorageContainerName);
             container.CreateIfNotExists();
 
             builder.Services.AddSingleton((s) => serviceConfig);
