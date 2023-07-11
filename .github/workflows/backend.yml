@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_NAME: defikarte-backend  # set this to your application's name
+  AZURE_FUNCTIONAPP_NAME: defikarte-backend-test  # set this to your application's name
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './backend/DefikarteBackend/DefikarteBackend/'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'              # set this to the dotnet version to use
   SLOT_NAME: "${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}"
