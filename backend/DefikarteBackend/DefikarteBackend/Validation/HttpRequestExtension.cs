@@ -54,5 +54,4 @@ namespace DefikarteBackend.Validation
             return JsonConvert.DeserializeObject<T>(requestBody);
         }
     }
-
 }

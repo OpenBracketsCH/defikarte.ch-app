@@ -12,16 +12,16 @@ namespace DefikarteBackend
     public class SimpleCacheFunction
     {
         private readonly ServiceConfiguration _config;
-        private readonly ICacheRepository<OsmNode> _simpleCache;
+        private readonly ICacheRepository<OsmNode> _cacheRepository;
 
-        public SimpleCacheFunction(ServiceConfiguration config, ICacheRepository<OsmNode> simpleCache)
+        public SimpleCacheFunction(ServiceConfiguration config, ICacheRepository<OsmNode> cacheRepository)
         {
             _config = config;
-            _simpleCache = simpleCache;
+            _cacheRepository = cacheRepository;
         }
 
         [FunctionName("SimpleCacheFunction")]
-        public async Task RunAsync([TimerTrigger("0 */30 * * * *", RunOnStartup = true)] TimerInfo myTimer, ILogger log)
+        public async Task RunAsync([TimerTrigger("0 */15 * * * *", RunOnStartup = true)] TimerInfo myTimer, ILogger log)
         {
             var overpassApiUrl = _config.OverpassApiUrl;
             var overpassApiClient = new OverpassClient(overpassApiUrl);
@@ -29,7 +29,7 @@ namespace DefikarteBackend
             try
             {
                 var response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
-                var success = await _simpleCache.TryUpdateCacheAsync(response);
+                var success = await _cacheRepository.TryUpdateCacheAsync(response);
                 log.LogInformation($"Updated cache sucessful:{success}");
             }
             catch (Exception ex)

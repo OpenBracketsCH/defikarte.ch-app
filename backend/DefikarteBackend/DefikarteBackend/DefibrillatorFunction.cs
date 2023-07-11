@@ -24,12 +24,12 @@ namespace DefikarteBackend
     public class DefibrillatorFunction
     {
         private readonly ServiceConfiguration _config;
-        private readonly ICacheRepository<OsmNode> _simpleCache;
+        private readonly ICacheRepository<OsmNode> _cacheRepository;
 
-        public DefibrillatorFunction(ServiceConfiguration config, ICacheRepository<OsmNode> simpleCache)
+        public DefibrillatorFunction(ServiceConfiguration config, ICacheRepository<OsmNode> cacheRepository)
         {
             _config = config;
-            _simpleCache = simpleCache;
+            _cacheRepository = cacheRepository;
         }
 
         [FunctionName("Defibrillators_GETALL")]
@@ -41,11 +41,11 @@ namespace DefikarteBackend
             {
                 if (TryParseIdQuery(req.RequestUri.ParseQueryString(), out var id))
                 {
-                    var byIdResponse = await _simpleCache.GetByIdAsync(id);
+                    var byIdResponse = await _cacheRepository.GetByIdAsync(id);
                     return new OkObjectResult(byIdResponse);
                 }
 
-                var response = await _simpleCache.GetAsync();
+                var response = await _cacheRepository.GetAsync();
                 if (response != null && response.Count > 0)
                 {
                     log.LogInformation($"Get all AED from cache. Count: {response.Count}");

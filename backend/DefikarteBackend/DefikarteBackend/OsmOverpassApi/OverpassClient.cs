@@ -1,5 +1,4 @@
 ﻿using DefikarteBackend.Model;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -46,7 +45,8 @@ namespace DefikarteBackend.OsmOverpassApi
                     var json = JObject.Parse(responseContent);
                     json.TryGetValue("elements", out var osmNodes);
                     var jArray = osmNodes as JArray;
-                    return jArray.Select(x => JsonConvert.DeserializeObject<OsmNode>(x.ToString())).ToList();
+                    var result =  jArray.Select(x => x.ToObject<OsmNode>()).ToList();
+                    return result;
                 }
                 else
                 {
