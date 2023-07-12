@@ -1,10 +1,10 @@
-﻿using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using DefikarteBackend.Cache;
 using DefikarteBackend.Configuration;
+using DefikarteBackend.Model;
+using Azure.Storage.Blobs;
 
 [assembly: FunctionsStartup(typeof(DefikarteBackend.Startup))]
 namespace DefikarteBackend
@@ -14,15 +14,14 @@ namespace DefikarteBackend
         public override void Configure(IFunctionsHostBuilder builder)
         {
             var configuration = LoadConfiguration();
-            var serivceConfig = ServiceConfiguration.Initialize(configuration);
+            var serviceConfig = ServiceConfiguration.Initialize(configuration);
 
-            // Basic database settings & setup
-            var connectionStringOptions = ConnectionStringOptions.Create(configuration.GetConnectionStringOrSetting("COSMOS_DBCONNECTION"));
-            IDocumentClient documentClient = new DocumentClient(connectionStringOptions.ServiceEndpoint, connectionStringOptions.AuthKey);
-            
-            builder.Services.AddSingleton((s) =>  serivceConfig);
-            builder.Services.AddSingleton<IDocumentClient>(s => documentClient);
-            builder.Services.AddTransient<ICacheRepository, OsmAedCacheRepository>();
+            var container = new BlobContainerClient(serviceConfig.BlobStoragaConnectionString, serviceConfig.BlobStorageContainerName);
+            container.CreateIfNotExists();
+
+            builder.Services.AddSingleton((s) => serviceConfig);
+            builder.Services.AddTransient<ICacheRepository<OsmNode>>(s =>
+                new BlobStorageCacheRepository(container, serviceConfig.BlobStorageBlobName));
         }
 
         private IConfigurationRoot LoadConfiguration()

@@ -9,7 +9,7 @@ namespace DefikarteBackend.Model
         public string Type { get; set; }
 
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public string Id { get; set; }  
 
         [JsonProperty("lat")]
         public double Lat { get; set; }
@@ -19,8 +19,5 @@ namespace DefikarteBackend.Model
 
         [JsonProperty("tags")]
         public Dictionary<string, string> Tags { get; set; }
-
-        [JsonProperty("ttl")]
-        public int TimeToLife { get; set; }
     }
 }

@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OsmSharp;
@@ -25,12 +24,12 @@ namespace DefikarteBackend
     public class DefibrillatorFunction
     {
         private readonly ServiceConfiguration _config;
-        private readonly ICacheRepository _simpleCache;
+        private readonly ICacheRepository<OsmNode> _cacheRepository;
 
-        public DefibrillatorFunction(ServiceConfiguration config, ICacheRepository simpleCache)
+        public DefibrillatorFunction(ServiceConfiguration config, ICacheRepository<OsmNode> cacheRepository)
         {
             _config = config;
-            _simpleCache = simpleCache;
+            _cacheRepository = cacheRepository;
         }
 
         [FunctionName("Defibrillators_GETALL")]
@@ -42,21 +41,23 @@ namespace DefikarteBackend
             {
                 if (TryParseIdQuery(req.RequestUri.ParseQueryString(), out var id))
                 {
-                    var byIdResponse = await _simpleCache.GetByIdAsync(id);
+                    var byIdResponse = await _cacheRepository.GetByIdAsync(id);
                     return new OkObjectResult(byIdResponse);
                 }
 
-                var response = _simpleCache.Get();
-                if (response == null && response.Count > 0)
+                var response = await _cacheRepository.GetAsync();
+                if (response != null && response.Count > 0)
                 {
-                    var overpassApiUrl = _config.OverpassApiUrl;
-                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache is not available.");
-
-                    var overpassApiClient = new OverpassClient(overpassApiUrl);
-                    response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
+                    log.LogInformation($"Get all AED from cache. Count: {response.Count}");
+                    return new OkObjectResult(response);
                 }
 
-                return new OkObjectResult(response);
+                var overpassApiUrl = _config.OverpassApiUrl;
+                log.LogInformation($"Get all AED from {overpassApiUrl}. Cache is not available.");
+
+                var overpassApiClient = new OverpassClient(overpassApiUrl);
+                var overpassResponse = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
+                return new OkObjectResult(overpassResponse);
             }
             catch (Exception ex)
             {

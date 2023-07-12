@@ -12,11 +12,11 @@ namespace DefikarteBackend.Configuration
 
         public string OverpassApiUrl { get; set; }
 
-        public string CosmosDBConnectionString { get; set; }
+        public string BlobStorageContainerName { get; set; }
 
-        public string DatabaseName { get; set; }
+        public string BlobStorageBlobName { get; set; }
 
-        public string CacheCollectionName { get; set; }
+        public string BlobStoragaConnectionString { get; set; }
 
         public static ServiceConfiguration Initialize(IConfigurationRoot configuration)
         {
@@ -26,9 +26,9 @@ namespace DefikarteBackend.Configuration
                 OsmUserName = configuration.GetConnectionStringOrSetting("OSM_USER_NAME"),
                 OsmUserPassword = configuration.GetConnectionStringOrSetting("OSM_USER_PASSWORD"),
                 OverpassApiUrl = configuration.GetConnectionStringOrSetting("OVERPASS_URL"),
-                CosmosDBConnectionString = configuration.GetConnectionStringOrSetting("COSMOS_DBCONNECTION"),
-                DatabaseName = configuration.GetConnectionStringOrSetting("COSMOS_DBNAME"),
-                CacheCollectionName = configuration.GetConnectionStringOrSetting("COSMOS_CACHE_COLLECTION")
+                BlobStoragaConnectionString = configuration.GetConnectionStringOrSetting("AzureWebJobsStorage"),
+                BlobStorageContainerName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_CONTAINER_NAME"),
+                BlobStorageBlobName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_BLOB_NAME"),
             };
         }
     }
