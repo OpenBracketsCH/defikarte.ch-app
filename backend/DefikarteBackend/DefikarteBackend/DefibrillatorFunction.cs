@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using DefikarteBackend.Cache;
+using DefikarteBackend.Configuration;
 using DefikarteBackend.Model;
 using DefikarteBackend.OsmOverpassApi;
 using DefikarteBackend.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OsmSharp;
@@ -23,34 +23,41 @@ namespace DefikarteBackend
 {
     public class DefibrillatorFunction
     {
-        private readonly IConfigurationRoot config;
+        private readonly ServiceConfiguration _config;
+        private readonly ICacheRepository<OsmNode> _cacheRepository;
 
-        public DefibrillatorFunction(IConfigurationRoot config)
+        public DefibrillatorFunction(ServiceConfiguration config, ICacheRepository<OsmNode> cacheRepository)
         {
-            this.config = config;
+            _config = config;
+            _cacheRepository = cacheRepository;
         }
 
         [FunctionName("Defibrillators_GETALL")]
         public async Task<IActionResult> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "defibrillator")] HttpRequestMessage req,
-            [DurableClient(TaskHub = "%BackendTaskHub%")] IDurableEntityClient client,
             ILogger log)
         {
             try
             {
-                EntityStateResponse<SimpleCache> stateResponse = await client.ReadEntityStateAsync<SimpleCache>(new EntityId(nameof(SimpleCache), "cache"));
-                log.LogInformation($"Request AEDs. Try to get from Cache:{stateResponse.EntityState?.CacheId} LastUpdated:{stateResponse.EntityState?.LastUpdate}.");
-                var response = stateResponse.EntityExists ? await stateResponse.EntityState.TryGetLegalCache() : null;
-                if (response == null)
+                if (TryParseIdQuery(req.RequestUri.ParseQueryString(), out var id))
                 {
-                    var overpassApiUrl = config["overpassUrl"];
-                    log.LogInformation($"Get all AED from {overpassApiUrl}. Cache:{stateResponse.EntityState?.CacheId} is not available (LastUpdated:{stateResponse.EntityState?.LastUpdate}).");
-
-                    var overpassApiClient = new OverpassClient(overpassApiUrl);
-                    response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
+                    var byIdResponse = await _cacheRepository.GetByIdAsync(id);
+                    return new OkObjectResult(byIdResponse);
                 }
 
-                return new OkObjectResult(response);
+                var response = await _cacheRepository.GetAsync();
+                if (response != null && response.Count > 0)
+                {
+                    log.LogInformation($"Get all AED from cache. Count: {response.Count}");
+                    return new OkObjectResult(response);
+                }
+
+                var overpassApiUrl = _config.OverpassApiUrl;
+                log.LogInformation($"Get all AED from {overpassApiUrl}. Cache is not available.");
+
+                var overpassApiClient = new OverpassClient(overpassApiUrl);
+                var overpassResponse = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
+                return new OkObjectResult(overpassResponse);
             }
             catch (Exception ex)
             {
@@ -66,9 +73,9 @@ namespace DefikarteBackend
         {
             try
             {
-                var username = config["osmUsername"];
-                var password = config["osmUserPassword"];
-                var osmApiUrl = config["osmApiUrl"];
+                var username = _config.OsmUserName;
+                var password = _config.OsmUserPassword;
+                var osmApiUrl = _config.OsmApiUrl;
 
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(osmApiUrl))
                 {
@@ -113,7 +120,23 @@ namespace DefikarteBackend
             }
         }
 
-        private Node CreateNode(DefibrillatorRequest request)
+        private static bool TryParseIdQuery(NameValueCollection query, out string id)
+        {
+            id = string.Empty;
+            try
+            {
+                var idValues = query.GetValues("id");
+                bool available = idValues != null && idValues.Length > 0;
+                id = idValues != null && idValues.Length > 0 ? idValues[0] : string.Empty;
+                return available;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private static Node CreateNode(DefibrillatorRequest request)
         {
             var tags = new Dictionary<string, string>
             {

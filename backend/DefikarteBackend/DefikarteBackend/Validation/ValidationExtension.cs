@@ -13,11 +13,11 @@ namespace DefikarteBackend.Validation
         /// <returns></returns>
         public static BadRequestObjectResult ToBadRequest<T>(this ValidatableRequest<T> request)
         {
-            return new BadRequestObjectResult(request.Errors.Select(e => new {
+            return new BadRequestObjectResult(request.Errors.Select(e => new
+            {
                 Field = e.PropertyName,
                 Error = e.ErrorMessage
             }));
         }
     }
-
 }
