@@ -72,7 +72,6 @@ Please read [SPONSORING.md](SPONSORING.md)
 
 * [First-Responder.ch](https://www.procamed.ch)
 * [Nohe.ch](https://www.nohe.ch)
-* [Notfallsicher.ch](https://www.notfallsicher.ch)
 
 ### Logo Sponsors
 
