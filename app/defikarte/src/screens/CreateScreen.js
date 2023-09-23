@@ -13,7 +13,7 @@ const CreateScreen = ({ navigation }) => {
   const { state: defiState, addDefibrillator, resetError } = useContext(DefibrillatorContext);
   const [state, setState] = useState({ latitude: 0, longitude: 0, emergencyPhone: '144' });
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const { control, handleSubmit, errors } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = (formValues) => {
     setState({ ...state, ...formValues });

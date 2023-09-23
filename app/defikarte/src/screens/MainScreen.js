@@ -1,13 +1,13 @@
-import React, { useRef, useContext, useEffect, useState } from 'react';
-import { AppState, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { AppState, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import LocationError from '../components/LocationError';
+import Map from '../components/Map';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import { Context as LocationContext } from '../context/LocationContext';
 import useDefibrillators from '../hooks/useDefibrillators';
 import useLocation from '../hooks/useLocation';
-import Map from '../components/Map';
-import LocationError from '../components/LocationError';
 
 const MainScreen = ({ navigation }) => {
   const appState = useRef(AppState.currentState);
