@@ -25,7 +25,8 @@
     "react-native-maps": "1.7.1",
     "react-native-open-maps": "^0.4.3",
     "react-navigation": "^4.4.4",
-    "react-navigation-stack": "^2.10.4"
+    "react-navigation-stack": "^2.10.4",
+    "expo-dev-client": "~2.4.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
