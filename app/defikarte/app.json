@@ -34,10 +34,6 @@
         "googleMaps": {
           "apiKey": ""
         }
-      },
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
       }
     },
     "web": {
