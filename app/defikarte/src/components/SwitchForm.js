@@ -11,16 +11,16 @@ const SwitchForm = ({ labelText, name, control, rules, errors, errorMsg, default
         name={name}
         rules={rules}
         defaultValue={defaultValue}
-        render={({ onChange, onBlur, value }) => (
+        render={({ field }) => (
           <Switch
-            onBlur={onBlur}
-            onValueChange={onChange}
-            value={value}
+            onBlur={field.onBlur}
+            onValueChange={field.onChange}
+            value={field.value}
             disabled={disabled}
           />
         )}
       />
-      {errors[name] && <Text style={styles.errorTextStyle}>{errorMsg}</Text>}
+      {(errors && errors[name]) && <Text style={styles.errorTextStyle}>{errorMsg}</Text>}
     </View>
   );
 };

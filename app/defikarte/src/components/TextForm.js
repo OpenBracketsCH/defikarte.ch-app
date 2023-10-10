@@ -62,19 +62,19 @@ const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholde
         name={name}
         rules={rules}
         defaultValue={useSwitch ? '' : defaultValue}
-        render={({ onChange, onBlur, value }) => {
+        render={({ field }) => {
           return (
             <>
               <View style={styles.inlineSwitchStyle} >
                 <Text style={styles.labelStyle}>{labelText}</Text>
-                {defaultWithSwitch(value, onChange)}
+                {defaultWithSwitch(field.value, field.onChange)}
               </View>
-              {showTextInput(onChange, onBlur, value)}
+              {showTextInput(field.onChange, field.onBlur, field.value)}
             </>
           )
         }}
       />
-      {errors[name] && <Text style={styles.errorTextStyle}>{errorMsg}</Text>}
+      {(errors && errors[name]) && <Text style={styles.errorTextStyle}>{errorMsg}</Text>}
     </View>
   );
 };

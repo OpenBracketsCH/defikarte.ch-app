@@ -25,11 +25,11 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 18.x
       - name: Setup Expo and EAS
-        uses: expo/expo-github-action@v7
+        uses: expo/expo-github-action@v8
         with:
-          expo-version: 5.x
+          expo-version: 6.x
           eas-version: latest
           token: ${{ secrets.EXPO_CLI_TOKEN }}
           packager: 'npm'
