@@ -13,6 +13,9 @@ export default ({ config }) => {
         projectId: "1d176347-a834-4c1c-92e7-c0f4637108a0",
       },
     },
+    plugins: [
+      "expo-localization"
+    ],
     ...config,
   };
 };
