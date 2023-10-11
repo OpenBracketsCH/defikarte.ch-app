@@ -1,17 +1,19 @@
+import 'intl-pluralrules';
 import React from 'react';
 import { StatusBar } from "react-native";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import ErrorBoundary from './src/components/ErrorBoundary';
 import { Provider as DefibrillatorProvider } from './src/context/DefibrillatorContext';
-import { Provider as LocationProvider } from './src/context/LocationContext';
 import { Provider as InfoProvider } from './src/context/InfoContext';
+import { Provider as LocationProvider } from './src/context/LocationContext';
+import './src/i18n/i18n';
+import AboutScreen from './src/screens/AboutScreen';
 import CreateScreen from './src/screens/CreateScreen';
+import DetailScreen from './src/screens/DetailScreen';
 import ListScreen from './src/screens/ListScreen';
 import MainScreen from './src/screens/MainScreen';
-import DetailScreen from './src/screens/DetailScreen';
-import AboutScreen from './src/screens/AboutScreen';
-import ErrorBoundary from './src/components/ErrorBoundary';
 
 const navigator = createStackNavigator({
   Main: { screen: MainScreen, navigationOptions: { title: 'Karte', headerShown: false } },
