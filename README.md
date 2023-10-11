@@ -77,12 +77,11 @@ Bitte lese [SPONSORING.md](SPONSORING.md)
 ### Gold Sponsoren
 
 * [First-Responder.ch](https://www.procamed.ch)
-* [Notfallsicher.ch](https://www.notfallsicher.ch)
-* [Säntis Härzstart](https://www.saentis-haerzstart.ch)
 
 ### Logo Sponsoren
 
 * [Hexagon](http://www.hexagonsi.com)
+* [Hostpoint](http://www.hostpoint.ch)
 * [WC Guide](https://www.wc-guide.com)
 * [SIRMED](https://www.sirmed.ch)
 
