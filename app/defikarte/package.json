@@ -22,6 +22,7 @@
     "expo-status-bar": "~1.6.0",
     "i18next": "^23.5.1",
     "intl-pluralrules": "^2.0.1",
+    "libphonenumber-js": "^1.10.49",
     "moment": "^2.29.4",
     "opening_hours": "^3.8.0",
     "react": "18.2.0",

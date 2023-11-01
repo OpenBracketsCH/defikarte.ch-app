@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
-import { View, Text, Switch, TextInput, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, Switch, TextInput, StyleSheet } from "react-native";
 import { Controller } from "react-hook-form";
 
-const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholder, useSwitch = false, name, control, rules, errors, errorMsg, disabled }) => {
+const TextForm = ({
+  labelText,
+  keyboardType,
+  defaultValue,
+  multiline,
+  placeholder,
+  useSwitch = false,
+  name,
+  control,
+  rules,
+  errors,
+  errorMsg,
+  disabled,
+}) => {
   const [switchValue, setSwitchValue] = useState(false);
-  const [tempValue, setTempValue] = useState('');
+  const [tempValue, setTempValue] = useState("");
 
   const onSwitchChange = (newVal, value, setValue) => {
     setSwitchValue(newVal);
@@ -12,16 +25,18 @@ const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholde
     // if newVal from switch (bool) is true, use default value
     const val = newVal ? defaultValue : tempValue;
     setValue(val);
-  }
+  };
 
   const defaultWithSwitch = (value, onChange) => {
-    const textStyle = switchValue ? styles.switchActiveLabelStyle : styles.switchLabelStyle;
+    const textStyle = switchValue
+      ? styles.switchActiveLabelStyle
+      : styles.switchLabelStyle;
     if (useSwitch) {
       return (
         <View style={styles.switchContainerStyle}>
           <Switch
             style={styles.switchStyle}
-            onValueChange={newVal => onSwitchChange(newVal, value, onChange)}
+            onValueChange={(newVal) => onSwitchChange(newVal, value, onChange)}
             value={switchValue}
             disabled={disabled}
           />
@@ -31,7 +46,7 @@ const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholde
     }
 
     return null;
-  }
+  };
 
   const showTextInput = (onChange, onBlur, value) => {
     if (!switchValue) {
@@ -41,40 +56,44 @@ const TextForm = ({ labelText, keyboardType, defaultValue, multiline, placeholde
           value={value}
           onChangeText={onChange}
           onBlur={onBlur}
-          autoCapitalize='none'
+          autoCapitalize="none"
           keyboardType={keyboardType}
-          defaultValue={useSwitch ? '' : defaultValue}
+          defaultValue={useSwitch ? "" : defaultValue}
           multiline={multiline}
           autoGrow={true}
           placeholder={placeholder}
           autoCorrect={false}
           editable={!switchValue}
-          returnKeyType={multiline ? 'default' : 'done'}
+          returnKeyType={multiline ? "default" : "done"}
         />
       );
     }
   };
 
   return (
-    <View style={styles.inlineForm} >
+    <View style={styles.inlineForm}>
       <Controller
         control={control}
         name={name}
         rules={rules}
-        defaultValue={useSwitch ? '' : defaultValue}
+        defaultValue={useSwitch ? "" : defaultValue}
         render={({ field }) => {
           return (
             <>
-              <View style={styles.inlineSwitchStyle} >
+              <View style={styles.inlineSwitchStyle}>
                 <Text style={styles.labelStyle}>{labelText}</Text>
                 {defaultWithSwitch(field.value, field.onChange)}
               </View>
               {showTextInput(field.onChange, field.onBlur, field.value)}
             </>
-          )
+          );
         }}
       />
-      {(errors && errors[name]) && <Text style={styles.errorTextStyle}>{errorMsg}</Text>}
+      {errors && errors[name] && (
+        <Text style={styles.errorTextStyle}>
+          {errorMsg ?? errors[name]?.message}
+        </Text>
+      )}
     </View>
   );
 };
@@ -86,23 +105,23 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   inlineSwitchStyle: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   labelStyle: {
     fontSize: 18,
     marginRight: 10,
-    color: 'rgba(70, 70, 70, 1)',
+    color: "rgba(70, 70, 70, 1)",
   },
   inputStyle: {
-    borderColor: 'rgba(200, 200, 200, 1)',
+    borderColor: "rgba(200, 200, 200, 1)",
     borderBottomWidth: 1,
     fontSize: 18,
     padding: 5,
   },
   switchContainerStyle: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   switchStyle: {
     marginRight: 10,
@@ -111,19 +130,19 @@ const styles = StyleSheet.create({
   switchLabelStyle: {
     fontSize: 16,
     marginRight: 10,
-    color: 'rgba(140, 140, 140, 1)',
+    color: "rgba(140, 140, 140, 1)",
   },
   switchActiveLabelStyle: {
     fontSize: 16,
     marginRight: 10,
-    color: '#007AFF',
-    fontWeight: 'bold'
+    color: "#007AFF",
+    fontWeight: "bold",
   },
   errorTextStyle: {
     fontSize: 16,
-    color: 'red',
+    color: "red",
     marginTop: 3,
-  }
+  },
 });
 
 export default TextForm;
