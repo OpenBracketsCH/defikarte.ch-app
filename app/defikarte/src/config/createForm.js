@@ -25,7 +25,7 @@ const phonenumberValidation = (value) => {
     isValidPhoneNumber(value) === true &&
     validatePhoneNumberLength(value, "CH") === undefined;
 
-  return valid;
+  return value === null || value === "" || valid;
 };
 
 export default [
@@ -88,7 +88,7 @@ export default [
   },
   {
     name: "operatorPhone",
-    rules: { validate: phonenumberValidation },
+    rules: { validate: phonenumberValidation, required: false },
     type: "Text",
     label: "Telefon",
     placeholder: "+41 79 000 00 00",
