@@ -18,7 +18,7 @@ export default (userLocation, callback, enableLocationTracking, setLocationTrack
       const sub = await watchPositionAsync(
         {
           accuracy: Accuracy.BestForNavigation,
-          timeInterval: 2000,
+          timeInterval: 20000,
           distanceInterval: 10,
         },
         callback
