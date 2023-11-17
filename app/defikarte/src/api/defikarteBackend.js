@@ -1,10 +1,9 @@
 import axios from 'axios';
-import Constants from 'expo-constants';
 
 export default axios.create({
-  baseURL: Constants.expoConfig.extra.backendBaseUrl,
+  baseURL: process.env.EXPO_PUBLIC_BASE_URL || 'https://defikarte-backend-staging.azurewebsites.net/api',
   headers: {
     'x-functions-clientid': 'defikarte-app',
-    'x-functions-key': Constants.expoConfig.extra.backendApiKey,
-  }
-})
+    'x-functions-key': process.env.EXPO_PUBLIC_API_KEY || '', // create AED will not work without an api key
+  },
+});

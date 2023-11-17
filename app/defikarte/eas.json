@@ -8,20 +8,23 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "REACT_NATIVE_BASE_URL": "https://defikarte-backend-staging.azurewebsites.net/api"
+        "EXPO_PUBLIC_BASE_URL": "https://defikarte-backend-staging.azurewebsites.net/api"
       }
     },
     "preview": {
       "releaseChannel": "beta",
       "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
       "env": {
-        "REACT_NATIVE_BASE_URL": "https://defikarte-backend.azurewebsites.net/api"
+        "EXPO_PUBLIC_BASE_URL": "https://defikarte-backend-staging.azurewebsites.net/api"
       }
     },
     "production": {
       "releaseChannel": "production",
       "env": {
-        "REACT_NATIVE_BASE_URL": "https://defikarte-backend.azurewebsites.net/api"
+        "EXPO_PUBLIC_BASE_URL": "https://defikarte-backend.azurewebsites.net/api"
       }
     }
   },

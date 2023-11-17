@@ -12,7 +12,7 @@ on:
 
 env:
   APP_SRC_PATH: "./app/defikarte/" # set this to the path to your web app project, defaults to the repository root
-  RELEASE_PROFILE: "${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}"
+  RELEASE_PROFILE: "${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}"
   REACT_NATIVE_BASE_URL: "${{ github.ref == 'refs/heads/main' && 'https://defikarte-backend.azurewebsites.net/api' || 'https://defikarte-backend-staging.azurewebsites.net/api' }}"
   REACT_NATIVE_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API }}
   REACT_NATIVE_API_KEY: ${{ secrets.AZURE_FUNCTIONAPP_API_KEY }}
