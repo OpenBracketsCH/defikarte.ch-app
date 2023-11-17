@@ -16,12 +16,9 @@ The app is a project by [Defikarte.ch](https://www.defikarte.ch) and is intended
 
 The App is available in the Appstores.
 
-<div style="display:flex; gap:20px; align-items:start;">
 <a href="https://apps.apple.com/ch/app/defikarte-ch/id1549569525?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 10px; width: 150px; height: 50px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1613952000" alt="Download on the App Store" style="border-radius: 10px; width: 150px; height: 50px;"></a>
 
 <a style="display: inline-block; overflow: hidden;margin:-6px;" href='https://play.google.com/store/apps/details?id=ch.defikarte.app'><img style="height:63px;" alt='Jetzt bei Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
-
-</div>
 
 ## Development
 
@@ -36,13 +33,16 @@ IDE & Tools:
 - ExpoGO für Android oder iOS (emulators are supported)
 
 Starting the development environment (App/React Native).
+
 - `cd app`
 - Create .env-File according to .env.template
 - Execute `npm install` && `npx expo start` (starts the Expo-App)
 - Scn the QR-Code displayed in the console => ExpoGO-App starts
 
 ### Getting started Backend (.Net/Azure Functions):
+
 IDE & Tools
+
 - x86-environment (Apple Silicon is not yet supported)
 - .Net 6
 - Visual Studio or Visual Studio Code incl. Azure Function Core Tools

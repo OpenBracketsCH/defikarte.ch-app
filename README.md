@@ -21,12 +21,9 @@ Die App ist ein Projekt von [Defikarte.ch](https://www.defikarte.ch) und soll he
 
 Die App zu Defikarte.ch findet man in den Stores des jeweiligen Anbieters.
 
-<div style="display:flex; gap:20px; align-items:start;">
 <a href="https://apps.apple.com/ch/app/defikarte-ch/id1549569525?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 10px; width: 150px; height: 50px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/de-de?size=250x83&amp;releaseDate=1613952000" alt="Download on the App Store" style="border-radius: 10px; width: 150px; height: 50px;"></a>
 
 <a style="display: inline-block; overflow: hidden;margin:-6px;" href='https://play.google.com/store/apps/details?id=ch.defikarte.app'><img style="height:63px;" alt='Jetzt bei Google Play' src='https://play.google.com/intl/de_de/badges/static/images/badges/de_badge_web_generic.png'/></a>
-
-</div>
 
 ## Entwicklung
 
