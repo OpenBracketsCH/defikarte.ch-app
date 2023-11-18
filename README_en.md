@@ -1,6 +1,6 @@
 # Defikarte.ch - the App
 
-![Picture](/app/defikarte/assets/icons/appstore.png)
+<img src="./app/assets/logo_defikarte.png" alt="defikarte.ch" style="height:150px"/>
 
 ## Purpose of the app
 
@@ -16,42 +16,49 @@ The app is a project by [Defikarte.ch](https://www.defikarte.ch) and is intended
 
 The App is available in the Appstores.
 
-[![appstore.png](images/appstore.png)](https://apps.apple.com/us/app/defikarte-ch/id1549569525)
+<a href="https://apps.apple.com/ch/app/defikarte-ch/id1549569525?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 10px; width: 150px; height: 50px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1613952000" alt="Download on the App Store" style="border-radius: 10px; width: 150px; height: 50px;"></a>
 
-[![playstore.png](images/playstore.png)](https://play.google.com/store/apps/details?id=ch.defikarte.app)
+<a style="display: inline-block; overflow: hidden;" href='https://play.google.com/store/apps/details?id=ch.defikarte.app'><img style="height:63px;" alt='Jetzt bei Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 
 ## Development
-The app is developed using [React Native](https://reactnative.dev/) and [Expo](https://expo.io). The backend API was implemented in .Net using [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview).
 
-System Requirements App (React Native):
-* Node.js version >=14
-* npm
-* VS Code (recommended).
-* Andorid or iOS device to download [iOS App](https://apps.apple.com/ch/app/expo-client/id982107779) or [Android App](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=de_CH&gl=US)
-* You can also use an iOS or Android simulator (not tested or setup)
+The mobile-app (android & iOS) is developed using [React Native](https://reactnative.dev/) and [Expo](https://expo.io). The backend (REST-API) ist implemented in .Net using [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview).
+
+### Getting started Mobile-App (React Native):
+
+IDE & Tools:
+
+- Node.js Version >=18 & npm
+- VS Code
+- ExpoGO für Android oder iOS (emulators are supported)
 
 Starting the development environment (App/React Native).
-* Install expo-cli: `npm install expo-cli -g` (installs expo globally on your device)
-* Create .env file with necessary environment variables in the defikarte directory
-* First run `npm install` and then run `npm start`
-* scan the QR code on the newly opened website with your smartphone / tablet
-* Open the link with the Expo app
-* Start testing
 
-System Requirements Backend (Azure Functions):
-* .Net Core 3.1
-* Visual Studio or Visual Studio Code incl. Azure development
-* Postman (recommended)
+- `cd app`
+- Create .env-File according to .env.template
+- Execute `npm install` && `npx expo start` (starts the Expo-App)
+- Scn the QR-Code displayed in the console => ExpoGO-App starts
+
+### Getting started Backend (.Net/Azure Functions):
+
+IDE & Tools
+
+- x86-environment (Apple Silicon is not yet supported)
+- .Net 6
+- Visual Studio or Visual Studio Code incl. Azure Function Core Tools
+- Postman (recommended)
 
 Starting the development environment (Backend / Azure Functions).
-* Open DeficarteBackend.sln with Visual Studio
-* add local.settings.json (needed for storage emulation)
-* Start project
-* Execute http-requests with Postman (see console for local ports)
+
+- `cd backend`
+- Open DeficarteBackend.sln with Visual Studio
+- add local.settings.json (needed for storage emulation)
+- Start debugging in Visual Studio / `dotnet run`
+- Execute http-requests with Postman (see console for local ports)
 
 ## Contribute
 
-We are looking for motivated contributors that help us, to make the app better. Solve an issue, create an issue, write some new functions.
+We are looking for motivated contributors that help us, to make the app better. Solve or create an issue, develope new features.
 
 ### Contributors
 
@@ -65,18 +72,18 @@ Please read [SPONSORING.md](SPONSORING.md)
 
 ### Platin Sponsor
 
-* [Procamed](https://www.procamed.ch)
-* [Lifetec](https://www.lifetec.ch)
+- [Procamed](https://www.procamed.ch)
+- [Lifetec](https://www.lifetec.ch)
 
 ### Gold Sponsors
 
-* [First-Responder.ch](https://www.procamed.ch)
+- [First-Responder.ch](https://www.procamed.ch)
 
 ### Logo Sponsors
 
-* [Hexagon](http://www.hexagonsi.com)
-* [Hostpoint](http://www.hostpoint.ch)
-* [WC Guide](https://www.wc-guide.com)
-* [SIRMED](https://www.sirmed.ch)
+- [Hexagon](http://www.hexagonsi.com)
+- [Hostpoint](http://www.hostpoint.ch)
+- [WC Guide](https://www.wc-guide.com)
+- [SIRMED](https://www.sirmed.ch)
 
-[Sponsor us](https://github.com/sponsors/chnuessli)
+[Become a Sponsor](https://github.com/sponsors/chnuessli)

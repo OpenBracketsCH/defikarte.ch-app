@@ -3,7 +3,7 @@
 
 # Defikarte.ch - die App
 
-![Picture](app/defikarte/assets/icons/appstore.png)
+<img src="./app/assets/logo_defikarte.png" alt="defikarte.ch" style="height:150px"/>
 
 This Page is also available in English, please visit: [English 👈🏻](README_en.md)
 
@@ -21,43 +21,49 @@ Die App ist ein Projekt von [Defikarte.ch](https://www.defikarte.ch) und soll he
 
 Die App zu Defikarte.ch findet man in den Stores des jeweiligen Anbieters.
 
-[![appstore.png](images/appstore.png)](https://apps.apple.com/us/app/defikarte-ch/id1549569525)
+<a href="https://apps.apple.com/ch/app/defikarte-ch/id1549569525?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 10px; width: 150px; height: 50px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/de-de?size=250x83&amp;releaseDate=1613952000" alt="Download on the App Store" style="border-radius: 10px; width: 150px; height: 50px;"></a>
 
-[![playstore.png](images/playstore.png)](https://play.google.com/store/apps/details?id=ch.defikarte.app)
+<a style="display: inline-block; overflow: hidden;" href='https://play.google.com/store/apps/details?id=ch.defikarte.app'><img style="height:63px;" alt='Jetzt bei Google Play' src='https://play.google.com/intl/de_de/badges/static/images/badges/de_badge_web_generic.png'/></a>
 
 ## Entwicklung
 
-Die App wird mit [React Native](https://reactnative.dev/) und [Expo](https://expo.io) entwickelt. Die Backend-API wurde in .Net mit [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview) implementiert.
+Zur Entwicklung der Mobile-App (Android & iOS) wird [React Native](https://reactnative.dev/) und [Expo](https://expo.io) verwendet. Das Backend (REST-API) ist mit .Net (c#) und [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview) implementiert.
 
-Systemanforderungen App (React Native):
-* Node.js Version >=14
-* npm
-* VS Code (empfohlen)
-* iOS oder Android Gerät zum download der [iOS App](https://apps.apple.com/ch/app/expo-client/id982107779) oder [Android App](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=de_CH&gl=US)
-* Alternativ kann auch ein iOS oder Android Simulator zum testen verwendet werden (nicht geprüft oder konfiguriert innerhalb diese Projektes)
+### Getting started Mobile-App (React Native):
+
+Entwicklungsumgebung & Tools:
+
+- Node.js Version >=18 & npm
+- VS Code
+- ExpoGO für Android oder iOS (Simulatoren können verwendet werden)
 
 Starten der Entwicklungsumgebung (App/React Native)
-* Installieren der expo-cli: `npm install expo-cli -g` (installiert expo global auf deinem Gerät)
-* .env-File mit nötigen Environment-Variablen defikarte-Verzeichnis anlegen
-* Zuerst `npm install` und danach `npm start` ausführen
-* Scanne den QR-Code auf der neu geöffneten Website mit deinem Smartphone / Tablet
-* Öffne den Link mit der Expo-App
-* Beginne zu testen
 
-Systemanforderungen Backend (Azure Functions):
-* .Net Core 3.1
-* Visual Studio oder Visual Studio Code inkl. Azure Entwicklung
-* Postman (empfohlen)
+- `cd app`
+- .env-File mit nötigen Environment-Variablen app-Verzeichnis anlegen (siehe .env.template)
+- `npm install` und danach `npx expo start` ausführen (startet die Expo-App)
+- Scanne den QR-Code in der Konsole mit dem Entwicklungsgerät => ExpoGO-App startet
+
+### Getting started Backend (.Net/Azure Functions):
+
+Enticklungsumgbeung & Tools:
+
+- x86-Umgebung (Apple Silicon wird aktuell nicht untersützt)
+- .Net 6
+- Visual Studio oder Visual Studio Code inkl. Azure Function Core Tools
+- Postman (empfohlen)
 
 Starten der Entwicklungsumgebung (Backend / Azure Functions)
-* DefikarteBackend.sln mit Visual Studio öffnen
-* local.settings.json hinzufügen (wird für Storage emulation benötigt)
-* Projekt starten
-* Mit Postman http-requests ausführen (siehe Console für locale Ports)
+
+- `cd backend`
+- DefikarteBackend.sln mit Visual Studio / Order in VS Code öffnen
+- local.settings.json hinzufügen (wird für Storage emulation benötigt)
+- In Visual Studio debugging starten / `dotnet run`
+- Mit Postman http-requests ausführen (siehe Console für locale Ports)
 
 ## Mitmachen
 
-Wir sind immer auf der Suche nach motivierten, offenen Mitwirkenden die unser Projekt unterstützen wollen. Löse ein Issue, erfasse ein Issue, schreibe neue Funktionen usw.
+Wir sind immer auf der Suche nach motivierten, offenen Mitwirkenden die unser Projekt unterstützen wollen. Löse ein Issue, erfasse ein Issue oder entwickle ein neues Feature!
 
 ### Mitwirkende
 
@@ -67,22 +73,22 @@ Wir sind immer auf der Suche nach motivierten, offenen Mitwirkenden die unser Pr
 
 ## Sponsoren
 
-Bitte lese [SPONSORING.md](SPONSORING.md)
+Bitte lies [SPONSORING.md](SPONSORING.md)
 
 ### Platin Sponsoren
 
-* [Procamed](https://www.procamed.ch)
-* [Lifetec](https://www.lifetec.ch)
+- [Procamed](https://www.procamed.ch)
+- [Lifetec](https://www.lifetec.ch)
 
 ### Gold Sponsoren
 
-* [First-Responder.ch](https://www.procamed.ch)
+- [First-Responder.ch](https://www.procamed.ch)
 
 ### Logo Sponsoren
 
-* [Hexagon](http://www.hexagonsi.com)
-* [Hostpoint](http://www.hostpoint.ch)
-* [WC Guide](https://www.wc-guide.com)
-* [SIRMED](https://www.sirmed.ch)
+- [Hexagon](http://www.hexagonsi.com)
+- [Hostpoint](http://www.hostpoint.ch)
+- [WC Guide](https://www.wc-guide.com)
+- [SIRMED](https://www.sirmed.ch)
 
-[Sponsore uns](https://github.com/sponsors/chnuessli)
+[Werde zum Sponsor](https://github.com/sponsors/chnuessli)
