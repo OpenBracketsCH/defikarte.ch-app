@@ -77,13 +77,12 @@ Please read [SPONSORING.md](SPONSORING.md)
 
 ### Gold Sponsors
 
-- [First-Responder.ch](https://www.procamed.ch)
+- [First-Responder.ch](https://www.first-responder.ch)
 
 ### Logo Sponsors
 
 - [Hexagon](http://www.hexagonsi.com)
 - [Hostpoint](http://www.hostpoint.ch)
-- [WC Guide](https://www.wc-guide.com)
 - [SIRMED](https://www.sirmed.ch)
 
 [Become a Sponsor](https://github.com/sponsors/chnuessli)
