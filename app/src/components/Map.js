@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import { Marker, UrlTile } from 'react-native-maps';
+import React, { useEffect, useState } from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-map-clustering';
-import { currentDefisOnMap, isPointInRegion } from '../helpers/markersOnMap.js'
-import DefiMarker from './DefiMarker';
-import SimpleMarker from './SimpleMarker';
+import { Marker, UrlTile } from 'react-native-maps';
+import { currentDefisOnMap, isPointInRegion } from '../helpers/markersOnMap.js';
 import CreateMapOverlay from './CreateMapOverlay';
-import MapInfoPanel from './MapInfoPanel';
+import DefiMarker from './DefiMarker';
 import DetailMapOverlay from './DetailMapOverlay';
 import LocationButton from './LocationButton.js';
+import MapInfoPanel from './MapInfoPanel';
 import MapLayerButton from './MapLayersButton.js';
 import OsmContributerOverlay from './OsmContributerOverlay.js';
+import SimpleMarker from './SimpleMarker';
 
 const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCreateMode, setIsCreateMode }) => {
   const [region, setRegion] = useState(initCoords);
@@ -25,7 +25,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
       latitude,
       longitude,
       latitudeDelta: 0.01,
-      longitudeDelta: 0.01
+      longitudeDelta: 0.01,
     });
   };
 
@@ -40,7 +40,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
     if (isCreateMode && markerOutsideRegion) {
       setNewDefiCoords({ latitude: region.latitude, longitude: region.longitude });
     }
-  }, [region, isCreateMode])
+  }, [region, isCreateMode]);
 
   useEffect(() => {
     // debounce defis on map claculation for performance optimization
@@ -52,26 +52,20 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
       if (timerId) {
         clearTimeout(timerId);
       }
-    }
-  }, [region, defibrillators])
+    };
+  }, [region, defibrillators]);
 
   useEffect(() => {
     const firstload = defibrillators.length === 0 && defibrillatorsLoading;
     const info = defisOnMap.length > 1000 && !isCreateMode;
     const top = firstload ? 'load' : info ? 'info' : isCreateMode ? 'create' : 'loc';
     setMode(top);
-  }, [defisOnMap.length, defibrillators.length, defibrillatorsLoading, isCreateMode])
+  }, [defisOnMap.length, defibrillators.length, defibrillatorsLoading, isCreateMode]);
 
   const renderMarkers = (createMode, defibrillators, latlon, setLatLng) => {
     if (createMode) {
-      return (
-        <Marker draggable
-          coordinate={latlon}
-          onDragEnd={(e) => setLatLng(e.nativeEvent.coordinate)}
-        />
-      );
-    }
-    else {
+      return <Marker draggable coordinate={latlon} onDragEnd={(e) => setLatLng(e.nativeEvent.coordinate)} />;
+    } else {
       if (defibrillators.length >= 1000) {
         return null;
       }
@@ -84,8 +78,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
               coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
             />
           );
-        }
-        else {
+        } else {
           return (
             <SimpleMarker
               key={defibrillator.id.toString()}
@@ -95,56 +88,45 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
             />
           );
         }
-      }
-      );
+      });
     }
   };
 
   const renderOverlay = (mode) => {
     if (mode === 'create') {
-      return <CreateMapOverlay
-        isTopView={true}
-        setIsCreateMode={setIsCreateMode}
-        newDefiCoords={newDefiCoords} />
-    }
-    else if (selectedDefibrillator != null) {
-      return <DetailMapOverlay defibrillator={selectedDefibrillator} />
+      return <CreateMapOverlay isTopView={true} setIsCreateMode={setIsCreateMode} newDefiCoords={newDefiCoords} />;
+    } else if (selectedDefibrillator != null) {
+      return <DetailMapOverlay defibrillator={selectedDefibrillator} />;
     } else {
       return null;
     }
-  }
+  };
 
   const renderInfoPanel = (defibrillators, mode) => {
-    if (mode === 'info') { //defibrillators.length > 1000 && !isCreateMode
+    if (mode === 'info') {
+      //defibrillators.length > 1000 && !isCreateMode
       return (
         <MapInfoPanel
           isTopView={true}
-          text='Zoome in eine bestimmte Region um Defibrillatoren anzuzeigen.'
-          subText={`(${defibrillators.length} Defis im Kartenausschnitt, Anzeige ab < 1000)`} />
-      );
-    }
-    else if (mode === 'load') { //defibrillators.length === 0 && isLoading
-      return (
-        <MapInfoPanel
-          isTopView={true}
-          text="Lade Defibrillatoren..."
-          showLoading={true}
+          text="Zoome in eine bestimmte Region um Defibrillatoren anzuzeigen."
+          subText={`(${defibrillators.length} Defis im Kartenausschnitt, Anzeige ab < 1000)`}
         />
       );
+    } else if (mode === 'load') {
+      //defibrillators.length === 0 && isLoading
+      return <MapInfoPanel isTopView={true} text="Lade Defibrillatoren..." showLoading={true} />;
     }
-  }
+  };
 
-  const onMapPress = event => {
+  const onMapPress = (event) => {
     if (event.action !== null && event.action !== 'marker-press') {
       setSelectedDefibrillator(null);
     }
-  }
+  };
 
-  const tileOverlay = isTileOverlayActive ? <UrlTile
-    urlTemplate='https://tile.osm.ch/osm-swiss-style/{z}/{x}/{y}.png'
-    maximumZ={19}
-    flipY={false}
-  /> : null;
+  const tileOverlay = isTileOverlayActive ? (
+    <UrlTile urlTemplate="https://tile.osm.ch/osm-swiss-style/{z}/{x}/{y}.png" maximumZ={19} flipY={false} />
+  ) : null;
 
   return (
     <View style={styles.containerStyle}>
@@ -158,7 +140,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         spiralEnabled={false}
         onPress={(e) => onMapPress(e.nativeEvent)}
         showsMyLocationButton={false}
-        mapType={Platform.OS == "android" ? "standard" : "mutedStandard"}
+        mapType={Platform.OS == 'android' ? 'standard' : 'mutedStandard'}
         maxZoomLevel={19}
         maxZoom={17}
         moveOnMarkerPress={false}
@@ -172,7 +154,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
       {renderOverlay(mode)}
       <LocationButton isTopView={mode === 'loc'} animateToRegion={animateToRegion} />
       <MapLayerButton setLayerActive={setIsTileOverlayActive} layerIsActive={isTileOverlayActive} />
-    </View >
+    </View>
   );
 };
 

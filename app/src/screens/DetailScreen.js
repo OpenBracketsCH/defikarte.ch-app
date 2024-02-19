@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Linking, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
+import React from 'react';
+import { Linking, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { UrlTile } from 'react-native-maps';
 import openMap from 'react-native-open-maps';
-import DefiMarker from '../components/DefiMarker';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AttributeListing from '../components/AttributeListing';
+import DefiMarker from '../components/DefiMarker';
 import OsmContributerOverlay from '../components/OsmContributerOverlay';
 
 const DetailScreen = ({ navigation }) => {
@@ -16,7 +16,7 @@ const DetailScreen = ({ navigation }) => {
     latitude: defibrillator.lat,
     longitude: defibrillator.lon,
     latitudeDelta: 0.001,
-    longitudeDelta: 0.001
+    longitudeDelta: 0.001,
   };
 
   makeCall = (phoneNumber) => {
@@ -36,7 +36,7 @@ const DetailScreen = ({ navigation }) => {
   let containerStyle = { ...styles.containerStyle };
   containerStyle.paddingBottom = insets.bottom * 0.5;
   return (
-    <View style={containerStyle} >
+    <View style={containerStyle}>
       <View style={{ height: '30%' }}>
         <MapView
           style={styles.mapStyle}
@@ -44,16 +44,12 @@ const DetailScreen = ({ navigation }) => {
           scrollEnabled={false}
           rotateEnabled={false}
           zoomEnabled={false}
-          onPress={() => { navigation.navigate('Main', { latlng: { latitude: defibrillator.lat, longitude: defibrillator.lon } }) }}
+          onPress={() => {
+            navigation.navigate('Main', { latlng: { latitude: defibrillator.lat, longitude: defibrillator.lon } });
+          }}
         >
-          <UrlTile
-            urlTemplate='https://tile.osm.ch/osm-swiss-style/{z}/{x}/{y}.png'
-            maximumZ={19}
-            flipY={false}
-          />
-          <DefiMarker
-            defibrillator={defibrillator}
-          />
+          <UrlTile urlTemplate="https://tile.osm.ch/osm-swiss-style/{z}/{x}/{y}.png" maximumZ={19} flipY={false} />
+          <DefiMarker defibrillator={defibrillator} />
         </MapView>
         <OsmContributerOverlay show={true} />
       </View>
@@ -63,21 +59,31 @@ const DetailScreen = ({ navigation }) => {
         <View style={styles.buttonContainerStyle}>
           <TouchableOpacity
             style={styles.buttonStyle}
-            onPress={() => openMap({ latitude: defibrillator.lat, longitude: defibrillator.lon, end: `${defibrillator.lat}, ${defibrillator.lon}`, query: name, travelType: 'walk' })}
+            onPress={() =>
+              openMap({
+                latitude: defibrillator.lat,
+                longitude: defibrillator.lon,
+                end: `${defibrillator.lat}, ${defibrillator.lon}`,
+                query: name,
+                travelType: 'walk',
+              })
+            }
           >
-            <Feather style={styles.navigationIconStyle} name='navigation' />
+            <Feather style={styles.navigationIconStyle} name="navigation" />
             <Text style={styles.buttonTextStyle}>Navigieren</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonStyle}
-            onPress={() => { makeCall(emergencyPhone) }}
+            onPress={() => {
+              makeCall(emergencyPhone);
+            }}
           >
-            <Feather style={styles.navigationIconStyle} name='phone-call' />
+            <Feather style={styles.navigationIconStyle} name="phone-call" />
             <Text style={styles.buttonTextStyle}>Notruf ({emergencyPhone})</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView >
+      <ScrollView>
         <AttributeListing title="Standort" iconName="map-pin" value={defibrillator.tags['defibrillator:location']} />
         <AttributeListing title="Stockwerk" iconName="stairs" value={defibrillator.tags.level} />
         <AttributeListing title="Beschreibung" iconName="list" value={defibrillator.tags.description} />
@@ -87,14 +93,14 @@ const DetailScreen = ({ navigation }) => {
         <AttributeListing title="Zugänglich" iconName="alert-circle" value={defibrillator.tags.access} />
         <AttributeListing title="Im Gebäude" iconName="home" value={defibrillator.tags.indoor} />
       </ScrollView>
-    </View >
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: 'white',
-    flex: 1
+    flex: 1,
   },
   titleStyle: {
     fontSize: 18,
@@ -131,7 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginRight: 10,
     color: 'white',
-  }
+  },
 });
 
 export default DetailScreen;

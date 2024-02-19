@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 
+const markerImage = require('../../assets/marker.png');
+
 const SimpleMarker = ({ defibrillator, onMarkerSelected }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const tags = defibrillator.tags;
 
-  let dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.simpleDayMarkerStyle : styles.simpleDayNightMarkerStyle;
+  let dayNightStyle =
+    !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.simpleDayMarkerStyle : styles.simpleDayNightMarkerStyle;
   if (defibrillator.new) {
-    dayNightStyle = { ...dayNightStyle, ...styles.newMarkerStyle }
+    dayNightStyle = { ...dayNightStyle, ...styles.newMarkerStyle };
   }
 
   return (
@@ -18,10 +21,7 @@ const SimpleMarker = ({ defibrillator, onMarkerSelected }) => {
       onPress={() => onMarkerSelected(defibrillator)}
     >
       <View style={dayNightStyle}>
-        <Image
-          style={styles.simpleImageStyle}
-          source={require('../../assets/marker.png')}
-          onLoadEnd={() => setImageLoaded(true)} />
+        <Image style={styles.simpleImageStyle} source={markerImage} onLoadEnd={() => setImageLoaded(true)} />
       </View>
     </Marker>
   );
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     width: 34,
     borderColor: 'rgb(255, 80, 100)',
     borderWidth: 3,
-  }
+  },
 });
 
 export default SimpleMarker;

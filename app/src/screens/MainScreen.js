@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { AppState, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { AppState, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LocationError from '../components/LocationError';
 import Map from '../components/Map';
@@ -13,7 +13,11 @@ const MainScreen = ({ navigation }) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const insets = useSafeAreaInsets();
-  const { state: { defibrillators, loading }, getDefibrillators, setDefisNearLocation } = useContext(DefibrillatorContext);
+  const {
+    state: { defibrillators, loading },
+    getDefibrillators,
+    setDefisNearLocation,
+  } = useContext(DefibrillatorContext);
   const { state: userLocation, updateLocation, enableLocationTracking, setLocationTracker, setInitZoom } = useContext(LocationContext);
   useDefibrillators(defibrillators, getDefibrillators, setDefisNearLocation, userLocation);
   const [locationErr, resetErr] = useLocation(userLocation, updateLocation, enableLocationTracking, setLocationTracker);
@@ -25,7 +29,7 @@ const MainScreen = ({ navigation }) => {
       latitude,
       longitude,
       latitudeDelta: 0.01,
-      longitudeDelta: 0.01
+      longitudeDelta: 0.01,
     });
   };
 
@@ -34,7 +38,7 @@ const MainScreen = ({ navigation }) => {
       animateToRegion({ latitude: userLocation.location.latitude, longitude: userLocation.location.longitude });
       setInitZoom(true);
     }
-  }, [userLocation])
+  }, [userLocation]);
 
   useEffect(() => {
     const latlng = navigation.getParam('latlng');
@@ -45,33 +49,34 @@ const MainScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (locationErr) {
-      LocationError({ title: "Standort Zugriff verweigert", message: "Um die Standortfunktion zu nutzen, aktiviere den Zugriff in den Einstellungen." });
+      LocationError({
+        title: 'Standort Zugriff verweigert',
+        message: 'Um die Standortfunktion zu nutzen, aktiviere den Zugriff in den Einstellungen.',
+      });
       resetErr();
     }
   }, [locationErr]);
 
   useEffect(() => {
-    if (Platform.OS === "android") {
-      AppState.addEventListener("focus", _handleAppStateFocus);
-    }
-    else if (Platform.OS === "ios") {
-      AppState.addEventListener("change", _handleAppStateChange);
+    if (Platform.OS === 'android') {
+      AppState.addEventListener('focus', _handleAppStateFocus);
+    } else if (Platform.OS === 'ios') {
+      AppState.addEventListener('change', _handleAppStateChange);
     }
 
     return () => {
-      AppState.removeEventListener("focus", _handleAppStateFocus);
-      AppState.removeEventListener("change", _handleAppStateChange);
+      AppState.removeEventListener('focus', _handleAppStateFocus);
+      AppState.removeEventListener('change', _handleAppStateChange);
     };
   }, []);
 
   useEffect(() => {
-    if (appStateVisible === "active") {
+    if (appStateVisible === 'active') {
       enableLocationTracking(true);
-    }
-    else {
+    } else {
       enableLocationTracking(false);
     }
-  }, [appStateVisible])
+  }, [appStateVisible]);
 
   const _handleAppStateChange = (nextAppState) => {
     appState.current = nextAppState;
@@ -79,13 +84,13 @@ const MainScreen = ({ navigation }) => {
   };
 
   const _handleAppStateFocus = () => {
-    setAppStateVisible("active");
-  }
+    setAppStateVisible('active');
+  };
 
   let bottomBar = { ...styles.bottomBar };
   bottomBar.paddingBottom = insets.bottom * 0.5;
   return (
-    <View style={styles.containerStyle} >
+    <View style={styles.containerStyle}>
       <Map
         mapRef={mapRef}
         initCoords={{
@@ -101,16 +106,16 @@ const MainScreen = ({ navigation }) => {
       />
       <View style={bottomBar}>
         <TouchableOpacity onPress={() => navigation.navigate('List')}>
-          <Feather name='list' style={styles.iconStyle} />
+          <Feather name="list" style={styles.iconStyle} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setIsCreateMode(true)}>
-          <Feather name='plus-circle' style={styles.iconStyle} />
+          <Feather name="plus-circle" style={styles.iconStyle} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('About')}>
-          <Feather name='info' style={styles.iconStyle} />
+          <Feather name="info" style={styles.iconStyle} />
         </TouchableOpacity>
       </View>
-    </View >
+    </View>
   );
 };
 
@@ -130,13 +135,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     bottom: 0,
     height: 70,
-    backgroundColor: 'green'
+    backgroundColor: 'green',
   },
   iconStyle: {
     alignSelf: 'center',
     fontSize: 32,
-    color: 'white'
-  }
+    color: 'white',
+  },
 });
 
 export default MainScreen;
