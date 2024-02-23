@@ -3,13 +3,15 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const LocationButton = ({ setLayerActive, layerIsActive }) => {
-
-  const layerIcon = layerIsActive ? 'ios-layers' : 'ios-layers-outline';
+  const layerIcon = layerIsActive ? 'layers' : 'layers-outline';
 
   return (
-    <TouchableOpacity style={styles.layerButtonStyle} onPress={async () => {
-      setLayerActive(!layerIsActive)
-    }}>
+    <TouchableOpacity
+      style={styles.layerButtonStyle}
+      onPress={async () => {
+        setLayerActive(!layerIsActive);
+      }}
+    >
       <Ionicons name={layerIcon} style={styles.iconStyle} />
       <Text style={styles.textStyle}>OSM</Text>
     </TouchableOpacity>
@@ -40,7 +42,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 8,
     fontWeight: '400',
-  }
+  },
 });
 
 export default LocationButton;
