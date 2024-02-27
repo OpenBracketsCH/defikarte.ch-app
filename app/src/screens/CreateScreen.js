@@ -86,8 +86,8 @@ const CreateScreen = ({ navigation }) => {
     });
   };
 
-  let bottomBar = { ...styles.bottomBar };
-  bottomBar.paddingBottom = insets.bottom * 0.5;
+  const bottomBar = { ...styles.bottomBar };
+  bottomBar.paddingBottom = insets.bottom;
 
   return (
     <View style={styles.containerStyle}>
@@ -98,17 +98,18 @@ const CreateScreen = ({ navigation }) => {
           {state.latitude.toFixed(4)}, {state.longitude.toFixed(4)}
         </Text>
       </View>
-      <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-        <KeyboardAvoidingView
-          // padding is for ios best, for android it is not the best solution,
-          // but the best available in this context
-          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
-          enabled
-        >
+      <KeyboardAvoidingView
+        // padding is for ios best, for android it is not the best solution,
+        // but the best available in this context
+        behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+        enabled
+        style={styles.fieldsContainer}
+      >
+        <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
           {renderFormComponent()}
           <Text style={styles.errorTextStyle}>{defiState.error}</Text>
-        </KeyboardAvoidingView>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <View style={bottomBar}>
         <TouchableOpacity disabled={defiState.creating} color="white" title="Erstellen" onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonTextStyle}>Erstellen</Text>
@@ -125,6 +126,10 @@ const styles = StyleSheet.create({
   containerStyle: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'white',
+    display: 'flex',
+  },
+  fieldsContainer: {
+    flex: 1,
   },
   coordStyle: {
     flexDirection: 'row',
