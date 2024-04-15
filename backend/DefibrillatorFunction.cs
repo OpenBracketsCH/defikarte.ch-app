@@ -159,7 +159,7 @@ namespace DefikarteBackend
                     "operator", request.Operator
                 },
                 {
-                    "access", request.Access ? "yes" : "no"
+                    "access", request.Access
                 },
                 {
                     "indoor", request.Indoor ? "yes" : "no"

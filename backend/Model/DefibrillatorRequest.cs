@@ -14,7 +14,7 @@
 
         public string Description { get; set; }
 
-        public bool Access { get; set; }
+        public string Access { get; set; }
 
         public string Operator { get; set; }
 

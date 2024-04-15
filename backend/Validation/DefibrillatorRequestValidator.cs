@@ -1,5 +1,6 @@
 ﻿using DefikarteBackend.Model;
 using FluentValidation;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace DefikarteBackend.Validation
@@ -14,13 +15,13 @@ namespace DefikarteBackend.Validation
             RuleFor(x => x.Location).NotEmpty().MaximumLength(200);
             RuleFor(x => x.Description).MaximumLength(200);
             RuleFor(x => x.OperatorPhone).Custom((value, context) => PhoneNumberValid(value, context)).When(x => !string.IsNullOrEmpty(x.OperatorPhone));
-            RuleFor(x => x.Access).NotNull();
+            RuleFor(x => x.Access).Custom((value, context) => AccessValid(value, context));
             RuleFor(x => x.Indoor).NotNull();
             RuleFor(x => x.EmergencyPhone).NotEmpty().Custom((value, context) => PhoneNumberValid(value, context));
             // opening hours validation is missing
         }
 
-        private void PhoneNumberValid(string phoneNumberRaw, ValidationContext<DefibrillatorRequest> context)
+        private static void PhoneNumberValid(string phoneNumberRaw, ValidationContext<DefibrillatorRequest> context)
         {
             if (string.IsNullOrEmpty(phoneNumberRaw))
             {
@@ -51,6 +52,19 @@ namespace DefikarteBackend.Validation
             catch (System.Exception)
             {
                 context.AddFailure(context.PropertyName, "Phonenumber not valid");
+            }
+        }
+
+        private static void AccessValid(string access, ValidationContext<DefibrillatorRequest> context)
+        {
+            if (string.IsNullOrEmpty(access))
+            {
+                return;
+            }
+
+            if (!(new List<string> { "yes", "no", "private", "permissive" }).Contains(access))
+            {
+                context.AddFailure(context.PropertyName, "Access not valid");
             }
         }
     }
