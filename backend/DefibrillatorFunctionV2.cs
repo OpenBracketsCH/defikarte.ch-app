@@ -15,7 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using OsmSharp;
 using OsmSharp.IO.API;
@@ -35,7 +37,7 @@ namespace DefikarteBackend
         }
 
         [FunctionName("Defibrillators_GETALL_V2")]
-        [OpenApiOperation(operationId: "GetDefibrillators_V2")]
+        [OpenApiOperation(operationId: "GetDefibrillators_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Get all defibrillators from switzerland as geojson.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
         public async Task<IActionResult> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v2/defibrillator")] HttpRequestMessage req,
@@ -71,9 +73,10 @@ namespace DefikarteBackend
 
 
         [FunctionName("Defibrillators_POST_V2")]
-        [OpenApiOperation(operationId: "CreateDefibrillator_V2")]
+        [OpenApiOperation(operationId: "CreateDefibrillator_V2", tags: new[] {"Defibrillator-V2"}, Summary = "Create a new defibrillator.")]
         [OpenApiRequestBody("application/json", typeof(DefibrillatorRequestV2))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(DefibrillatorResponse), Description = "The OK response")]
+        [OpenApiSecurity("Defikarte.ch API-Key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
         public async Task<IActionResult> Create(
             [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "v2/defibrillator")] HttpRequest req,
             ILogger log)
@@ -169,7 +172,7 @@ namespace DefikarteBackend
                     "access", request.Access
                 },
                 {
-                    "indoor", request.Indoor ? "yes" : "no"
+                    "indoor", request.Indoor
                 },
                 {
                     "description", request.Description

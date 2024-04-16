@@ -24,7 +24,7 @@
 
         public string EmergencyPhone { get; set; }
 
-        public bool Indoor { get; set; }
+        public string Indoor { get; set; }
 
         public string Source { get; set; }
 

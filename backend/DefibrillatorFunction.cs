@@ -15,7 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using OsmSharp;
 using OsmSharp.IO.API;
@@ -35,7 +37,7 @@ namespace DefikarteBackend
         }
 
         [FunctionName("Defibrillators_GETALL")]
-        [OpenApiOperation(operationId: "GetDefibrillators_V1")]
+        [OpenApiOperation(operationId: "GetDefibrillators_V1", tags: new[] { "Defibrillator-V1" }, Summary = "Get all defibrillators from switzerland as custom json.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<OsmNode>), Description = "The OK response")]
         public async Task<IActionResult> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "defibrillator")] HttpRequestMessage req,
@@ -71,9 +73,10 @@ namespace DefikarteBackend
 
 
         [FunctionName("Defibrillators_POST")]
-        [OpenApiOperation(operationId: "CreateDefibrillator_V1")]
+        [OpenApiOperation(operationId: "CreateDefibrillator_V1", tags: new[] { "Defibrillator-V1" }, Summary = "Create a new defibrillator. [Soon deprecated, use V2]")]
         [OpenApiRequestBody("application/json", typeof(DefibrillatorRequest))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(DefibrillatorResponse), Description = "The OK response")]
+        [OpenApiSecurity("Defikarte.ch API-Key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
         public async Task<IActionResult> Create(
             [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "defibrillator")] HttpRequest req,
             ILogger log)
