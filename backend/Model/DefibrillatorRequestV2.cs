@@ -1,6 +1,6 @@
 ﻿namespace DefikarteBackend.Model
 {
-    public class DefibrillatorRequest
+    public class DefibrillatorRequestV2
     {
         public long? Id { get; set; }
 
@@ -14,7 +14,7 @@
 
         public string Description { get; set; }
 
-        public bool Access { get; set; }
+        public string Access { get; set; }
 
         public string Operator { get; set; }
 

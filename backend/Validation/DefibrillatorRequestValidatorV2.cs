@@ -5,9 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace DefikarteBackend.Validation
 {
-    public class DefibrillatorRequestValidator : AbstractValidator<DefibrillatorRequest>
+    public class DefibrillatorRequestValidatorV2 : AbstractValidator<DefibrillatorRequestV2>
     {
-        public DefibrillatorRequestValidator()
+        public DefibrillatorRequestValidatorV2()
         {
             RuleFor(x => x.Latitude).NotEmpty();
             RuleFor(x => x.Longitude).NotEmpty();
@@ -15,13 +15,13 @@ namespace DefikarteBackend.Validation
             RuleFor(x => x.Location).NotEmpty().MaximumLength(200);
             RuleFor(x => x.Description).MaximumLength(200);
             RuleFor(x => x.OperatorPhone).Custom((value, context) => PhoneNumberValid(value, context)).When(x => !string.IsNullOrEmpty(x.OperatorPhone));
-            RuleFor(x => x.Access).NotNull();
+            RuleFor(x => x.Access).Custom((value, context) => AccessValid(value, context));
             RuleFor(x => x.Indoor).NotNull();
             RuleFor(x => x.EmergencyPhone).NotEmpty().Custom((value, context) => PhoneNumberValid(value, context));
             // opening hours validation is missing
         }
 
-        private static void PhoneNumberValid(string phoneNumberRaw, ValidationContext<DefibrillatorRequest> context)
+        private static void PhoneNumberValid(string phoneNumberRaw, ValidationContext<DefibrillatorRequestV2> context)
         {
             if (string.IsNullOrEmpty(phoneNumberRaw))
             {
@@ -55,7 +55,7 @@ namespace DefikarteBackend.Validation
             }
         }
 
-        private static void AccessValid(string access, ValidationContext<DefibrillatorRequest> context)
+        private static void AccessValid(string access, ValidationContext<DefibrillatorRequestV2> context)
         {
             if (string.IsNullOrEmpty(access))
             {

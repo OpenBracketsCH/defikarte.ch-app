@@ -8,12 +8,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
-    <PackageReference Include="FluentValidation" Version="11.6.0" />
-    <PackageReference Include="libphonenumber-csharp" Version="8.13.23" />
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="libphonenumber-csharp" Version="8.13.34" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.2.0" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
-    <PackageReference Include="OsmApiClient" Version="0.0.8" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="1.5.1" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.3.0" />
+    <PackageReference Include="OsmSharp.IO.API" Version="1.0.4" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

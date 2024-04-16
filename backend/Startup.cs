@@ -5,6 +5,7 @@ using DefikarteBackend.Cache;
 using DefikarteBackend.Configuration;
 using DefikarteBackend.Model;
 using Azure.Storage.Blobs;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 
 [assembly: FunctionsStartup(typeof(DefikarteBackend.Startup))]
 namespace DefikarteBackend
@@ -22,6 +23,10 @@ namespace DefikarteBackend
             builder.Services.AddSingleton((s) => serviceConfig);
             builder.Services.AddTransient<ICacheRepository<OsmNode>>(s =>
                 new BlobStorageCacheRepository(container, serviceConfig.BlobStorageBlobName));
+            builder.Services.AddTransient<IGeoJsonCacheRepository>(s =>
+                new BlobStorageCacheRepositoryV2(container, serviceConfig.BlobStorageBlobNameV2));
+
+            builder.Services.AddSingleton<IOpenApiConfigurationOptions>(s => new CustomOpenApiConfigurationOptions());
         }
 
         private IConfigurationRoot LoadConfiguration()
