@@ -46,12 +46,12 @@ namespace DefikarteBackend.Validation
 
                 if (!valid)
                 {
-                    context.AddFailure(context.PropertyName, "Phonenumber not valid");
+                    context.AddFailure(context.PropertyPath, "Phonenumber not valid");
                 }
             }
             catch (System.Exception)
             {
-                context.AddFailure(context.PropertyName, "Phonenumber not valid");
+                context.AddFailure(context.PropertyPath, "Phonenumber not valid");
             }
         }
 
@@ -64,7 +64,7 @@ namespace DefikarteBackend.Validation
 
             if (!(new List<string> { "yes", "no", "private", "permissive" }).Contains(access))
             {
-                context.AddFailure(context.PropertyName, "Access not valid");
+                context.AddFailure(context.PropertyPath, "Access not valid");
             }
         }
 
@@ -77,7 +77,7 @@ namespace DefikarteBackend.Validation
 
             if (!(new List<string> { "yes", "no" }).Contains(indoor))
             {
-                context.AddFailure(context.PropertyName, "Indoor not valid");
+                context.AddFailure(context.PropertyPath, "Indoor not valid");
             }
         }
     }

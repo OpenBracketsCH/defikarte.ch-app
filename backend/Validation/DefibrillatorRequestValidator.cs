@@ -1,6 +1,5 @@
 ﻿using DefikarteBackend.Model;
 using FluentValidation;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace DefikarteBackend.Validation
@@ -46,25 +45,12 @@ namespace DefikarteBackend.Validation
 
                 if (!valid)
                 {
-                    context.AddFailure(context.PropertyName, "Phonenumber not valid");
+                    context.AddFailure(context.PropertyPath, "Phonenumber not valid");
                 }
             }
             catch (System.Exception)
             {
-                context.AddFailure(context.PropertyName, "Phonenumber not valid");
-            }
-        }
-
-        private static void AccessValid(string access, ValidationContext<DefibrillatorRequest> context)
-        {
-            if (string.IsNullOrEmpty(access))
-            {
-                return;
-            }
-
-            if (!(new List<string> { "yes", "no", "private", "permissive" }).Contains(access))
-            {
-                context.AddFailure(context.PropertyName, "Access not valid");
+                context.AddFailure(context.PropertyPath, "Phonenumber not valid");
             }
         }
     }
