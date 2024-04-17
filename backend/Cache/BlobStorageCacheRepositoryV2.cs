@@ -2,19 +2,18 @@
 using DefikarteBackend.Model;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 
 namespace DefikarteBackend.Cache
 {
-    public class BlobStorageCacheRepository : IBlobStorageCacheRepository, ICacheRepository<OsmNode>
+    public class BlobStorageCacheRepositoryV2 : IBlobStorageCacheRepository, IGeoJsonCacheRepository
     {
         private readonly BlobContainerClient _containerClient;
         private readonly string _blobName;
 
-        public BlobStorageCacheRepository(BlobContainerClient containerClient, string blobName)
+        public BlobStorageCacheRepositoryV2(BlobContainerClient containerClient, string blobName)
         {
             _containerClient = containerClient;
             _blobName = blobName;
@@ -46,18 +45,18 @@ namespace DefikarteBackend.Cache
             await blobClient.DeleteIfExistsAsync();
         }
 
-        public async Task<IList<OsmNode>> GetAsync()
+        public async Task<FeatureCollection> GetAsync()
         {
             var content = await ReadAsync(_blobName);
-            return JsonConvert.DeserializeObject<List<OsmNode>>(content);
+            return JsonConvert.DeserializeObject<FeatureCollection>(content);
         }
 
-        public async Task<OsmNode> GetByIdAsync(string id)
+        public async Task<Feature> GetByIdAsync(string id)
         {
-            return (await GetAsync()).FirstOrDefault(x => x.Id == id);
+            return (await GetAsync()).Features.FirstOrDefault(x => x.Id == id);
         }
 
-        public async Task<bool> TryUpdateCacheAsync(IList<OsmNode> values)
+        public async Task<bool> TryUpdateCacheAsync(FeatureCollection values)
         {
             var success = false;
             try

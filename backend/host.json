@@ -2,9 +2,17 @@
   "version": "2.0",
   "logging": {
     "applicationInsights": {
-      "samplingExcludedTypes": "Request",
+      "samplingExcludedTypes": "Request;Exception",
       "samplingSettings": {
-        "isEnabled": true
+        "maxTelemetryItemsPerSecond": 20,
+        "isEnabled": true,
+        "excludedTypes": "Request;Exception"
+      },
+      "logLevel": {
+        "default": "Warning",
+        "Host.Results": "Information",
+        "Function": "Information",
+        "Function.DefikarteBackend": "Information"
       }
     }
   }

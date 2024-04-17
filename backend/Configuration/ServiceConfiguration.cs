@@ -16,6 +16,8 @@ namespace DefikarteBackend.Configuration
 
         public string BlobStorageBlobName { get; set; }
 
+        public string BlobStorageBlobNameV2 { get; set; }
+
         public string BlobStoragaConnectionString { get; set; }
 
         public static ServiceConfiguration Initialize(IConfigurationRoot configuration)
@@ -29,6 +31,7 @@ namespace DefikarteBackend.Configuration
                 BlobStoragaConnectionString = configuration.GetConnectionStringOrSetting("AzureWebJobsStorage"),
                 BlobStorageContainerName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_CONTAINER_NAME"),
                 BlobStorageBlobName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_BLOB_NAME"),
+                BlobStorageBlobNameV2 = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_BLOB_NAME_V2"),
             };
         }
     }

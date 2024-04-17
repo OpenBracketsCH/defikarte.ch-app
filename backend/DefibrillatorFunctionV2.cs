@@ -25,22 +25,22 @@ using OsmSharp.Tags;
 
 namespace DefikarteBackend
 {
-    public class DefibrillatorFunction
+    public class DefibrillatorFunctionV2
     {
         private readonly ServiceConfiguration _config;
-        private readonly ICacheRepository<OsmNode> _cacheRepository;
+        private readonly IGeoJsonCacheRepository _cacheRepository;
 
-        public DefibrillatorFunction(ServiceConfiguration config, ICacheRepository<OsmNode> cacheRepository)
+        public DefibrillatorFunctionV2(ServiceConfiguration config, IGeoJsonCacheRepository cacheRepository)
         {
             _config = config;
             _cacheRepository = cacheRepository;
         }
 
-        [FunctionName("Defibrillators_GETALL")]
-        [OpenApiOperation(operationId: "GetDefibrillators_V1", tags: new[] { "Defibrillator-V1" }, Summary = "Get all defibrillators from switzerland as custom json.")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<OsmNode>), Description = "The OK response")]
+        [FunctionName("Defibrillators_GETALL_V2")]
+        [OpenApiOperation(operationId: "GetDefibrillators_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Get all defibrillators from switzerland as geojson.")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
         public async Task<IActionResult> GetAll(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "defibrillator")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v2/defibrillator")] HttpRequestMessage req,
             ILogger log)
         {
             try
@@ -52,9 +52,9 @@ namespace DefikarteBackend
                 }
 
                 var response = await _cacheRepository.GetAsync();
-                if (response != null && response.Count > 0)
+                if (response != null && response.Features.Count > 0)
                 {
-                    log.LogInformation($"Get all AED from cache. Count: {response.Count}");
+                    log.LogInformation($"Get all AED from cache. Count: {response.Features.Count}");
                     return new OkObjectResult(response);
                 }
 
@@ -72,13 +72,13 @@ namespace DefikarteBackend
         }
 
 
-        [FunctionName("Defibrillators_POST")]
-        [OpenApiOperation(operationId: "CreateDefibrillator_V1", tags: new[] { "Defibrillator-V1" }, Summary = "Create a new defibrillator. [Soon deprecated, use V2]")]
-        [OpenApiRequestBody("application/json", typeof(DefibrillatorRequest))]
+        [FunctionName("Defibrillators_POST_V2")]
+        [OpenApiOperation(operationId: "CreateDefibrillator_V2", tags: new[] {"Defibrillator-V2"}, Summary = "Create a new defibrillator.")]
+        [OpenApiRequestBody("application/json", typeof(DefibrillatorRequestV2))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(DefibrillatorResponse), Description = "The OK response")]
         [OpenApiSecurity("Defikarte.ch API-Key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
         public async Task<IActionResult> Create(
-            [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "defibrillator")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "v2/defibrillator")] HttpRequest req,
             ILogger log)
         {
             try
@@ -93,7 +93,7 @@ namespace DefikarteBackend
                     return new InternalServerErrorResult();
                 }
 
-                var defibrillatorObj = await req.GetJsonBodyAsync<DefibrillatorRequest, DefibrillatorRequestValidator>();
+                var defibrillatorObj = await req.GetJsonBodyAsync<DefibrillatorRequestV2, DefibrillatorRequestValidatorV2>();
 
                 if (!defibrillatorObj.IsValid)
                 {
@@ -146,7 +146,7 @@ namespace DefikarteBackend
             }
         }
 
-        private static Node CreateNode(DefibrillatorRequest request)
+        private static Node CreateNode(DefibrillatorRequestV2 request)
         {
             var tags = new Dictionary<string, string>
             {
@@ -169,10 +169,10 @@ namespace DefikarteBackend
                     "operator", request.Operator
                 },
                 {
-                    "access", request.Access ? "yes" : "no"
+                    "access", request.Access
                 },
                 {
-                    "indoor", request.Indoor ? "yes" : "no"
+                    "indoor", request.Indoor
                 },
                 {
                     "description", request.Description
