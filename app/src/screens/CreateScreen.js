@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import SelectForm from '../components/SelectForm';
 import SwitchForm from '../components/SwitchForm';
 import TextForm from '../components/TextForm';
 import createForm from '../config/createForm';
@@ -20,7 +21,7 @@ const CreateScreen = ({ navigation }) => {
   } = useForm();
 
   const onSubmit = (formValues) => {
-    setState({ ...state, ...formValues });
+    setState({ ...state, ...formValues, indoor: formValues.indoor ? 'yes' : 'no' });
     setIsSubmitted(true);
   };
 
@@ -78,6 +79,24 @@ const CreateScreen = ({ navigation }) => {
             key={index}
             labelText={formComp.label}
             disabled={defiState.creating}
+          />
+        );
+      } else if (formComp.type === 'Select') {
+        return (
+          <SelectForm
+            labelText={formComp.label}
+            placeholder={formComp.placeholder}
+            name={formComp.name}
+            control={control}
+            rules={formComp.rules}
+            errors={errors}
+            errorMsg={formComp.errorMsg}
+            key={index}
+            disabled={defiState.creating}
+            options={formComp.options}
+            infoTitel={formComp.infoTitel}
+            infoText={formComp.infoText}
+            infoLink={formComp.infoLink}
           />
         );
       } else {
