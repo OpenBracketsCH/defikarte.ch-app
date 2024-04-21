@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { View, Text, Switch, TextInput, StyleSheet } from "react-native";
-import { Controller } from "react-hook-form";
+import React, { useState } from 'react';
+import { Controller } from 'react-hook-form';
+import { StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
 const TextForm = ({
   labelText,
@@ -17,7 +17,7 @@ const TextForm = ({
   disabled,
 }) => {
   const [switchValue, setSwitchValue] = useState(false);
-  const [tempValue, setTempValue] = useState("");
+  const [tempValue, setTempValue] = useState('');
 
   const onSwitchChange = (newVal, value, setValue) => {
     setSwitchValue(newVal);
@@ -28,9 +28,7 @@ const TextForm = ({
   };
 
   const defaultWithSwitch = (value, onChange) => {
-    const textStyle = switchValue
-      ? styles.switchActiveLabelStyle
-      : styles.switchLabelStyle;
+    const textStyle = switchValue ? styles.switchActiveLabelStyle : styles.switchLabelStyle;
     if (useSwitch) {
       return (
         <View style={styles.switchContainerStyle}>
@@ -58,13 +56,14 @@ const TextForm = ({
           onBlur={onBlur}
           autoCapitalize="none"
           keyboardType={keyboardType}
-          defaultValue={useSwitch ? "" : defaultValue}
+          defaultValue={useSwitch ? '' : defaultValue}
           multiline={multiline}
           autoGrow={true}
           placeholder={placeholder}
           autoCorrect={false}
           editable={!switchValue}
-          returnKeyType={multiline ? "default" : "done"}
+          returnKeyType={multiline ? 'default' : 'done'}
+          readOnly={disabled}
         />
       );
     }
@@ -76,7 +75,7 @@ const TextForm = ({
         control={control}
         name={name}
         rules={rules}
-        defaultValue={useSwitch ? "" : defaultValue}
+        defaultValue={useSwitch ? '' : defaultValue}
         render={({ field }) => {
           return (
             <>
@@ -89,11 +88,7 @@ const TextForm = ({
           );
         }}
       />
-      {errors && errors[name] && (
-        <Text style={styles.errorTextStyle}>
-          {errorMsg ?? errors[name]?.message}
-        </Text>
-      )}
+      {errors && errors[name] && <Text style={styles.errorTextStyle}>{errorMsg ?? errors[name]?.message}</Text>}
     </View>
   );
 };
@@ -105,23 +100,23 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   inlineSwitchStyle: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   labelStyle: {
     fontSize: 18,
     marginRight: 10,
-    color: "rgba(70, 70, 70, 1)",
+    color: 'rgba(70, 70, 70, 1)',
   },
   inputStyle: {
-    borderColor: "rgba(200, 200, 200, 1)",
+    borderColor: 'rgba(200, 200, 200, 1)',
     borderBottomWidth: 1,
     fontSize: 18,
     padding: 5,
   },
   switchContainerStyle: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   switchStyle: {
     marginRight: 10,
@@ -130,17 +125,17 @@ const styles = StyleSheet.create({
   switchLabelStyle: {
     fontSize: 16,
     marginRight: 10,
-    color: "rgba(140, 140, 140, 1)",
+    color: 'rgba(140, 140, 140, 1)',
   },
   switchActiveLabelStyle: {
     fontSize: 16,
     marginRight: 10,
-    color: "#007AFF",
-    fontWeight: "bold",
+    color: '#007AFF',
+    fontWeight: 'bold',
   },
   errorTextStyle: {
     fontSize: 16,
-    color: "red",
+    color: 'red',
     marginTop: 3,
   },
 });

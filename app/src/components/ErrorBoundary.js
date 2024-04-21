@@ -12,16 +12,16 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // ToDo: Log to backend 
+    // ToDo: Log to backend
     console.log(`${error}, ${errorInfo}`);
   }
 
   render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI      
+      // You can render any custom fallback UI
       return (
         <View style={styles.containerStyle}>
-          <Text style={styles.errorTextStyle}>Something went wrong.</Text>
+          <Text style={styles.errorTextStyle}>Something went wrong. Please try to restart the app.</Text>
         </View>
       );
     }
@@ -33,7 +33,9 @@ class ErrorBoundary extends React.Component {
 const styles = StyleSheet.create({
   containerStyle: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   errorTextStyle: {
     margin: 20,
