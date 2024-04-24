@@ -69,7 +69,7 @@ const SelectForm = ({
             );
           }}
         />
-        {errors && errors[name] && <Text style={styles.errorTextStyle}>{t(errorMsg) ?? errors[name]?.message}</Text>}
+        {errors && errors[name] && <Text style={styles.errorTextStyle}>{errorMsg ? t(errorMsg) : t(errors[name]?.message)}</Text>}
       </View>
     </>
   );
