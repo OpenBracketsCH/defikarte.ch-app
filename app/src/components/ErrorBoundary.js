@@ -1,5 +1,6 @@
+import { t } from 'i18next';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class ErrorBoundary extends React.Component {
       // You can render any custom fallback UI
       return (
         <View style={styles.containerStyle}>
-          <Text style={styles.errorTextStyle}>Something went wrong. Please try to restart the app.</Text>
+          <Text style={styles.errorTextStyle}>{t('something_went_wrong')}</Text>
         </View>
       );
     }

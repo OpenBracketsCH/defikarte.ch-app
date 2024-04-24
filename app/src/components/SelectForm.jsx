@@ -5,7 +5,20 @@ import { StyleSheet, Text, View } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import FieldInfo from './FieldInfo';
 
-const SelectForm = ({ labelText, placeholder, name, control, rules, errors, errorMsg, disabled, options, infoTitel, infoText, infoLink }) => {
+const SelectForm = ({
+  labelText,
+  placeholder,
+  name,
+  control,
+  rules,
+  errors,
+  errorMsg,
+  disabled,
+  options,
+  infoTitel,
+  infoText,
+  infoLink,
+}) => {
   return (
     <>
       <View style={styles.inlineForm}>
@@ -17,7 +30,7 @@ const SelectForm = ({ labelText, placeholder, name, control, rules, errors, erro
             return (
               <>
                 <View style={styles.inlineInfoStyle}>
-                  <Text style={styles.labelStyle}>{labelText}</Text>
+                  <Text style={styles.labelStyle}>{t(labelText)}</Text>
                   <FieldInfo titel={infoTitel} text={infoText} link={infoLink} />
                 </View>
                 <SelectDropdown
@@ -32,7 +45,7 @@ const SelectForm = ({ labelText, placeholder, name, control, rules, errors, erro
                   renderButton={(selectedItem) => {
                     return (
                       <View style={styles.dropdownButtonStyle}>
-                        <Text style={styles.dropdownButtonTextStyle}>{t(selectedItem) || placeholder}</Text>
+                        <Text style={styles.dropdownButtonTextStyle}>{t(selectedItem) || t(placeholder)}</Text>
                       </View>
                     );
                   }}
@@ -45,7 +58,7 @@ const SelectForm = ({ labelText, placeholder, name, control, rules, errors, erro
                         }}
                       >
                         {(item && <Text style={styles.dropdownItemTextStyle}>{t(item)}</Text>) || (
-                          <Text style={styles.dropdownItemEmptyTextStyle}>keine Angabe</Text>
+                          <Text style={styles.dropdownItemEmptyTextStyle}>{t('not_specified')}</Text>
                         )}
                       </View>
                     );
@@ -56,7 +69,7 @@ const SelectForm = ({ labelText, placeholder, name, control, rules, errors, erro
             );
           }}
         />
-        {errors && errors[name] && <Text style={styles.errorTextStyle}>{errorMsg ?? errors[name]?.message}</Text>}
+        {errors && errors[name] && <Text style={styles.errorTextStyle}>{t(errorMsg) ?? errors[name]?.message}</Text>}
       </View>
     </>
   );
