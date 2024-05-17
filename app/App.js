@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import 'intl-pluralrules';
 import React from 'react';
 import { StatusBar } from "react-native";
@@ -16,11 +17,11 @@ import ListScreen from './src/screens/ListScreen';
 import MainScreen from './src/screens/MainScreen';
 
 const navigator = createStackNavigator({
-  Main: { screen: MainScreen, navigationOptions: { title: 'Karte', headerShown: false } },
-  List: { screen: ListScreen, navigationOptions: { title: 'In deiner Nähe', headerShown: true } },
-  Create: { screen: CreateScreen, navigationOptions: { title: 'Defibrillator melden', headerShown: true } },
-  Detail: { screen: DetailScreen, navigationOptions: { title: 'Detailansicht', headerShown: true } },
-  About: { screen: AboutScreen, navigationOptions: { title: 'About', headerShown: true } },
+  Main: { screen: MainScreen, navigationOptions: { title: t('map'), headerShown: false } },
+  List: { screen: ListScreen, navigationOptions: { title: t('close_to_you'), headerShown: true } },
+  Create: { screen: CreateScreen, navigationOptions: { title: t('create_aed'), headerShown: true } },
+  Detail: { screen: DetailScreen, navigationOptions: { title: t('detail_view'), headerShown: true } },
+  About: { screen: AboutScreen, navigationOptions: { title: t('about'), headerShown: true } },
 }, {
   initialRouteName: 'Main',
   defaultNavigationOptions: {

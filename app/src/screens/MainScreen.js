@@ -1,4 +1,5 @@
 import { Feather } from '@expo/vector-icons';
+import { t } from 'i18next';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { AppState, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -50,8 +51,8 @@ const MainScreen = ({ navigation }) => {
   useEffect(() => {
     if (locationErr) {
       LocationError({
-        title: 'Standort Zugriff verweigert',
-        message: 'Um die Standortfunktion zu nutzen, aktiviere den Zugriff in den Einstellungen.',
+        title: t('location_access_denied'),
+        message: t('location_access_denied_message'),
       });
       resetErr();
     }
