@@ -8,7 +8,7 @@ namespace DefikarteBackend.Configuration
 
         public string OsmUserName { get; set; }
 
-        public string OsmUserPassword { get; set; }
+        public string OsmApiToken { get; set; }
 
         public string OverpassApiUrl { get; set; }
 
@@ -26,7 +26,7 @@ namespace DefikarteBackend.Configuration
             {
                 OsmApiUrl = configuration.GetConnectionStringOrSetting("OSM_API_URL"),
                 OsmUserName = configuration.GetConnectionStringOrSetting("OSM_USER_NAME"),
-                OsmUserPassword = configuration.GetConnectionStringOrSetting("OSM_USER_PASSWORD"),
+                OsmApiToken = configuration.GetConnectionStringOrSetting("OSM_API_TOKEN"),
                 OverpassApiUrl = configuration.GetConnectionStringOrSetting("OVERPASS_URL"),
                 BlobStoragaConnectionString = configuration.GetConnectionStringOrSetting("AzureWebJobsStorage"),
                 BlobStorageContainerName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_CONTAINER_NAME"),
