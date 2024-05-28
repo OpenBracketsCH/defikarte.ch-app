@@ -84,10 +84,10 @@ namespace DefikarteBackend
             try
             {
                 var username = _config.OsmUserName;
-                var password = _config.OsmUserPassword;
+                var osmApiToken = _config.OsmApiToken;
                 var osmApiUrl = _config.OsmApiUrl;
 
-                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(osmApiUrl))
+                if (string.IsNullOrEmpty(osmApiToken) || string.IsNullOrEmpty(osmApiUrl))
                 {
                     log.LogWarning("No valid configuration available for eighter username, password or osmApiUrl");
                     return new InternalServerErrorResult();
@@ -104,7 +104,7 @@ namespace DefikarteBackend
                 var newNode = CreateNode(defibrillatorObj.Value);
                 var clientFactory = new ClientsFactory(log, new HttpClient(), osmApiUrl);
 
-                var authClient = clientFactory.CreateBasicAuthClient(username, password);
+                var authClient = clientFactory.CreateOAuth2Client(osmApiToken);
                 var changeSetTags = new TagsCollection() { new Tag("created_by", username), new Tag("comment", "Create new AED.") };
                 var changeSetId = await authClient.CreateChangeset(changeSetTags);
 
