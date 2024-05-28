@@ -1,56 +1,53 @@
-import React from 'react';
-import { Alert, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { withNavigation } from 'react-navigation';
 import { AntDesign } from '@expo/vector-icons';
+import { t } from 'i18next';
+import React from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import MapInfoPanel from './MapInfoPanel';
 
 const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation, isTopView }) => {
   const ApprovePosition = () => {
     Alert.alert(
-      'Position überprüfen',
-      'Ist der rote Marker korrekt positioniert?',
+      t('check_position'),
+      t('is_marker_position_correct'),
       [
         {
-          text: 'Ja',
+          text: t('yes'),
           onPress: () => {
             navigation.navigate('Create', { latlon: newDefiCoords });
             setIsCreateMode(false);
           },
         },
         {
-          text: 'Nein',
-          style: 'destructive'
+          text: t('no'),
+          style: 'destructive',
         },
       ],
-      { cancelable: false },
-    )
+      { cancelable: false }
+    );
   };
 
   return (
     <>
-      <MapInfoPanel
-        isTopView={isTopView}
-        text='Ziehe den Marker an den Standort des neuen Defibrillators'
-        subText='(Marker halten und verschieben)' />
+      <MapInfoPanel isTopView={isTopView} text={t('move_marker_to_position')} subText={`(${t('hold_marker_to_move')})`} />
       <View style={styles.createIconsContainerStyle}>
         <TouchableOpacity
           style={styles.iconStyle}
           onPress={async () => {
             ApprovePosition();
-          }} >
+          }}
+        >
           <AntDesign name="checkcircleo" size={48} color="white" />
-          <Text style={styles.descriptionTextStyle}>Position wählen</Text>
+          <Text style={styles.descriptionTextStyle}>{t('confirm_position')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setIsCreateMode(false)}
-          style={styles.iconStyle}>
+        <TouchableOpacity onPress={() => setIsCreateMode(false)} style={styles.iconStyle}>
           <AntDesign name="closecircleo" size={48} color="white" />
-          <Text style={styles.descriptionTextStyle}>Abbrechen</Text>
+          <Text style={styles.descriptionTextStyle}>{t('cancel')}</Text>
         </TouchableOpacity>
       </View>
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   createIconsContainerStyle: {
@@ -71,7 +68,7 @@ const styles = StyleSheet.create({
   descriptionTextStyle: {
     color: 'white',
     marginTop: 5,
-  }
+  },
 });
 
 export default withNavigation(CreateMapOverlay);

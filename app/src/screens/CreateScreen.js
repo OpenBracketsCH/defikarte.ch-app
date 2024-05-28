@@ -1,4 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import { t } from 'i18next';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -8,6 +9,7 @@ import SwitchForm from '../components/SwitchForm';
 import TextForm from '../components/TextForm';
 import createForm from '../config/createForm';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
+
 
 const CreateScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
@@ -130,11 +132,11 @@ const CreateScreen = ({ navigation }) => {
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={bottomBar}>
-        <TouchableOpacity disabled={defiState.creating} color="white" title="Erstellen" onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonTextStyle}>Erstellen</Text>
+        <TouchableOpacity disabled={defiState.creating} color="white" title={t('create')} onPress={handleSubmit(onSubmit)}>
+          <Text style={styles.buttonTextStyle}>{t('create')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity disabled={defiState.creating} color="white" title="Abbrechen" onPress={() => navigation.navigate('Main')}>
-          <Text style={styles.buttonTextStyle}>Abbrechen</Text>
+        <TouchableOpacity disabled={defiState.creating} color="white" title={t('cancel')} onPress={() => navigation.navigate('Main')}>
+          <Text style={styles.buttonTextStyle}>{t('cancel')}</Text>
         </TouchableOpacity>
       </View>
     </View>

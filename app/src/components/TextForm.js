@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { StyleSheet, Switch, Text, TextInput, View } from 'react-native';
@@ -59,7 +60,7 @@ const TextForm = ({
           defaultValue={useSwitch ? '' : defaultValue}
           multiline={multiline}
           autoGrow={true}
-          placeholder={placeholder}
+          placeholder={t(placeholder)}
           autoCorrect={false}
           editable={!switchValue}
           returnKeyType={multiline ? 'default' : 'done'}
@@ -80,7 +81,7 @@ const TextForm = ({
           return (
             <>
               <View style={styles.inlineSwitchStyle}>
-                <Text style={styles.labelStyle}>{labelText}</Text>
+                <Text style={styles.labelStyle}>{t(labelText)}</Text>
                 {defaultWithSwitch(field.value, field.onChange)}
               </View>
               {showTextInput(field.onChange, field.onBlur, field.value)}
@@ -88,7 +89,7 @@ const TextForm = ({
           );
         }}
       />
-      {errors && errors[name] && <Text style={styles.errorTextStyle}>{errorMsg ?? errors[name]?.message}</Text>}
+      {errors && errors[name] && <Text style={styles.errorTextStyle}>{errorMsg ? t(errorMsg) : t(errors[name]?.message)}</Text>}
     </View>
   );
 };

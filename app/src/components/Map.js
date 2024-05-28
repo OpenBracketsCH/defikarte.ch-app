@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-map-clustering';
@@ -108,13 +109,13 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
       return (
         <MapInfoPanel
           isTopView={true}
-          text="Zoome in eine bestimmte Region um Defibrillatoren anzuzeigen."
-          subText={`(${defibrillators.length} Defis im Kartenausschnitt, Anzeige ab < 1000)`}
+          text={t('zoom_in_to_see_defis')}
+          subText={`(${t('current_aeds_on_map', { count: defibrillators.length })})`}
         />
       );
     } else if (mode === 'load') {
       //defibrillators.length === 0 && isLoading
-      return <MapInfoPanel isTopView={true} text="Lade Defibrillatoren..." showLoading={true} />;
+      return <MapInfoPanel isTopView={true} text={t('load_aed')} showLoading={true} />;
     }
   };
 

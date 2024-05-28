@@ -1,11 +1,12 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Context as LocationContext } from '../context/LocationContext';
-import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
-import { Context as InfoContext } from '../context/InfoContext';
+import { t } from 'i18next';
+import React, { useContext, useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DefiItem from '../components/DefiItem';
 import WarningInfoPanel from '../components/WarningInfoPanel';
+import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
+import { Context as InfoContext } from '../context/InfoContext';
+import { Context as LocationContext } from '../context/LocationContext';
 
 const ListScreen = () => {
   const { state: userLocation, enableLocationTracking } = useContext(LocationContext);
@@ -27,7 +28,7 @@ const ListScreen = () => {
         return (
           <>
             <MaterialIcons style={styles.noLocationIconStyle} name='location-disabled' />
-            <Text style={styles.noLocationTextStyle}>Aktiviere deinen Standort um Defibrillatoren in deiner Nähe anzuzeigen.</Text>
+            <Text style={styles.noLocationTextStyle}>{t('turn_on_location_services_to_show_aed')}</Text>
             <TouchableOpacity onPress={() => enableLocationTracking(true)}>
               <MaterialIcons style={styles.actLocationIconStyle} name={locationIcon} />
             </TouchableOpacity>
@@ -38,7 +39,7 @@ const ListScreen = () => {
     noDefisNearYou: {
       render: () => {
         return (
-          <Text style={styles.noLocationTextStyle}>Keine Defibrillatoren in deiner Nähe (2km) verfügbar.</Text>
+          <Text style={styles.noLocationTextStyle}>{t('no_aed_close_to_you')}</Text>
         );
       }
     },
@@ -47,7 +48,7 @@ const ListScreen = () => {
         const infoPanel = showInfo ?
           <WarningInfoPanel
             onButtonClick={updateShowInfo}
-            text="Achtung: Nicht alle Defibrillatoren in der Schweiz sind erfasst, möglicherweise gibt es Defibrillatoren die näher sind als die hier angezeigten." />
+            text={t('warning_not_all_aed_on_map')} />
           : null;
         return (
           <>

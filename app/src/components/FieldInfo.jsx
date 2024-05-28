@@ -1,4 +1,5 @@
 import { FontAwesome6 } from '@expo/vector-icons';
+import { t } from 'i18next';
 import React, { useState } from 'react';
 import { Button, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -18,23 +19,24 @@ const FieldInfo = ({ titel, text, link }) => {
       <TouchableOpacity onPress={handlePress}>
         <FontAwesome6 name="circle-question" size={24} color="rgba(70, 70, 70, 1)" />
       </TouchableOpacity>
-      <Modal
-        visible={modalVisible}
-        animationType="none"
-        onRequestClose={closeModal}
-        transparent={true}
-      >
+      <Modal visible={modalVisible} animationType="none" onRequestClose={closeModal} transparent={true}>
         <View style={styles.container}>
           <View style={styles.modalView}>
-            {titel && <Text style={styles.titelStyle}>{titel}</Text>}
+            {titel && <Text style={styles.titelStyle}>{t(titel)}</Text>}
             <View>
-              {text.map((x, i) => <View style={styles.contentContainer} kex={i}>
-                <Text key={i + 'title'} style={styles.contentTitelStyle}>{x.titel}</Text>
-                <Text key={i + 'text'} style={styles.contentTextStyle}>{x.text}</Text>
-              </View>)}
-              {link && <Button title="Weiterführende Informationen" onPress={() => Linking.openURL(link)} />}
+              {text.map((x, i) => (
+                <View style={styles.contentContainer} key={i}>
+                  <Text key={i + 'title'} style={styles.contentTitelStyle}>
+                    {t(x.titel)}
+                  </Text>
+                  <Text key={i + 'text'} style={styles.contentTextStyle}>
+                    {t(x.text)}
+                  </Text>
+                </View>
+              ))}
+              {link && <Button title={t('further_information')} onPress={() => Linking.openURL(link)} />}
             </View>
-            <Button onPress={closeModal} title='Schliessen' />
+            <Button onPress={closeModal} title={t('close')} />
           </View>
         </View>
       </Modal>

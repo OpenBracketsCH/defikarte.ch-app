@@ -1,95 +1,98 @@
+import { t } from 'i18next';
 import React from 'react';
-import { ScrollView, View, Image, Text, Linking, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Image, Linking, Pressable, ScrollView, StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
 
-const AboutScreen = ({ navigation }) => {
-  const insets = useSafeAreaInsets();
-
+const AboutScreen = () => {
   return (
-    <ScrollView style={styles.containerStyle}>
+    <ScrollView style={styles.container}>
       <Image style={styles.imageStyle} source={require('../../assets/logo_defikarte.png')} />
       <View style={styles.wrapperStyle}>
-        <Text style={styles.titleStyle}>Das Projekt</Text>
-        <Text style={styles.textStyle}>
-          Die Defikarte.ch-App hilft dabei, den nächsten Defibrillator in deiner Nähe zu finden. Über die Navigations-App des jeweiligen
-          Gerätes, kannst du dich zu diesem navigieren lassen. So kann möglichst rasch einer Person in Not geholfen werden. Die Daten sind
-          Open Source und werden von der Community in OpenStreetMaps (OSM) gepflegt und verwaltet. Da es in der Schweiz keinen kompletten
-          Datensatz und auch keine Meldepflicht für Defibrillatoren gibt, sind nicht alle erfasst und somit auch nicht in der App
-          ersichtlich. Die OSM-Community ist bemüht, die Daten aktuell und vollständig zu halten. Bemerkst du also, dass ein Defibrillator
-          nicht eingetragen ist, unterstütze die Community und den guten Zweck indem du den fehlenden Defibrillator mithilfe dieser App mit
-          Leichtigkeit erfasst.
-        </Text>
+        <Text style={styles.titleStyle}>{t('the_project')}</Text>
+        <Text style={styles.textStyle}>{t('about_the_project_text')}</Text>
       </View>
       <View style={styles.wrapperStyle}>
-        <Text style={styles.titleStyle}>Webseite</Text>
+        <Text style={styles.titleStyle}>OpenBrackets Association Switzerland</Text>
+        <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://www.openbrackets.ch')}>
+          www.OpenBrackets.ch
+        </Text>
         <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://www.defikarte.ch')}>
-          https://www.defikarte.ch
+          www.defikarte.ch
+        </Text>
+      </View>
+
+      <View style={styles.wrapperStyle}>
+        <Text style={styles.titleStyle}>{t('osm_contributors')}</Text>
+        <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://www.openstreetmap.org/copyright')}>
+          www.openstreetmap.org/copyright
         </Text>
       </View>
       <View style={styles.wrapperStyle}>
-        <Text style={styles.titleStyle}>OpenStreetMap </Text>
-        <Text style={styles.textStyle}>
-          OpenStreetMap Mitwirkende (
-          <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://www.openstreetmap.org/copyright')}>
-            https://www.openstreetmap.org/copyright
-          </Text>
-          )
-        </Text>
-      </View>
-      <Image style={styles.imageStyle} source={require('../../assets/procamed.jpg')} />
-      <View style={styles.wrapperStyle}>
-        <Text style={styles.titleStyle}>exklusiver Platin Sponsor</Text>
-        <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://www.aed.ch')}>
-          https://www.aed.ch
-        </Text>
-      </View>
-      <View style={styles.wrapperStyle}>
-        <Text style={styles.titleStyle}>Vielen Dank an alle unsere Sponsoren</Text>
+        <Text style={styles.titleStyle}>{t('app_sponsored_by')}</Text>
+        <Pressable onPress={() => Linking.openURL('https://www.aed.ch')}>
+          <Image style={styles.imageStyle} source={require('../../assets/procamed.jpg')} />
+        </Pressable>
+        <Text style={styles.titleStyle}>{t('thanks_to_all_sponsors')}</Text>
         <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://www.defikarte.ch/sponsors.html')}>
-          https://www.defikarte.ch/sponsors.html
+          www.defikarte.ch/sponsors.html
         </Text>
       </View>
       <View style={styles.wrapperStyle}>
-        <Text style={styles.titleStyle}>Probleme oder Fehler gefunden?</Text>
-        <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://github.com/OpenBracketsCH/defikarte.ch/issues')}>
-          https://github.com/OpenBracketsCH/defikarte.ch/issues
+        <Text style={styles.titleStyle}>{t('found_errors_in_app')}</Text>
+        <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://github.com/OpenBracketsCH/defikarte.ch-app/issues')}>
+          www.github.com/OpenBracketsCH/defikarte.ch-app/issues
         </Text>
       </View>
-      <View style={{ marginBottom: insets.bottom + 10 }}></View>
+      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  containerStyle: {
+  container: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'white',
   },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: '80%',
+  },
   titleStyle: {
     fontSize: 20,
-    alignSelf: 'center',
-    textAlign: 'center',
     fontWeight: '500',
+    marginVertical: 10,
   },
   wrapperStyle: {
-    marginHorizontal: 10,
-    marginBottom: 18,
+    marginHorizontal: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
   },
   textStyle: {
     fontSize: 16,
-    alignSelf: 'center',
   },
   linkStyle: {
-    fontSize: 16,
-    alignSelf: 'center',
-    color: 'blue',
+    fontSize: 20,
+    color: '#1982C4',
+    textDecorationStyle: 'solid',
     textDecorationLine: 'underline',
+    marginBottom: 10,
   },
   imageStyle: {
-    height: 150,
+    height: 100,
     width: '100%',
-    alignSelf: 'center',
     marginBottom: 10,
+  },
+  versionText: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 0,
   },
 });
 

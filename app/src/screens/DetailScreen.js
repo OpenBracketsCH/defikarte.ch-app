@@ -1,4 +1,5 @@
 import { Feather } from '@expo/vector-icons';
+import { t } from 'i18next';
 import React from 'react';
 import { Linking, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { UrlTile } from 'react-native-maps';
@@ -31,7 +32,7 @@ const DetailScreen = ({ navigation }) => {
 
   const name = defibrillator.tags['defibrillator:location'] ?? defibrillator.tags.description ?? defibrillator.tags.operator ?? 'n/A';
   const emergencyPhone = defibrillator.tags['emergency:phone'] ?? '144';
-  const newInfo = defibrillator.new ? <Text>(Temporär in App erfasst, OSM update ausstehend)</Text> : null;
+  const newInfo = defibrillator.new ? <Text>({t('aed_only_temporary_in_app')})</Text> : null;
 
   let containerStyle = { ...styles.containerStyle };
   containerStyle.paddingBottom = insets.bottom * 0.5;
@@ -70,7 +71,7 @@ const DetailScreen = ({ navigation }) => {
             }
           >
             <Feather style={styles.navigationIconStyle} name="navigation" />
-            <Text style={styles.buttonTextStyle}>Navigieren</Text>
+            <Text style={styles.buttonTextStyle}>{t('directions')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonStyle}
@@ -79,19 +80,19 @@ const DetailScreen = ({ navigation }) => {
             }}
           >
             <Feather style={styles.navigationIconStyle} name="phone-call" />
-            <Text style={styles.buttonTextStyle}>Notruf ({emergencyPhone})</Text>
+            <Text style={styles.buttonTextStyle}>{t('emergency_phone', { emergencyPhone })}</Text>
           </TouchableOpacity>
         </View>
       </View>
       <ScrollView>
-        <AttributeListing title="Standort" iconName="map-pin" value={defibrillator.tags['defibrillator:location']} />
-        <AttributeListing title="Stockwerk" iconName="stairs" value={defibrillator.tags.level} />
-        <AttributeListing title="Beschreibung" iconName="list" value={defibrillator.tags.description} />
-        <AttributeListing title="Öffnungszeiten" iconName="clock" value={defibrillator.tags.opening_hours} />
-        <AttributeListing title="Betreiber" iconName="flag" value={defibrillator.tags.operator} />
-        <AttributeListing title="Telefon" iconName="phone" value={defibrillator.tags.phone} />
-        <AttributeListing title="Zugänglich" iconName="alert-circle" value={defibrillator.tags.access} />
-        <AttributeListing title="Im Gebäude" iconName="home" value={defibrillator.tags.indoor} />
+        <AttributeListing title={t('location')} iconName="map-pin" value={defibrillator.tags['defibrillator:location']} />
+        <AttributeListing title={t('level')} iconName="stairs" value={defibrillator.tags.level} />
+        <AttributeListing title={t('description')} iconName="list" value={defibrillator.tags.description} />
+        <AttributeListing title={t('openinghours')} iconName="clock" value={defibrillator.tags.opening_hours} />
+        <AttributeListing title={t('operator')} iconName="flag" value={defibrillator.tags.operator} />
+        <AttributeListing title={t('operatorphone')} iconName="phone" value={defibrillator.tags.phone} />
+        <AttributeListing title={t('access')} iconName="alert-circle" value={defibrillator.tags.access} />
+        <AttributeListing title={t('indoor')} iconName="home" value={defibrillator.tags.indoor} />
       </ScrollView>
     </View>
   );

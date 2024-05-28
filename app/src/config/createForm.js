@@ -8,8 +8,10 @@ const openingHoursErrorsAndWarnings = (value) => {
     const warnings = oh.getWarnings();
     msg = warnings.join(', ');
   } catch (error) {
-    msg = 'Die eingegebenen Öffnungzeiten entsprechen nicht dem geforderten Format.';
+    msg = 'error_openinghours';
   }
+
+  console.log(msg);
 
   return msg === '' || value === null || value === '' ? true : msg;
 };
@@ -26,37 +28,37 @@ export default [
     name: 'reporter',
     rules: { required: true },
     type: 'Text',
-    label: 'Melder',
-    placeholder: 'Max Mustermann',
+    label: 'reporter',
+    placeholder: 'placeholder_reporter',
     defaultValue: '',
-    errorMsg: 'Der Melder wird benötigt',
+    errorMsg: 'error_reporter',
   },
   {
     name: 'location',
     rules: { required: true, maxLength: 200 },
     type: 'Text',
-    label: 'Standort',
-    placeholder: 'Schulhaus Zürich West, neben Eingang',
+    label: 'location',
+    placeholder: 'placeholder_location',
     defaultValue: '',
-    errorMsg: 'Der Standort wird benötigt, maximale Länge 200 Zeichen',
+    errorMsg: 'error_location',
   },
   {
     name: 'level',
     rules: { required: false },
     type: 'Text',
-    label: 'Stockwerk',
-    placeholder: '6. OG',
+    label: 'level',
+    placeholder: 'placeholder_level',
     defaultValue: '',
   },
   {
     name: 'description',
     rules: { required: false, maxLength: 200 },
     type: 'Text',
-    label: 'Beschreibung',
-    placeholder: 'z.B.: während Öffnungszeiten verfügbar',
+    label: 'description',
+    placeholder: 'placeholder_description',
     defaultValue: '',
     multiline: true,
-    errorMsg: 'Die maximale Länge beträgt 200 Zeichen',
+    errorMsg: 'error_description',
   },
   /* not required 
   es gibt diverse opening Hour validation tools. problem: es gibt sehr viele kombinationen,
@@ -65,8 +67,8 @@ export default [
     name: 'openingHours',
     rules: { validate: openingHoursErrorsAndWarnings },
     type: 'Text',
-    label: 'Öffnungszeiten',
-    placeholder: 'Mo-Fr: 08:00-17:00',
+    label: 'openinghours',
+    placeholder: 'placeholder_openinghours',
     defaultValue: '24/7',
     useSwitch: true,
     multiline: true,
@@ -75,42 +77,42 @@ export default [
     name: 'operator',
     rules: { required: false },
     type: 'Text',
-    label: 'Betreiber',
-    placeholder: 'Gemeinde, Verein, Privatperson',
+    label: 'operator',
+    placeholder: 'placeholder_operator',
     defaultValue: '',
   },
   {
     name: 'operatorPhone',
     rules: { validate: phonenumberValidation, required: false },
     type: 'Text',
-    label: 'Betreiber Telefon',
-    placeholder: '+41 79 000 00 00',
+    label: 'operatorphone',
+    placeholder: 'placeholder_operatorphone',
     keyboardType: 'phone-pad',
     defaultValue: '',
-    errorMsg: 'Der Wert muss eine gültige Telefonummer sein',
+    errorMsg: 'error_operatorphone',
   },
   {
     name: 'access',
     type: 'Select',
-    label: 'Zugänglich',
-    placeholder: 'Ist der Defibrillator öffentlich?',
+    label: 'access',
+    placeholder: 'access_placeholder',
     options: ['yes', 'no', 'permissive', 'private'],
-    infoTitel: 'Was wird unter "Zugänglich" verstanden?',
+    infoTitel: 'access_info_titel',
     infoText: [
-      { titel: 'Ja', text: 'Die Benutzung ist allgemein erlaubt' },
-      { titel: 'Nein', text: 'Kein Zugang für die breite Öffentlichkeit. Stärkeres Verbot als private.' },
+      { titel: 'access_yes_titel', text: 'access_yes_text' },
+      { titel: 'access_no_titel', text: 'access_no_text' },
       {
-        titel: 'Eingeschränkt zugänglich',
-        text: 'Der Eigentümer duldet die öffentliche Benutzung. Die Erlaubnis oder Duldung kann der Eigentümer jedoch jederzeit widerrufen.',
+        titel: 'access_permissive_titel',
+        text: 'access_permissive_text',
       },
-      { titel: 'Privat', text: 'Kein Zugang für die breite Öffentlichkeit, Benutzung nach individueller Erlaubnis' },
+      { titel: 'access_private_titel', text: 'access_private_text' },
     ],
     infoLink: 'https://wiki.openstreetmap.org/wiki/Key:access',
   },
   {
     name: 'indoor',
     type: 'Switch',
-    label: 'Im Gebäude',
+    label: 'indoor',
     defaultValue: false,
   },
 ];
