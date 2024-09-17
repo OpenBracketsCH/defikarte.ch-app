@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
-using DefikarteBackend.Cache;
+﻿using DefikarteBackend.Cache;
 using DefikarteBackend.Configuration;
 using DefikarteBackend.Model;
 using DefikarteBackend.OsmOverpassApi;
@@ -22,6 +15,13 @@ using Newtonsoft.Json;
 using OsmSharp;
 using OsmSharp.IO.API;
 using OsmSharp.Tags;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace DefikarteBackend
 {
@@ -169,7 +169,7 @@ namespace DefikarteBackend
                     "operator", request.Operator
                 },
                 {
-                    "access", request.Access ? "yes" : "no"
+                    "access", request.Access ? "yes" : null
                 },
                 {
                     "indoor", request.Indoor ? "yes" : "no"

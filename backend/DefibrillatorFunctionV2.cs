@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
-using DefikarteBackend.Cache;
+﻿using DefikarteBackend.Cache;
 using DefikarteBackend.Configuration;
 using DefikarteBackend.Model;
 using DefikarteBackend.OsmOverpassApi;
@@ -22,6 +15,13 @@ using Newtonsoft.Json;
 using OsmSharp;
 using OsmSharp.IO.API;
 using OsmSharp.Tags;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace DefikarteBackend
 {
@@ -73,7 +73,7 @@ namespace DefikarteBackend
 
 
         [FunctionName("Defibrillators_POST_V2")]
-        [OpenApiOperation(operationId: "CreateDefibrillator_V2", tags: new[] {"Defibrillator-V2"}, Summary = "Create a new defibrillator.")]
+        [OpenApiOperation(operationId: "CreateDefibrillator_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Create a new defibrillator.")]
         [OpenApiRequestBody("application/json", typeof(DefibrillatorRequestV2))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(DefibrillatorResponse), Description = "The OK response")]
         [OpenApiSecurity("Defikarte.ch API-Key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
@@ -169,7 +169,7 @@ namespace DefikarteBackend
                     "operator", request.Operator
                 },
                 {
-                    "access", request.Access
+                    "access", request.Access == "no" ? null : request.Access
                 },
                 {
                     "indoor", request.Indoor
