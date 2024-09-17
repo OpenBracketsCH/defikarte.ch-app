@@ -169,6 +169,7 @@ namespace DefikarteBackend
                     "operator", request.Operator
                 },
                 {
+                    // Ensure no values are not set anymore, i.e. by older versions of the app
                     "access", request.Access == "no" ? null : request.Access
                 },
                 {
