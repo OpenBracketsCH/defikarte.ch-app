@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   dropdownMenuStyle: {
     backgroundColor: '#E9ECEF',
     borderRadius: 5,
-    height: 235,
+    maxHeight: 350,
   },
   dropdownItemStyle: {
     width: '100%',

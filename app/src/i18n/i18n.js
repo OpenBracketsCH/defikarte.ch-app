@@ -24,8 +24,6 @@ const resources = {
       not_specified: 'not specified',
       access_yes_titel: 'Yes',
       access_yes_text: 'The use is generally allowed',
-      access_no_titel: 'No',
-      access_no_text: 'No access for the general public. Stronger ban than private.',
       access_permissive_titel: 'Permissive',
       access_permissive_text: 'The owner tolerates public use. However, the owner can revoke permission at any time.',
       access_private_titel: 'Private',
@@ -103,8 +101,6 @@ const resources = {
       not_specified: 'keine Angabe',
       access_yes_titel: 'Ja',
       access_yes_text: 'Die Benutzung ist allgemein erlaubt',
-      access_no_titel: 'Nein',
-      access_no_text: 'Kein Zugang für die breite Öffentlichkeit. Stärkeres Verbot als private.',
       access_permissive_titel: 'Eingeschränkt zugänglich',
       access_permissive_text:
         'Der Eigentümer duldet die öffentliche Benutzung. Die Erlaubnis oder Duldung kann der Eigentümer jedoch jederzeit widerrufen.',
@@ -183,8 +179,6 @@ const resources = {
       not_specified: 'non spécifié',
       access_yes_titel: 'Oui',
       access_yes_text: "L'utilisation est généralement autorisée",
-      access_no_titel: 'Non',
-      access_no_text: "Pas d'accès pour le grand public. Interdiction plus forte que privée.",
       access_permissive_titel: 'Accès restreint',
       access_permissive_text:
         "Le propriétaire tolère l'utilisation publique. Cependant, le propriétaire peut révoquer l'autorisation à tout moment.",
@@ -263,8 +257,6 @@ const resources = {
       not_specified: 'non specificato',
       access_yes_titel: 'Sì',
       access_yes_text: "L'uso è generalmente consentito",
-      access_no_titel: 'No',
-      access_no_text: 'Nessun accesso per il pubblico. Divieto più forte rispetto a privato.',
       access_permissive_titel: 'Accesso limitato',
       access_permissive_text:
         "Il proprietario tollera l'uso pubblico. Tuttavia, il proprietario può revocare l'autorizzazione o la tolleranza in qualsiasi momento.",
