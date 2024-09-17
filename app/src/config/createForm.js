@@ -96,11 +96,10 @@ export default [
     type: 'Select',
     label: 'access',
     placeholder: 'access_placeholder',
-    options: ['yes', 'no', 'permissive', 'private'],
+    options: ['yes', 'permissive', 'private'],
     infoTitel: 'access_info_titel',
     infoText: [
       { titel: 'access_yes_titel', text: 'access_yes_text' },
-      { titel: 'access_no_titel', text: 'access_no_text' },
       {
         titel: 'access_permissive_titel',
         text: 'access_permissive_text',
