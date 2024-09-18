@@ -326,7 +326,7 @@ i18n.init({
   defaultNS: 'translation',
 });
 
-const deviceLanguage = getLocales()[0].languageCode || 'de';
+const deviceLanguage = getLocales()[0]?.languageCode || 'de';
 i18n.changeLanguage(deviceLanguage);
 
 export default i18n;
