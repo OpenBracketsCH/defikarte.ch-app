@@ -10,7 +10,6 @@ import TextForm from '../components/TextForm';
 import createForm from '../config/createForm';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 
-
 const CreateScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const { state: defiState, addDefibrillator, resetError } = useContext(DefibrillatorContext);
@@ -67,6 +66,7 @@ const CreateScreen = ({ navigation }) => {
             useSwitch={formComp.useSwitch}
             placeholder={formComp.placeholder}
             disabled={defiState.creating}
+            inputMode={formComp.inputMode}
           />
         );
       } else if (formComp.type === 'Switch') {
