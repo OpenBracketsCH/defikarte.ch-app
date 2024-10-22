@@ -44,11 +44,13 @@ export default [
   },
   {
     name: 'level',
-    rules: { required: false },
+    rules: { required: false, pattern: /^[0-9]*$/ },
     type: 'Text',
     label: 'level',
     placeholder: 'placeholder_level',
     defaultValue: '',
+    errorMsg: 'error_level',
+    inputMode: 'numeric',
   },
   {
     name: 'description',
