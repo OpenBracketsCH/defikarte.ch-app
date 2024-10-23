@@ -44,7 +44,7 @@ export default [
   },
   {
     name: 'level',
-    rules: { required: false, pattern: /^[0-9]*$/ },
+    rules: { required: false, pattern: /^-?[0-9]*$/ },
     type: 'Text',
     label: 'level',
     placeholder: 'placeholder_level',
