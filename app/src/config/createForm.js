@@ -1,5 +1,6 @@
 import { isPossiblePhoneNumber, isValidPhoneNumber, validatePhoneNumberLength } from 'libphonenumber-js';
 import opening_hours from 'opening_hours';
+import { Platform } from 'react-native';
 
 const openingHoursErrorsAndWarnings = (value) => {
   let msg = '';
@@ -50,7 +51,7 @@ export default [
     placeholder: 'placeholder_level',
     defaultValue: '',
     errorMsg: 'error_level',
-    inputMode: 'numeric',
+    keyboardType: Platform.OS == 'ios' ? 'numbers-and-punctuation' : 'numeric',
   },
   {
     name: 'description',
