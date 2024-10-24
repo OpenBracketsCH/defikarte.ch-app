@@ -66,7 +66,6 @@ const CreateScreen = ({ navigation }) => {
             useSwitch={formComp.useSwitch}
             placeholder={formComp.placeholder}
             disabled={defiState.creating}
-            inputMode={formComp.inputMode}
           />
         );
       } else if (formComp.type === 'Switch') {

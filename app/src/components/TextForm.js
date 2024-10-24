@@ -16,7 +16,6 @@ const TextForm = ({
   errors,
   errorMsg,
   disabled,
-  inputMode,
 }) => {
   const [switchValue, setSwitchValue] = useState(false);
   const [tempValue, setTempValue] = useState('');
@@ -66,7 +65,6 @@ const TextForm = ({
           editable={!switchValue}
           returnKeyType={multiline ? 'default' : 'done'}
           readOnly={disabled}
-          inputMode={inputMode ?? 'text'}
         />
       );
     }
