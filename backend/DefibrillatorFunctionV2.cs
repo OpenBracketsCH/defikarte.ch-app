@@ -18,6 +18,7 @@ using OsmSharp.Tags;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -197,6 +198,9 @@ namespace DefikarteBackend
             }
 
             keysToRemove.ForEach(r => tags.Remove(r));
+            tags = tags
+                .Select(x => new KeyValuePair<string, string>(x.Key, x.Value.Trim()))
+                .ToDictionary(x => x.Key, x => x.Value);
 
             return new Node()
             {
