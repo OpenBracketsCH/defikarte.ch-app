@@ -12,8 +12,6 @@ const openingHoursErrorsAndWarnings = (value) => {
     msg = 'error_openinghours';
   }
 
-  console.log(msg);
-
   return msg === '' || value === null || value === '' ? true : msg;
 };
 
