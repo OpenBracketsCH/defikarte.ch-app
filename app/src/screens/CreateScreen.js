@@ -24,7 +24,7 @@ const CreateScreen = ({ navigation }) => {
 
   const onSubmit = async (formValues) => {
     try {
-      const completeData = { ...completeData, ...formValues, indoor: formValues.indoor ? 'yes' : 'no' };
+      const completeData = { ...state, ...formValues, indoor: formValues.indoor ? 'yes' : 'no' };
       const formData = trimStringValues(completeData);
       await addDefibrillator(formData, () => navigation.navigate('Main'));
     } catch (error) {
@@ -119,7 +119,8 @@ const CreateScreen = ({ navigation }) => {
       >
         <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
           {renderFormComponent()}
-          <Text style={styles.errorTextStyle}>{defiState.error || localError}</Text>
+          <Text style={styles.errorTextStyle}>{t(defiState.error.code) || localError}</Text>
+          <Text style={styles.errorTextStyle}>{t(defiState.error.additionalMessage)}</Text>
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={bottomBar}>

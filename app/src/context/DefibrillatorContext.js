@@ -41,7 +41,7 @@ const getDefibrillators = (dispatch) => {
       const response = await defikarteBackend.get('/defibrillator');
       dispatch({ type: 'update_all', payload: response.data });
     } catch (error) {
-      dispatch({ type: 'update_error', payload: 'Defibrillatoren konnten nicht geladen werden.' });
+      dispatch({ type: 'update_error', payload: { code: 'error_aed_not_loaded', additionalMessage: '' } });
     } finally {
       dispatch({ type: 'update_loading', payload: false });
     }
@@ -78,10 +78,17 @@ const addDefibrillator = (dispatch) => {
         callback();
       }
 
-      dispatch({ type: 'update_error', payload: '' });
+      dispatch({ type: 'update_error', payload: { code: '', additionalMessage: '' } });
     } catch (error) {
-      console.log(error.message);
-      dispatch({ type: 'update_error', payload: 'Defibrillator konnte nicht hinzugefügt werden.' });
+      let errorMessage = '';
+      if (error.response?.data) {
+        errorMessage = error.response.data.map((x) => `${x.field}: ${x.error}`).join('\r\n');
+      }
+
+      dispatch({
+        type: 'update_error',
+        payload: { code: 'error_aed_create_failed', additionalMessage: errorMessage },
+      });
     } finally {
       dispatch({ type: 'update_creating', payload: false });
     }
@@ -91,5 +98,5 @@ const addDefibrillator = (dispatch) => {
 export const { Context, Provider } = createDataContext(
   reducer,
   { getDefibrillators, addDefibrillator, setDefisNearLocation },
-  { defibrillators: [], defisNearLocation: [], loading: false, creating: false, error: '' }
+  { defibrillators: [], defisNearLocation: [], loading: false, creating: false, error: { additionalMessage: '', code: '' } }
 );
