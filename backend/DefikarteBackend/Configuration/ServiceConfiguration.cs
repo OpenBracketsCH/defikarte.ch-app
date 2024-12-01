@@ -1,24 +1,27 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using DefikarteBackend.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace DefikarteBackend.Configuration
 {
-    public class ServiceConfiguration
+    public class ServiceConfiguration : IServiceConfiguration
     {
-        public string OsmApiUrl { get; set; }
+        public string OsmApiUrl { get; private set; }
 
-        public string OsmUserName { get; set; }
+        public string OsmUserName { get; private set; }
 
-        public string OsmApiToken { get; set; }
+        public string OsmApiToken { get; private set; }
 
-        public string OverpassApiUrl { get; set; }
+        public string OverpassApiUrl { get; private set; }
 
-        public string BlobStorageContainerName { get; set; }
+        public string BlobStorageContainerName { get; private set; }
 
-        public string BlobStorageBlobName { get; set; }
+        public string BlobStorageBlobName { get; private set; }
 
-        public string BlobStorageBlobNameV2 { get; set; }
+        public string BlobStorageBlobNameV2 { get; private set; }
 
-        public string BlobStoragaConnectionString { get; set; }
+        public string BlobStoragaConnectionString { get; private set; }
+
+        public string BlobStorageSwissBoundariesName { get; private set; }
 
         public static ServiceConfiguration Initialize(IConfigurationRoot configuration)
         {
@@ -32,6 +35,7 @@ namespace DefikarteBackend.Configuration
                 BlobStorageContainerName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_CONTAINER_NAME"),
                 BlobStorageBlobName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_BLOB_NAME"),
                 BlobStorageBlobNameV2 = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_BLOB_NAME_V2"),
+                BlobStorageSwissBoundariesName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_SWISSBOUNDARIES"),
             };
         }
     }

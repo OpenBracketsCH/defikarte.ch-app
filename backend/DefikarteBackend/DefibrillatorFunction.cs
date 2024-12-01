@@ -1,5 +1,4 @@
-﻿using DefikarteBackend.Cache;
-using DefikarteBackend.Configuration;
+﻿using DefikarteBackend.Interfaces;
 using DefikarteBackend.Model;
 using DefikarteBackend.OsmOverpassApi;
 using DefikarteBackend.Validation;
@@ -26,22 +25,24 @@ using System.Web.Http;
 
 namespace DefikarteBackend
 {
-    public class DefibrillatorFunctionV2
+    public class DefibrillatorFunction
     {
-        private readonly ServiceConfiguration _config;
-        private readonly IGeoJsonCacheRepository _cacheRepository;
+        private readonly IServiceConfiguration _config;
+        private readonly ICacheRepository<OsmNode> _cacheRepository;
+        private readonly ILocalisationService _localisationService;
 
-        public DefibrillatorFunctionV2(ServiceConfiguration config, IGeoJsonCacheRepository cacheRepository)
+        public DefibrillatorFunction(IServiceConfiguration config, ICacheRepository<OsmNode> cacheRepository, ILocalisationService localisationService)
         {
             _config = config;
             _cacheRepository = cacheRepository;
+            _localisationService = localisationService;
         }
 
-        [FunctionName("Defibrillators_GETALL_V2")]
-        [OpenApiOperation(operationId: "GetDefibrillators_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Get all defibrillators from switzerland as geojson.")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
+        [FunctionName("Defibrillators_GETALL")]
+        [OpenApiOperation(operationId: "GetDefibrillators_V1", tags: new[] { "Defibrillator-V1" }, Summary = "Get all defibrillators from switzerland as custom json.")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<OsmNode>), Description = "The OK response")]
         public async Task<IActionResult> GetAll(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v2/defibrillator")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "defibrillator")] HttpRequestMessage req,
             ILogger log)
         {
             try
@@ -53,9 +54,9 @@ namespace DefikarteBackend
                 }
 
                 var response = await _cacheRepository.GetAsync();
-                if (response != null && response.Features.Count > 0)
+                if (response != null && response.Count > 0)
                 {
-                    log.LogInformation($"Get all AED from cache. Count: {response.Features.Count}");
+                    log.LogInformation($"Get all AED from cache. Count: {response.Count}");
                     return new OkObjectResult(response);
                 }
 
@@ -73,13 +74,13 @@ namespace DefikarteBackend
         }
 
 
-        [FunctionName("Defibrillators_POST_V2")]
-        [OpenApiOperation(operationId: "CreateDefibrillator_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Create a new defibrillator.")]
-        [OpenApiRequestBody("application/json", typeof(DefibrillatorRequestV2))]
+        [FunctionName("Defibrillators_POST")]
+        [OpenApiOperation(operationId: "CreateDefibrillator_V1", tags: new[] { "Defibrillator-V1" }, Summary = "Create a new defibrillator. [Soon deprecated, use V2]")]
+        [OpenApiRequestBody("application/json", typeof(DefibrillatorRequest))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(DefibrillatorResponse), Description = "The OK response")]
         [OpenApiSecurity("Defikarte.ch API-Key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
         public async Task<IActionResult> Create(
-            [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "v2/defibrillator")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "defibrillator")] HttpRequest req,
             ILogger log)
         {
             try
@@ -90,11 +91,11 @@ namespace DefikarteBackend
 
                 if (string.IsNullOrEmpty(osmApiToken) || string.IsNullOrEmpty(osmApiUrl))
                 {
-                    log.LogWarning("No valid configuration available for eighter username, password or osmApiUrl");
+                    log.LogWarning("No valid configuration available for eighter osmApitoken or osmApiUrl");
                     return new InternalServerErrorResult();
                 }
 
-                var defibrillatorObj = await req.GetJsonBodyAsync<DefibrillatorRequestV2, DefibrillatorRequestValidatorV2>();
+                var defibrillatorObj = await req.GetJsonBodyAsync<DefibrillatorRequest, DefibrillatorRequestValidator>();
 
                 if (!defibrillatorObj.IsValid)
                 {
@@ -102,7 +103,8 @@ namespace DefikarteBackend
                     return defibrillatorObj.ToBadRequest();
                 }
 
-                var newNode = CreateNode(defibrillatorObj.Value);
+                var isInSwitzerland = await _localisationService.IsSwitzerlandAsync(defibrillatorObj.Value.Latitude, defibrillatorObj.Value.Longitude).ConfigureAwait(false);
+                var newNode = CreateNode(defibrillatorObj.Value, isInSwitzerland);
                 var clientFactory = new ClientsFactory(log, new HttpClient(), osmApiUrl);
 
                 var authClient = clientFactory.CreateOAuth2Client(osmApiToken);
@@ -147,15 +149,19 @@ namespace DefikarteBackend
             }
         }
 
-        private static Node CreateNode(DefibrillatorRequestV2 request)
+        private static Node CreateNode(DefibrillatorRequest request, bool isInSwitzerland)
         {
+            var emergencyPhone = isInSwitzerland
+                ? "144"
+                : string.Empty;
+
             var tags = new Dictionary<string, string>
             {
                 {
                     "emergency", "defibrillator"
                 },
                 {
-                    "emergency:phone", request.EmergencyPhone
+                    "emergency:phone", emergencyPhone
                 },
                 {
                     "defibrillator:location", request.Location
@@ -170,11 +176,10 @@ namespace DefikarteBackend
                     "operator", request.Operator
                 },
                 {
-                    // Ensure no values are not set anymore, i.e. by older versions of the app
-                    "access", request.Access == "no" ? null : request.Access
+                    "access", request.Access ? "yes" : null
                 },
                 {
-                    "indoor", request.Indoor
+                    "indoor", request.Indoor ? "yes" : "no"
                 },
                 {
                     "description", request.Description
@@ -186,6 +191,10 @@ namespace DefikarteBackend
                     "source", request.Source
                 },
             };
+
+            tags = tags
+               .Select(x => new KeyValuePair<string, string>(x.Key, x.Value?.Trim()))
+               .ToDictionary(x => x.Key, x => x.Value);
 
             var keysToRemove = new List<string>();
             // remove empty values

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DefikarteBackend.Cache
+namespace DefikarteBackend.Interfaces
 {
     public interface IBlobStorageCacheRepository
     {
