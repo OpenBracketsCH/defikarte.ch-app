@@ -1,37 +1,25 @@
 ﻿using Azure.Storage.Blobs;
+using DefikarteBackend.Interfaces;
 using DefikarteBackend.Model;
+using DefikarteBackend.Repository;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DefikarteBackend.Cache
 {
-    public class BlobStorageCacheRepository : IBlobStorageCacheRepository, ICacheRepository<OsmNode>
+    public class BlobStorageCacheRepository : BlobStorageDataRepository, IBlobStorageCacheRepository, ICacheRepository<OsmNode>
     {
         private readonly BlobContainerClient _containerClient;
         private readonly string _blobName;
 
         public BlobStorageCacheRepository(BlobContainerClient containerClient, string blobName)
+            : base(containerClient)
         {
             _containerClient = containerClient;
             _blobName = blobName;
-        }
-
-        public async Task CreateAsync(string jsonData, string blobName)
-        {
-            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-            await blobClient.UploadAsync(BinaryData.FromString(jsonData));
-        }
-
-        public async Task<string> ReadAsync(string blobName)
-        {
-            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-            var response = await blobClient.DownloadContentAsync();
-            var content = response.Value.Content;
-            return Encoding.UTF8.GetString(content);
         }
 
         public async Task UpdateAsync(string jsonData, string blobName)

@@ -45,7 +45,7 @@ namespace DefikarteBackend.OsmOverpassApi
                     var json = JObject.Parse(responseContent);
                     json.TryGetValue("elements", out var osmNodes);
                     var jArray = osmNodes as JArray;
-                    var result =  jArray.Select(x => x.ToObject<OsmNode>()).ToList();
+                    var result = jArray.Select(x => x.ToObject<OsmNode>()).ToList();
                     return result;
                 }
                 else

@@ -1,24 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DefikarteBackend.Cache;
-using DefikarteBackend.Configuration;
+using DefikarteBackend.Interfaces;
 using DefikarteBackend.Model;
 using DefikarteBackend.OsmOverpassApi;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DefikarteBackend
 {
     public class SimpleCacheFunction
     {
-        private readonly ServiceConfiguration _config;
+        private readonly IServiceConfiguration _config;
         private readonly ICacheRepository<OsmNode> _cacheRepository;
         private readonly IGeoJsonCacheRepository _geoJsonCacheRepository;
 
         public SimpleCacheFunction(
-            ServiceConfiguration config,
+            IServiceConfiguration config,
             ICacheRepository<OsmNode> cacheRepository,
             IGeoJsonCacheRepository geoJsonCacheRepository)
         {
