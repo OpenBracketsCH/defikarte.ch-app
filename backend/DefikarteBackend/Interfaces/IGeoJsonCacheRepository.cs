@@ -1,7 +1,7 @@
 ﻿using DefikarteBackend.Model;
 using System.Threading.Tasks;
 
-namespace DefikarteBackend.Cache
+namespace DefikarteBackend.Interfaces
 {
     public interface IGeoJsonCacheRepository
     {

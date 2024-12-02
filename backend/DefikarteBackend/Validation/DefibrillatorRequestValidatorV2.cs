@@ -17,7 +17,7 @@ namespace DefikarteBackend.Validation
             RuleFor(x => x.OperatorPhone).Custom((value, context) => PhoneNumberValid(value, context)).When(x => !string.IsNullOrEmpty(x.OperatorPhone));
             RuleFor(x => x.Access).Custom((value, context) => AccessValid(value, context));
             RuleFor(x => x.Indoor).NotNull().NotEmpty().Custom((value, context) => IndoorValid(value, context));
-            RuleFor(x => x.EmergencyPhone).NotEmpty().Custom((value, context) => PhoneNumberValid(value, context));
+            RuleFor(x => x.Level).Custom((value, context) => IsNumber(value, context));
             // opening hours validation is missing
         }
 
@@ -78,6 +78,19 @@ namespace DefikarteBackend.Validation
             if (!(new List<string> { "yes", "no" }).Contains(indoor))
             {
                 context.AddFailure(context.PropertyPath, "Indoor not valid");
+            }
+        }
+
+        private static void IsNumber(string value, ValidationContext<DefibrillatorRequestV2> context)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return;
+            }
+
+            if (!int.TryParse(value, out _))
+            {
+                context.AddFailure(context.PropertyPath, "Value is not a number");
             }
         }
     }

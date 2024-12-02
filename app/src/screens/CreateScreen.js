@@ -9,25 +9,28 @@ import SwitchForm from '../components/SwitchForm';
 import TextForm from '../components/TextForm';
 import createForm from '../config/createForm';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
+import { trimStringValues } from '../helpers/stringHelpers';
 
 const CreateScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
-  const { state: defiState, addDefibrillator, resetError } = useContext(DefibrillatorContext);
+  const { state: defiState, addDefibrillator } = useContext(DefibrillatorContext);
   const [state, setState] = useState({ latitude: 0, longitude: 0, emergencyPhone: '144' });
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [localError, setLocalError] = useState('');
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (formValues) => {
-    setState({ ...state, ...formValues, indoor: formValues.indoor ? 'yes' : 'no' });
-    setIsSubmitted(true);
-  };
-
-  const add = async () => {
-    await addDefibrillator(state, () => navigation.navigate('Main'));
+  const onSubmit = async (formValues) => {
+    try {
+      const completeData = { ...state, ...formValues, indoor: formValues.indoor ? 'yes' : 'no' };
+      const formData = trimStringValues(completeData);
+      await addDefibrillator(formData, () => navigation.navigate('Main'));
+    } catch (error) {
+      // should never occure
+      setLocalError(error.message);
+    }
   };
 
   useEffect(() => {
@@ -36,17 +39,6 @@ const CreateScreen = ({ navigation }) => {
       setState({ ...state, latitude: latlon.latitude, longitude: latlon.longitude });
     }
   }, []);
-
-  useEffect(() => {
-    if (isSubmitted) {
-      add();
-      setIsSubmitted(false);
-    } else {
-      resetError();
-    }
-  }, [isSubmitted]);
-
-  useEffect(() => {}, [state]);
 
   const renderFormComponent = () => {
     return createForm.map((formComp, index) => {
@@ -127,7 +119,8 @@ const CreateScreen = ({ navigation }) => {
       >
         <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
           {renderFormComponent()}
-          <Text style={styles.errorTextStyle}>{defiState.error}</Text>
+          <Text style={styles.errorTextStyle}>{t(defiState.error.code) || localError}</Text>
+          <Text style={styles.errorTextStyle}>{t(defiState.error.additionalMessage)}</Text>
         </ScrollView>
       </KeyboardAvoidingView>
       <View style={bottomBar}>
