@@ -43,7 +43,7 @@ namespace DefikarteBackend
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.ToString());
+                _logger.LogError(ex, "Error running SimpleCacheFunction");
             }
         }
 
