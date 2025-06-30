@@ -41,12 +41,13 @@ namespace DefikarteBackend
         }
 
         [Function("Defibrillators_GETALL_V2")]
-        [OpenApiOperation(operationId: "GetDefibrillators_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Get all or resourceId based defibrillators from switzerland as geojson.")]
-        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = false, Type = typeof(string), Summary = "Id of the defibrillator which should be returned.")]
+        [OpenApiOperation(operationId: "GetDefibrillators_V2", tags: ["Defibrillator-V2"], Summary = "Get all or resourceId based defibrillators from switzerland as geojson.")]
+        [OpenApiParameter(name: "id?", In = ParameterLocation.Path, Required = false, Type = typeof(string), Summary = "Id of the defibrillator which should be returned.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(Dictionary<string, string>), Description = "The NotFound response.")]
         public async Task<IActionResult> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v2/defibrillator/{id?}")] HttpRequest req,
-            string id)
+            string? id)
         {
             try
             {
@@ -85,10 +86,10 @@ namespace DefikarteBackend
 
 
         [Function("Defibrillators_POST_V2")]
-        [OpenApiOperation(operationId: "CreateDefibrillator_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Create a new defibrillator.")]
+        [OpenApiOperation(operationId: "CreateDefibrillator_V2", tags: ["Defibrillator-V2"], Summary = "Create a new defibrillator.")]
         [OpenApiRequestBody("application/json", typeof(DefibrillatorRequestV2))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(DefibrillatorResponse), Description = "The OK response")]
-        [OpenApiSecurity("Defikarte.ch API-Key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
+        [OpenApiSecurity("api-key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
         public async Task<IActionResult> Create(
             [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "v2/defibrillator")] HttpRequest req)
         {
