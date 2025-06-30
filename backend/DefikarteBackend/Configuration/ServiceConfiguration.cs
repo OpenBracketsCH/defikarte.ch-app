@@ -5,37 +5,37 @@ namespace DefikarteBackend.Configuration
 {
     public class ServiceConfiguration : IServiceConfiguration
     {
-        public string OsmApiUrl { get; private set; }
+        public string OsmApiUrl { get; private set; } = string.Empty;
 
-        public string OsmUserName { get; private set; }
+        public string OsmUserName { get; private set; } = string.Empty;
 
-        public string OsmApiToken { get; private set; }
+        public string OsmApiToken { get; private set; } = string.Empty;
 
-        public string OverpassApiUrl { get; private set; }
+        public string OverpassApiUrl { get; private set; } = string.Empty;
 
-        public string BlobStorageContainerName { get; private set; }
+        public string BlobStorageContainerName { get; private set; } = string.Empty;
 
-        public string BlobStorageBlobName { get; private set; }
+        public string BlobStorageBlobName { get; private set; } = string.Empty;
 
-        public string BlobStorageBlobNameV2 { get; private set; }
+        public string BlobStorageBlobNameV2 { get; private set; } = string.Empty;
 
-        public string BlobStoragaConnectionString { get; private set; }
+        public string BlobStoragaConnectionString { get; private set; } = string.Empty;
 
-        public string BlobStorageSwissBoundariesName { get; private set; }
+        public string BlobStorageSwissBoundariesName { get; private set; } = string.Empty;
 
         public static ServiceConfiguration Initialize(IConfigurationRoot configuration)
         {
             return new ServiceConfiguration
             {
-                OsmApiUrl = configuration.GetConnectionStringOrSetting("OSM_API_URL"),
-                OsmUserName = configuration.GetConnectionStringOrSetting("OSM_USER_NAME"),
-                OsmApiToken = configuration.GetConnectionStringOrSetting("OSM_API_TOKEN"),
-                OverpassApiUrl = configuration.GetConnectionStringOrSetting("OVERPASS_URL"),
-                BlobStoragaConnectionString = configuration.GetConnectionStringOrSetting("AzureWebJobsStorage"),
-                BlobStorageContainerName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_CONTAINER_NAME"),
-                BlobStorageBlobName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_BLOB_NAME"),
-                BlobStorageBlobNameV2 = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_BLOB_NAME_V2"),
-                BlobStorageSwissBoundariesName = configuration.GetConnectionStringOrSetting("BLOB_STORAGE_SWISSBOUNDARIES"),
+                OsmApiUrl = configuration.GetValue<string>("OSM_API_URL") ?? string.Empty,
+                OsmUserName = configuration.GetValue<string>("OSM_USER_NAME") ?? string.Empty,
+                OsmApiToken = configuration.GetValue<string>("OSM_API_TOKEN") ?? string.Empty,
+                OverpassApiUrl = configuration.GetValue<string>("OVERPASS_URL") ?? string.Empty,
+                BlobStoragaConnectionString = configuration.GetValue<string>("AzureWebJobsStorage") ?? string.Empty,
+                BlobStorageContainerName = configuration.GetValue<string>("BLOB_STORAGE_CONTAINER_NAME") ?? string.Empty,
+                BlobStorageBlobName = configuration.GetValue<string>("BLOB_STORAGE_BLOB_NAME") ?? string.Empty,
+                BlobStorageBlobNameV2 = configuration.GetValue<string>("BLOB_STORAGE_BLOB_NAME_V2") ?? string.Empty,
+                BlobStorageSwissBoundariesName = configuration.GetValue<string>("BLOB_STORAGE_SWISSBOUNDARIES") ?? string.Empty,
             };
         }
     }

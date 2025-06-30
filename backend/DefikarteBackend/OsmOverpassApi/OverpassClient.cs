@@ -1,10 +1,5 @@
 ﻿using DefikarteBackend.Model;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace DefikarteBackend.OsmOverpassApi
 {
@@ -45,7 +40,11 @@ namespace DefikarteBackend.OsmOverpassApi
                     var json = JObject.Parse(responseContent);
                     json.TryGetValue("elements", out var osmNodes);
                     var jArray = osmNodes as JArray;
-                    var result = jArray.Select(x => x.ToObject<OsmNode>()).ToList();
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+                    List<OsmNode> result = jArray != null
+                        ? jArray.Select(x => x.ToObject<OsmNode>()).Where(node => node != null).ToList()
+                        : new List<OsmNode>();
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
                     return result;
                 }
                 else

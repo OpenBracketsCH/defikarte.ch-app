@@ -1,11 +1,12 @@
-﻿using DefikarteBackend.Interfaces;
+﻿using DefikarteBackend.Helpers;
+using DefikarteBackend.Interfaces;
 using DefikarteBackend.Model;
 using DefikarteBackend.OsmOverpassApi;
 using DefikarteBackend.Validation;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
@@ -14,14 +15,7 @@ using Newtonsoft.Json;
 using OsmSharp;
 using OsmSharp.IO.API;
 using OsmSharp.Tags;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace DefikarteBackend
 {
@@ -29,59 +23,72 @@ namespace DefikarteBackend
     {
         private readonly IServiceConfiguration _config;
         private readonly IGeoJsonCacheRepository _cacheRepository;
-        private readonly ILocalisationService _localisationService;
+        private readonly IGeofenceService _localisationService;
+        private readonly ILogger<DefibrillatorFunctionV2> _logger;
 
-        public DefibrillatorFunctionV2(IServiceConfiguration config, IGeoJsonCacheRepository cacheRepository, ILocalisationService localisationService)
+        public DefibrillatorFunctionV2(
+            IServiceConfiguration config,
+            IGeoJsonCacheRepository cacheRepository,
+            IGeofenceService localisationService,
+            ILogger<DefibrillatorFunctionV2> logger)
         {
             _config = config;
             _cacheRepository = cacheRepository;
             _localisationService = localisationService;
+            _logger = logger;
         }
 
-        [FunctionName("Defibrillators_GETALL_V2")]
-        [OpenApiOperation(operationId: "GetDefibrillators_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Get all defibrillators from switzerland as geojson.")]
+        [Function("Defibrillators_GETALL_V2")]
+        [OpenApiOperation(operationId: "GetDefibrillators_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Get all or resourceId based defibrillators from switzerland as geojson.")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Query, Required = false, Type = typeof(string), Summary = "Id of the defibrillator which should be returned.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
         public async Task<IActionResult> GetAll(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v2/defibrillator")] HttpRequestMessage req,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v2/defibrillator/{id?}")] HttpRequest req,
+            string id)
         {
             try
             {
-                if (TryParseIdQuery(req.RequestUri.ParseQueryString(), out var id))
+                if (!string.IsNullOrEmpty(id))
                 {
                     var byIdResponse = await _cacheRepository.GetByIdAsync(id);
-                    return new OkObjectResult(byIdResponse);
+                    return byIdResponse != null
+                        ? new OkObjectResult(byIdResponse)
+                        : new ObjectResult(new { Error = $"AED with Id: {id} not found." }) { StatusCode = StatusCodes.Status404NotFound };
                 }
 
                 var response = await _cacheRepository.GetAsync();
                 if (response != null && response.Features.Count > 0)
                 {
-                    log.LogInformation($"Get all AED from cache. Count: {response.Features.Count}");
+                    _logger.LogInformation($"Get all AED from cache. Count: {response.Features.Count}");
                     return new OkObjectResult(response);
                 }
 
                 var overpassApiUrl = _config.OverpassApiUrl;
-                log.LogWarning($"Get all AED from {overpassApiUrl}. Cache is not available.");
+                _logger.LogWarning($"Get all AED from {overpassApiUrl}. Cache is not available.");
 
                 var overpassApiClient = new OverpassClient(overpassApiUrl);
                 var overpassResponse = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
-                return new OkObjectResult(overpassResponse);
+                var geojsonRepsone = GeoJsonConverter.Convert2GeoJson(overpassResponse);
+                return new OkObjectResult(geojsonRepsone);
             }
             catch (Exception ex)
             {
-                return new ExceptionResult(ex, false);
+                _logger.LogError(ex.ToString());
+                return new ObjectResult(new { Error = ex.Message })
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                };
             }
         }
 
 
-        [FunctionName("Defibrillators_POST_V2")]
+        [Function("Defibrillators_POST_V2")]
         [OpenApiOperation(operationId: "CreateDefibrillator_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Create a new defibrillator.")]
         [OpenApiRequestBody("application/json", typeof(DefibrillatorRequestV2))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(DefibrillatorResponse), Description = "The OK response")]
         [OpenApiSecurity("Defikarte.ch API-Key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
         public async Task<IActionResult> Create(
-            [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "v2/defibrillator")] HttpRequest req,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Function, "Post", Route = "v2/defibrillator")] HttpRequest req)
         {
             try
             {
@@ -91,22 +98,24 @@ namespace DefikarteBackend
 
                 if (string.IsNullOrEmpty(osmApiToken) || string.IsNullOrEmpty(osmApiUrl))
                 {
-                    log.LogWarning("No valid configuration available for eighter username, token or osmApiUrl");
-                    return new InternalServerErrorResult();
+                    _logger.LogWarning("No valid configuration available for eighter username, token or osmApiUrl");
+                    return new ObjectResult(new { Error = "Configuration error. Contact API-Admins." })
+                    {
+                        StatusCode = StatusCodes.Status500InternalServerError,
+                    };
                 }
 
-                var defibrillatorObj = await req.GetJsonBodyAsync<DefibrillatorRequestV2, DefibrillatorRequestValidatorV2>();
-
-                if (!defibrillatorObj.IsValid)
+                var validationResult = await req.GetValidatedRequestAsync<DefibrillatorRequestV2, DefibrillatorRequestValidatorV2>();
+                if (validationResult == null || validationResult.IsValid == false)
                 {
-                    log.LogInformation($"Invalid request data.");
-                    return defibrillatorObj.ToBadRequest();
+                    _logger.LogInformation($"Invalid request data.");
+                    return validationResult?.ToBadRequest() ?? new BadRequestObjectResult(new { Error = "Request cannot be parsed. Body is not a valid JSON or null." });
                 }
 
-
-                var isInSwitzerland = await _localisationService.IsSwitzerlandAsync(defibrillatorObj.Value.Latitude, defibrillatorObj.Value.Longitude).ConfigureAwait(false);
-                var newNode = CreateNode(defibrillatorObj.Value, isInSwitzerland);
-                var clientFactory = new ClientsFactory(log, new HttpClient(), osmApiUrl);
+                var body = validationResult.Value;
+                var isInSwitzerland = await _localisationService.IsSwitzerlandAsync(body.Latitude, body.Longitude).ConfigureAwait(false);
+                var newNode = CreateNode(body, isInSwitzerland);
+                var clientFactory = new ClientsFactory(_logger, new HttpClient(), osmApiUrl);
 
                 var authClient = clientFactory.CreateOAuth2Client(osmApiToken);
                 var changeSetTags = new TagsCollection() { new Tag("created_by", username), new Tag("comment", "Create new AED.") };
@@ -119,34 +128,18 @@ namespace DefikarteBackend
 
                 var createdNode = await authClient.GetNode(nodeId);
 
-                log.LogInformation($"Added new node {nodeId}, isInSwitzerland:{isInSwitzerland}");
-                return new OkObjectResult(createdNode) { StatusCode = 201 };
+                _logger.LogInformation($"Added new node {nodeId}, isInSwitzerland:{isInSwitzerland}");
+                return new ObjectResult(createdNode) { StatusCode = StatusCodes.Status201Created };
             }
             catch (JsonSerializationException ex)
             {
-                log.LogError(ex.ToString());
-                return new BadRequestObjectResult(ex.Message);
+                _logger.LogError(ex.ToString());
+                return new BadRequestObjectResult(new { Error = ex.Message });
             }
             catch (Exception ex)
             {
-                log.LogError(ex.ToString());
-                return new ExceptionResult(ex, false);
-            }
-        }
-
-        private static bool TryParseIdQuery(NameValueCollection query, out string id)
-        {
-            id = string.Empty;
-            try
-            {
-                var idValues = query.GetValues("id");
-                bool available = idValues != null && idValues.Length > 0;
-                id = idValues != null && idValues.Length > 0 ? idValues[0] : string.Empty;
-                return available;
-            }
-            catch (Exception)
-            {
-                return false;
+                _logger.LogError(ex.ToString());
+                return new ObjectResult(new { Error = ex.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
             }
         }
 
@@ -156,7 +149,7 @@ namespace DefikarteBackend
                 ? "144"
                 : string.Empty;
 
-            var tags = new Dictionary<string, string>
+            var tags = new Dictionary<string, string?>
             {
                 {
                     "emergency", "defibrillator"
@@ -194,27 +187,16 @@ namespace DefikarteBackend
                 },
             };
 
-            tags = tags
-              .Select(x => new KeyValuePair<string, string>(x.Key, x.Value?.Trim()))
-              .ToDictionary(x => x.Key, x => x.Value);
-
-            var keysToRemove = new List<string>();
-            // remove empty values
-            foreach (var keyval in tags)
-            {
-                if (string.IsNullOrEmpty(keyval.Value))
-                {
-                    keysToRemove.Add(keyval.Key);
-                }
-            }
-
-            keysToRemove.ForEach(r => tags.Remove(r));
+            var cleanTags = tags
+                .Where(x => !string.IsNullOrEmpty(x.Value?.Trim()))
+                .Select(x => new KeyValuePair<string, string?>(x.Key, x.Value?.Trim()))
+                .ToDictionary(x => x.Key, x => x.Value);
 
             return new Node()
             {
                 Latitude = request.Latitude,
                 Longitude = request.Longitude,
-                Tags = new TagsCollection(tags),
+                Tags = new TagsCollection(cleanTags),
             };
         }
     }

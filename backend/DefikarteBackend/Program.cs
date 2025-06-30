@@ -1,0 +1,82 @@
+﻿using Azure.Storage.Blobs;
+using DefikarteBackend.Cache;
+using DefikarteBackend.Configuration;
+using DefikarteBackend.Interfaces;
+using DefikarteBackend.Model;
+using DefikarteBackend.Repository;
+using DefikarteBackend.Services;
+using DefikarteBackend.Validation;
+using FluentValidation;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        var configuration = LoadConfiguration();
+        var serviceConfig = ServiceConfiguration.Initialize(configuration);
+
+        var container = new BlobContainerClient(serviceConfig.BlobStoragaConnectionString, serviceConfig.BlobStorageContainerName);
+        container.CreateIfNotExists();
+
+        var host = new HostBuilder()
+            .ConfigureFunctionsWebApplication()
+            .ConfigureServices(services =>
+            {
+                services.AddApplicationInsightsTelemetryWorkerService();
+                services.ConfigureFunctionsApplicationInsights();
+                services.AddMvc().AddNewtonsoftJson();
+                services.AddLogging(options =>
+                {
+                    options.AddFilter(nameof(DefikarteBackend), LogLevel.Trace);
+                });
+
+                services.AddSingleton<IServiceConfiguration>((s) => serviceConfig);
+                services.AddTransient<ICacheRepository<OsmNode>>(s =>
+                    new BlobStorageCacheRepository(container, serviceConfig.BlobStorageBlobName));
+                services.AddTransient<IGeoJsonCacheRepository>(s =>
+                    new BlobStorageCacheRepositoryV2(container, serviceConfig.BlobStorageBlobNameV2));
+
+                services.AddSingleton(container);
+                services.AddSingleton<IBlobStorageDataRepository, BlobStorageDataRepository>();
+
+                services.AddSingleton<IOpenApiConfigurationOptions>(s => new CustomOpenApiConfigurationOptions());
+
+                services.AddTransient<IValidator<DefibrillatorRequest>, DefibrillatorRequestValidator>();
+                services.AddTransient<IValidator<DefibrillatorRequestV2>, DefibrillatorRequestValidatorV2>();
+
+                services.AddSingleton<IGeofenceService, GeofenceService>();
+                RegisterNtsGeometryServices(services);
+            })
+            .Build();
+
+        host.Run();
+    }
+
+    private static IConfigurationRoot LoadConfiguration()
+    {
+        return new ConfigurationBuilder()
+               .AddEnvironmentVariables() // access (production) environment variables
+               .Build();
+    }
+
+    private static void RegisterNtsGeometryServices(IServiceCollection services)
+    {
+        NtsGeometryServices.Instance = new NtsGeometryServices(
+            CoordinateArraySequenceFactory.Instance,
+            new PrecisionModel(1000d),
+            4326,
+            GeometryOverlay.NG,
+            new CoordinateEqualityComparer());
+
+        services.AddSingleton(NtsGeometryServices.Instance);
+    }
+}

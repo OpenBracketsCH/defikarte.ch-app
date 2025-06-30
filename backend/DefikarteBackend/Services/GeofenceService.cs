@@ -5,13 +5,10 @@ using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using Newtonsoft.Json;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace DefikarteBackend.Services
 {
-    public class LocalisationService : ILocalisationService
+    public class GeofenceService : IGeofenceService
     {
         private readonly GeometryFactory _geometryFactory;
         private readonly NtsGeometryServices _ntsGeometryServices;
@@ -19,11 +16,11 @@ namespace DefikarteBackend.Services
         private readonly IServiceConfiguration _configuration;
         private readonly ILogger _logger;
 
-        public LocalisationService(
+        public GeofenceService(
             NtsGeometryServices ntsGeometryServices,
             IBlobStorageDataRepository blobRepository,
             IServiceConfiguration configuration,
-            ILogger logger)
+            ILogger<GeofenceService> logger)
         {
             _ntsGeometryServices = ntsGeometryServices;
             _blobRepository = blobRepository;
