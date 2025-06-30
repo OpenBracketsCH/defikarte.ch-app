@@ -39,11 +39,11 @@ namespace DefikarteBackend
                 var cacheV2Task = _geoJsonCacheRepository.TryUpdateCacheAsync(GeoJsonConverter.Convert2GeoJson(response));
 
                 var results = await Task.WhenAll(cacheV1Task, cacheV2Task);
-                _logger.LogInformation($"Updated cache sucessful:{results.All(x => x)}");
+                _logger.LogInformation($"Updated cache successful:{results.All(x => x)}");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.ToString());
+                _logger.LogError(ex, "Error running SimpleCacheFunction");
             }
         }
 
