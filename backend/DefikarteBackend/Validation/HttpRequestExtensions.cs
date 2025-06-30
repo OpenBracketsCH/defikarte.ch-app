@@ -26,7 +26,7 @@ namespace DefikarteBackend.Validation
             {
                 return new ValidatedRequest<T>
                 {
-                    Value = default,
+                    Value = default!,
                     IsValid = false,
                     Errors = [new("Body", "Request body is null or not a valid JSON")],
                 };
@@ -36,7 +36,7 @@ namespace DefikarteBackend.Validation
             {
                 return new ValidatedRequest<T>
                 {
-                    Value = default,
+                    Value = default!,
                     IsValid = false,
                     Errors = [new("Body", "Request body is null")],
                 };

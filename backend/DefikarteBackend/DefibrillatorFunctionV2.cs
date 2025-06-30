@@ -21,6 +21,8 @@ namespace DefikarteBackend
 {
     public class DefibrillatorFunctionV2
     {
+        private static readonly HttpClient _httpClient = new();
+
         private readonly IServiceConfiguration _config;
         private readonly IGeoJsonCacheRepository _cacheRepository;
         private readonly IGeofenceService _localisationService;
@@ -40,7 +42,7 @@ namespace DefikarteBackend
 
         [Function("Defibrillators_GETALL_V2")]
         [OpenApiOperation(operationId: "GetDefibrillators_V2", tags: new[] { "Defibrillator-V2" }, Summary = "Get all or resourceId based defibrillators from switzerland as geojson.")]
-        [OpenApiParameter(name: "id", In = ParameterLocation.Query, Required = false, Type = typeof(string), Summary = "Id of the defibrillator which should be returned.")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = false, Type = typeof(string), Summary = "Id of the defibrillator which should be returned.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
         public async Task<IActionResult> GetAll(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "v2/defibrillator/{id?}")] HttpRequest req,
@@ -115,7 +117,7 @@ namespace DefikarteBackend
                 var body = validationResult.Value;
                 var isInSwitzerland = await _localisationService.IsSwitzerlandAsync(body.Latitude, body.Longitude).ConfigureAwait(false);
                 var newNode = CreateNode(body, isInSwitzerland);
-                var clientFactory = new ClientsFactory(_logger, new HttpClient(), osmApiUrl);
+                var clientFactory = new ClientsFactory(_logger, _httpClient, osmApiUrl);
 
                 var authClient = clientFactory.CreateOAuth2Client(osmApiToken);
                 var changeSetTags = new TagsCollection() { new Tag("created_by", username), new Tag("comment", "Create new AED.") };

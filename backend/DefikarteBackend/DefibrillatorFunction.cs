@@ -20,6 +20,8 @@ namespace DefikarteBackend
 {
     public class DefibrillatorFunction
     {
+        private static readonly HttpClient _httpClient = new();
+
         private readonly IServiceConfiguration _config;
         private readonly ICacheRepository<OsmNode> _cacheRepository;
         private readonly IGeofenceService _localisationService;
@@ -109,7 +111,7 @@ namespace DefikarteBackend
                 var body = validationResult.Value;
                 var isInSwitzerland = await _localisationService.IsSwitzerlandAsync(body.Latitude, body.Longitude).ConfigureAwait(false);
                 var newNode = CreateNode(body, isInSwitzerland);
-                var clientFactory = new ClientsFactory(_logger, new HttpClient(), osmApiUrl);
+                var clientFactory = new ClientsFactory(_logger, _httpClient, osmApiUrl);
 
                 var authClient = clientFactory.CreateOAuth2Client(osmApiToken);
                 var changeSetTags = new TagsCollection() { new Tag("created_by", username), new Tag("comment", "Create new AED.") };
