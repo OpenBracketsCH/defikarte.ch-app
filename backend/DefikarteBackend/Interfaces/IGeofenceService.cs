@@ -2,7 +2,7 @@
 
 namespace DefikarteBackend.Interfaces
 {
-    public interface ILocalisationService
+    public interface IGeofenceService
     {
         Task<bool> IsSwitzerlandAsync(double latitude, double longitude);
     }

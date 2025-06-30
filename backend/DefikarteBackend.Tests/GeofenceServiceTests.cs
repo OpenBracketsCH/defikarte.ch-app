@@ -10,11 +10,11 @@ using System.Reflection;
 namespace DefikarteBackend.Tests
 {
     [TestFixture]
-    public class LocalisationServiceTests
+    public class GeofenceServiceTests
     {
         private Mock<IBlobStorageDataRepository> _blobRepositoryMock;
         private Mock<IServiceConfiguration> _configuratonMock;
-        private Mock<ILogger> _loggerMock;
+        private Mock<ILogger<GeofenceService>> _loggerMock;
 
         [SetUp]
         public void Setup()
@@ -33,14 +33,14 @@ namespace DefikarteBackend.Tests
             _configuratonMock = new Mock<IServiceConfiguration>();
             _configuratonMock.Setup(Setup => Setup.BlobStorageSwissBoundariesName).Returns("swissboundaries3d_2024-01_4326.geojson");
 
-            _loggerMock = new Mock<ILogger>();
+            _loggerMock = new Mock<ILogger<GeofenceService>>();
         }
 
         [Test]
         public async Task IsSwitzerlandAsync_GivenCooridnatesInSwitzerland_ShouldReturnTrueAsync()
         {
             // Arrange
-            var localisationService = new LocalisationService(NtsGeometryServices.Instance, _blobRepositoryMock.Object, _configuratonMock.Object, _loggerMock.Object);
+            var localisationService = new GeofenceService(NtsGeometryServices.Instance, _blobRepositoryMock.Object, _configuratonMock.Object, _loggerMock.Object);
 
             // Act
             var result = await localisationService.IsSwitzerlandAsync(47.0, 7.0).ConfigureAwait(false);
@@ -53,7 +53,7 @@ namespace DefikarteBackend.Tests
         public async Task IsSwitzerlandAsync_GivenCooridnatesOutsideSwitzerland_ShouldReturnFalseAsync()
         {
             // Arrange
-            var localisationService = new LocalisationService(NtsGeometryServices.Instance, _blobRepositoryMock.Object, _configuratonMock.Object, _loggerMock.Object);
+            var localisationService = new GeofenceService(NtsGeometryServices.Instance, _blobRepositoryMock.Object, _configuratonMock.Object, _loggerMock.Object);
 
             // Act
             var result = await localisationService.IsSwitzerlandAsync(47.73921, 8.04199).ConfigureAwait(false);
