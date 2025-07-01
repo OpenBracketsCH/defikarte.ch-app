@@ -1,5 +1,6 @@
 ﻿using DefikarteBackend.Interfaces;
 using DefikarteBackend.Model;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace DefikarteBackend.Services
@@ -14,10 +15,12 @@ namespace DefikarteBackend.Services
         private static readonly List<string> TAG_LIST = [ICON_TAG, ICON_TAG_END, BOLD_TAG, BOLD_TAG_END];
 
         private readonly IServiceConfiguration _configuration;
+        private readonly ILogger<AddressSearchService> _logger;
 
-        public AddressSearchService(IServiceConfiguration configuration)
+        public AddressSearchService(IServiceConfiguration configuration, ILogger<AddressSearchService> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         public async Task<FeatureCollection?> SearchAddressAsync(string searchText)
@@ -36,14 +39,14 @@ namespace DefikarteBackend.Services
             {
                 var uriBuilder = new UriBuilder(_configuration.AddressSearchUrl)
                 {
-                    Query = new FormUrlEncodedContent(query).ReadAsStringAsync().Result
+                    Query = await new FormUrlEncodedContent(query).ReadAsStringAsync().ConfigureAwait(false)
                 };
 
                 var url = uriBuilder.ToString();
-                var response = await _httpClient.GetAsync(url);
+                var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var jsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(jsonString);
                     if (featureCollection == null)
                     {
@@ -65,7 +68,7 @@ namespace DefikarteBackend.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Error searching address.");
             }
 
             return new FeatureCollection { Type = "FeatureCollection", Features = [] };

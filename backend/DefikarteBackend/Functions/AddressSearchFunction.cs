@@ -32,7 +32,7 @@ public class AddressSearchFunction
         {
             if (string.IsNullOrEmpty(searchText))
             {
-                return new BadRequestObjectResult(new { Error = "searchText is null or empty" });
+                return new NotFoundObjectResult(new { Error = "searchText is null or empty" });
             }
 
             var result = await _addressSearchService.SearchAddressAsync(searchText).ConfigureAwait(false);
