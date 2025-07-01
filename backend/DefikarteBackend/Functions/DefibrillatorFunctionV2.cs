@@ -17,7 +17,7 @@ using OsmSharp.IO.API;
 using OsmSharp.Tags;
 using System.Net;
 
-namespace DefikarteBackend
+namespace DefikarteBackend.Functions
 {
     public class DefibrillatorFunctionV2
     {

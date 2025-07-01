@@ -5,7 +5,7 @@ using DefikarteBackend.OsmOverpassApi;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace DefikarteBackend
+namespace DefikarteBackend.Functions
 {
     public class SimpleCacheFunction
     {

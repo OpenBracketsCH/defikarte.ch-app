@@ -23,6 +23,8 @@ namespace DefikarteBackend.Configuration
 
         public string BlobStorageSwissBoundariesName { get; private set; } = string.Empty;
 
+        public string AddressSearchUrl { get; private set; } = string.Empty;
+
         public static ServiceConfiguration Initialize(IConfigurationRoot configuration)
         {
             return new ServiceConfiguration
@@ -36,6 +38,7 @@ namespace DefikarteBackend.Configuration
                 BlobStorageBlobName = configuration.GetValue<string>("BLOB_STORAGE_BLOB_NAME") ?? string.Empty,
                 BlobStorageBlobNameV2 = configuration.GetValue<string>("BLOB_STORAGE_BLOB_NAME_V2") ?? string.Empty,
                 BlobStorageSwissBoundariesName = configuration.GetValue<string>("BLOB_STORAGE_SWISSBOUNDARIES") ?? string.Empty,
+                AddressSearchUrl = configuration.GetValue<string>("ADDRESS_SEARCH_URL") ?? string.Empty,
             };
         }
     }

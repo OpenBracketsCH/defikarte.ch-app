@@ -19,5 +19,7 @@
         string OsmUserName { get; }
 
         string OverpassApiUrl { get; }
+
+        string AddressSearchUrl { get; }
     }
 }
