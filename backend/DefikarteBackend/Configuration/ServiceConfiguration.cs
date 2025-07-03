@@ -19,7 +19,7 @@ namespace DefikarteBackend.Configuration
 
         public string BlobStorageBlobNameV2 { get; private set; } = string.Empty;
 
-        public string BlobStoragaConnectionString { get; private set; } = string.Empty;
+        public string BlobStorageConnectionString { get; private set; } = string.Empty;
 
         public string BlobStorageSwissBoundariesName { get; private set; } = string.Empty;
 
@@ -33,7 +33,7 @@ namespace DefikarteBackend.Configuration
                 OsmUserName = configuration.GetValue<string>("OSM_USER_NAME") ?? string.Empty,
                 OsmApiToken = configuration.GetValue<string>("OSM_API_TOKEN") ?? string.Empty,
                 OverpassApiUrl = configuration.GetValue<string>("OVERPASS_URL") ?? string.Empty,
-                BlobStoragaConnectionString = configuration.GetValue<string>("AzureWebJobsStorage") ?? string.Empty,
+                BlobStorageConnectionString = configuration.GetValue<string>("AzureWebJobsStorage") ?? string.Empty,
                 BlobStorageContainerName = configuration.GetValue<string>("BLOB_STORAGE_CONTAINER_NAME") ?? string.Empty,
                 BlobStorageBlobName = configuration.GetValue<string>("BLOB_STORAGE_BLOB_NAME") ?? string.Empty,
                 BlobStorageBlobNameV2 = configuration.GetValue<string>("BLOB_STORAGE_BLOB_NAME_V2") ?? string.Empty,

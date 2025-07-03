@@ -24,7 +24,7 @@ internal class Program
         var configuration = LoadConfiguration();
         var serviceConfig = ServiceConfiguration.Initialize(configuration);
 
-        var container = new BlobContainerClient(serviceConfig.BlobStoragaConnectionString, serviceConfig.BlobStorageContainerName);
+        var container = new BlobContainerClient(serviceConfig.BlobStorageConnectionString, serviceConfig.BlobStorageContainerName);
         container.CreateIfNotExists();
 
         var host = new HostBuilder()

@@ -2,7 +2,7 @@
 {
     public interface IServiceConfiguration
     {
-        string BlobStoragaConnectionString { get; }
+        string BlobStorageConnectionString { get; }
 
         string BlobStorageBlobName { get; }
 

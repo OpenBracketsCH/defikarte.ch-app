@@ -71,8 +71,8 @@ namespace DefikarteBackend.Functions
 
                 var overpassApiClient = new OverpassClient(overpassApiUrl);
                 var overpassResponse = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
-                var geojsonRepsone = GeoJsonConverter.Convert2GeoJson(overpassResponse);
-                return new OkObjectResult(geojsonRepsone);
+                var geojsonResponse = GeoJsonConverter.Convert2GeoJson(overpassResponse);
+                return new OkObjectResult(geojsonResponse);
             }
             catch (Exception ex)
             {
