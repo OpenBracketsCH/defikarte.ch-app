@@ -2,7 +2,7 @@
 {
     public interface IServiceConfiguration
     {
-        string BlobStoragaConnectionString { get; }
+        string BlobStorageConnectionString { get; }
 
         string BlobStorageBlobName { get; }
 
@@ -19,5 +19,7 @@
         string OsmUserName { get; }
 
         string OverpassApiUrl { get; }
+
+        string AddressSearchUrl { get; }
     }
 }

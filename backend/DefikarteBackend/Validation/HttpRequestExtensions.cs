@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 
 namespace DefikarteBackend.Validation
 {
@@ -17,16 +16,41 @@ namespace DefikarteBackend.Validation
         /// </typeparam>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static async Task<ValidatableRequest<T>> GetJsonBodyAsync<T, V>(this HttpRequest request)
+        public static async Task<ValidatedRequest<T>> GetValidatedRequestAsync<T, V>(this HttpRequest request)
             where V : AbstractValidator<T>, new()
         {
-            var requestObject = await request.GetJsonBodyAsync<T>();
+            T? requestObject;
+            try
+            {
+                var content = await request.ReadAsStringAsync();
+                requestObject = JsonConvert.DeserializeObject<T>(content);
+            }
+            catch (Exception)
+            {
+                return new ValidatedRequest<T>
+                {
+                    Value = default!,
+                    IsValid = false,
+                    Errors = [new("Body", "Request body is null or not a valid JSON")],
+                };
+            }
+
+            if (requestObject == null)
+            {
+                return new ValidatedRequest<T>
+                {
+                    Value = default!,
+                    IsValid = false,
+                    Errors = [new("Body", "Request body is null")],
+                };
+            }
+
             var validator = new V();
             var validationResult = validator.Validate(requestObject);
 
             if (!validationResult.IsValid)
             {
-                return new ValidatableRequest<T>
+                return new ValidatedRequest<T>
                 {
                     Value = requestObject,
                     IsValid = false,
@@ -34,24 +58,11 @@ namespace DefikarteBackend.Validation
                 };
             }
 
-            return new ValidatableRequest<T>
+            return new ValidatedRequest<T>
             {
                 Value = requestObject,
                 IsValid = true
             };
-        }
-
-        /// <summary>
-        /// Returns the deserialized request body.
-        /// </summary>
-        /// <typeparam name="T">Type used for deserialization of the request body.</typeparam>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public static async Task<T> GetJsonBodyAsync<T>(this HttpRequest request)
-        {
-            var requestBody = await request.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<T>(requestBody);
         }
     }
 }

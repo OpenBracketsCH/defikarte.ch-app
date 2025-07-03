@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace DefikarteBackend.Validation
 {
@@ -11,7 +10,7 @@ namespace DefikarteBackend.Validation
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static BadRequestObjectResult ToBadRequest<T>(this ValidatableRequest<T> request)
+        public static BadRequestObjectResult ToBadRequest<T>(this ValidatedRequest<T> request)
         {
             return new BadRequestObjectResult(request.Errors.Select(e => new
             {
