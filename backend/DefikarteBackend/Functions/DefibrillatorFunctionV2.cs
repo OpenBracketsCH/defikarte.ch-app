@@ -137,7 +137,7 @@ namespace DefikarteBackend.Functions
                 _logger.LogInformation($"Added new node {nodeId}, isInSwitzerland:{isInSwitzerland}");
 
                 var geoJsonResponse = GeoJsonConverter.Convert2GeoJson(createdNode);
-                _ = _updateGeoJsonCacheService.AddOrUpdateFeaturesInLocalCacheAsync(geoJsonResponse);
+                await _updateGeoJsonCacheService.AddOrUpdateFeaturesInLocalCacheAsync(geoJsonResponse).ConfigureAwait(false);
 
                 return new ObjectResult(geoJsonResponse) { StatusCode = StatusCodes.Status201Created };
             }
@@ -204,7 +204,7 @@ namespace DefikarteBackend.Functions
                 var updatedNode = await osmClient.GetNode(id);
                 _logger.LogInformation($"Updated node {id}, isInSwitzerland:{isInSwitzerland}");
                 var geoJsonResponse = GeoJsonConverter.Convert2GeoJson(updatedNode);
-                _ = _updateGeoJsonCacheService.AddOrUpdateFeaturesInLocalCacheAsync(geoJsonResponse);
+                await _updateGeoJsonCacheService.AddOrUpdateFeaturesInLocalCacheAsync(geoJsonResponse).ConfigureAwait(false);
 
                 return new OkObjectResult(geoJsonResponse);
             }
