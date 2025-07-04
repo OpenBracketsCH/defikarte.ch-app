@@ -3,9 +3,6 @@ using DefikarteBackend.Interfaces;
 using DefikarteBackend.Model;
 using DefikarteBackend.Repository;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DefikarteBackend.Cache
 {
@@ -14,11 +11,14 @@ namespace DefikarteBackend.Cache
         private readonly BlobContainerClient _containerClient;
         private readonly string _blobName;
 
-        public BlobStorageCacheRepositoryV2(BlobContainerClient containerClient, string blobName)
+        public DataSourceType DataSourceType { get; }
+
+        public BlobStorageCacheRepositoryV2(BlobContainerClient containerClient, string blobName, DataSourceType dataSourceType)
             : base(containerClient)
         {
             _containerClient = containerClient;
             _blobName = blobName;
+            DataSourceType = dataSourceType;
         }
 
         public async Task UpdateAsync(string jsonData, string blobName)
@@ -36,10 +36,15 @@ namespace DefikarteBackend.Cache
         public async Task<FeatureCollection> GetAsync()
         {
             var content = await ReadAsync(_blobName);
-            return JsonConvert.DeserializeObject<FeatureCollection>(content);
+            if (string.IsNullOrEmpty(content))
+            {
+                return new FeatureCollection();
+            }
+
+            return JsonConvert.DeserializeObject<FeatureCollection>(content) ?? new FeatureCollection();
         }
 
-        public async Task<Feature> GetByIdAsync(string id)
+        public async Task<Feature?> GetByIdAsync(string id)
         {
             return (await GetAsync()).Features.FirstOrDefault(x => x.Id == id);
         }

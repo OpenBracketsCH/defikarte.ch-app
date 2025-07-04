@@ -43,7 +43,11 @@ internal class Program
                 services.AddTransient<ICacheRepository<OsmNode>>(s =>
                     new BlobStorageCacheRepository(container, serviceConfig.BlobStorageBlobName));
                 services.AddTransient<IGeoJsonCacheRepository>(s =>
-                    new BlobStorageCacheRepositoryV2(container, serviceConfig.BlobStorageBlobNameV2));
+                    new BlobStorageCacheRepositoryV2(container, serviceConfig.BlobStorageBlobNameV2, DataSourceType.Osm));
+                services.AddTransient<IGeoJsonCacheRepository>(s =>
+                   new BlobStorageCacheRepositoryV2(container, serviceConfig.BlobStorageBlobNameLocalV2, DataSourceType.Local));
+
+                services.AddTransient<IUpdateGeoJsonCacheService, UpdateGeoJsonCacheService>();
 
                 services.AddSingleton(container);
                 services.AddSingleton<IBlobStorageDataRepository, BlobStorageDataRepository>();

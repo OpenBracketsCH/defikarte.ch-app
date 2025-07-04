@@ -12,23 +12,32 @@ namespace DefikarteBackend.Functions
         private readonly ILogger<SimpleCacheFunction> _logger;
         private readonly IServiceConfiguration _config;
         private readonly ICacheRepository<OsmNode> _cacheRepository;
-        private readonly IGeoJsonCacheRepository _geoJsonCacheRepository;
+        private readonly IUpdateGeoJsonCacheService _updateGeoJsonCacheService;
 
         public SimpleCacheFunction(
             ILogger<SimpleCacheFunction> logger,
             IServiceConfiguration config,
             ICacheRepository<OsmNode> cacheRepository,
-            IGeoJsonCacheRepository geoJsonCacheRepository)
+            IUpdateGeoJsonCacheService updateGeoJsonCacheService)
         {
             _logger = logger;
             _config = config;
             _cacheRepository = cacheRepository;
-            _geoJsonCacheRepository = geoJsonCacheRepository;
+            _updateGeoJsonCacheService = updateGeoJsonCacheService;
         }
 
         [Function(nameof(SimpleCacheFunction))]
         public async Task RunAsync([TimerTrigger("0 */15 * * * *", RunOnStartup = true)] TimerInfo myTimer)
         {
+            try
+            {
+                await _updateGeoJsonCacheService.CleanupOldItemsInLocalCacheAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception occured while tried to CleanupOldItemsInLocalCacheAsync. Continue update chache in SimpleCacheFunction.");
+            }
+
             var overpassApiUrl = _config.OverpassApiUrl;
             var overpassApiClient = new OverpassClient(overpassApiUrl);
 
@@ -36,7 +45,7 @@ namespace DefikarteBackend.Functions
             {
                 var response = await overpassApiClient.GetAllDefibrillatorsInSwitzerland();
                 var cacheV1Task = _cacheRepository.TryUpdateCacheAsync(response);
-                var cacheV2Task = _geoJsonCacheRepository.TryUpdateCacheAsync(GeoJsonConverter.Convert2GeoJson(response));
+                var cacheV2Task = _updateGeoJsonCacheService.TryUpdateAndCombineCacheAsync(GeoJsonConverter.Convert2GeoJson(response));
 
                 var results = await Task.WhenAll(cacheV1Task, cacheV2Task);
                 _logger.LogInformation($"Updated cache successful:{results.All(x => x)}");
