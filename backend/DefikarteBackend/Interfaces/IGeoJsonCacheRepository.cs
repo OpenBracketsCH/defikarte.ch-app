@@ -6,6 +6,8 @@ namespace DefikarteBackend.Interfaces
     {
         public DataSourceType DataSourceType { get; }
 
+        Task<bool> ExistsAsync();
+
         Task<FeatureCollection> GetAsync();
 
         Task<Feature?> GetByIdAsync(string id);

@@ -64,5 +64,10 @@ namespace DefikarteBackend.Cache
 
             return success;
         }
+
+        public async Task<bool> ExistsAsync()
+        {
+            return await ExistsAsync(_blobName);
+        }
     }
 }

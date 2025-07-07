@@ -22,15 +22,15 @@ namespace DefikarteBackend.Repository
         public async Task<string> ReadAsync(string blobName)
         {
             BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-            var exists = await blobClient.ExistsAsync();
-            if (!exists)
-            {
-                return string.Empty;
-            }
-
             var response = await blobClient.DownloadContentAsync();
             var content = response.Value.Content;
             return Encoding.UTF8.GetString(content);
+        }
+
+        public async Task<bool> ExistsAsync(string blobName)
+        {
+            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
+            return await blobClient.ExistsAsync();
         }
     }
 }

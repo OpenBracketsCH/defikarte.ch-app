@@ -30,7 +30,7 @@ namespace DefikarteBackend.Services
 
             if (localCacheRepository != null && osmCacheRepository != null)
             {
-                var temporaryData = await localCacheRepository.GetAsync().ConfigureAwait(false);
+                var temporaryData = await SafeGetAsync(localCacheRepository).ConfigureAwait(false);
                 AddOrUpdateItems(temporaryData, geoJson);
                 return await osmCacheRepository.TryUpdateCacheAsync(geoJson).ConfigureAwait(false);
             }
@@ -44,7 +44,7 @@ namespace DefikarteBackend.Services
             {
                 var localCacheRepository = _geoJsonCacheRepositories.FirstOrDefault(x => x.DataSourceType == DataSourceType.Local);
 
-                if (localCacheRepository == null)
+                if (localCacheRepository == null || await localCacheRepository.ExistsAsync() == false)
                 {
                     return; // No cache to cleanse
                 }
@@ -52,7 +52,7 @@ namespace DefikarteBackend.Services
                 var currentTime = DateTime.UtcNow;
                 var oneHourAgo = currentTime.AddHours(-1);
 
-                var geoJson = await localCacheRepository.GetAsync().ConfigureAwait(false);
+                var geoJson = await SafeGetAsync(localCacheRepository).ConfigureAwait(false);
 
                 geoJson.Features.RemoveAll(feature =>
                 {
@@ -85,7 +85,7 @@ namespace DefikarteBackend.Services
 
             if (localCacheRepository != null)
             {
-                var geoJson = await localCacheRepository.GetAsync().ConfigureAwait(false);
+                var geoJson = await SafeGetAsync(localCacheRepository).ConfigureAwait(false);
                 AddOrUpdateItems(newOrUpdatedFeatures, geoJson);
                 await localCacheRepository.TryUpdateCacheAsync(geoJson).ConfigureAwait(false);
             }
@@ -127,6 +127,16 @@ namespace DefikarteBackend.Services
                     geoJson.Features.Add(newFeature);
                 }
             }
+        }
+
+        private static async Task<FeatureCollection> SafeGetAsync(IGeoJsonCacheRepository geoJsonCacheRepository)
+        {
+            if (!await geoJsonCacheRepository.ExistsAsync())
+            {
+                return new FeatureCollection();
+            }
+
+            return await geoJsonCacheRepository.GetAsync().ConfigureAwait(false);
         }
     }
 }
