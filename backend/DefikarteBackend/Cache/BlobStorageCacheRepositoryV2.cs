@@ -35,8 +35,8 @@ namespace DefikarteBackend.Cache
 
         public async Task<FeatureCollection> GetAsync()
         {
-            var content = await ReadAsync(_blobName);
-            if (string.IsNullOrEmpty(content))
+            string content = await ReadAsync(_blobName);
+            if (string.IsNullOrWhiteSpace(content))
             {
                 return new FeatureCollection();
             }
