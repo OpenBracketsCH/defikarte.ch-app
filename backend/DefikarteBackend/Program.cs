@@ -7,6 +7,8 @@ using DefikarteBackend.Repository;
 using DefikarteBackend.Services;
 using DefikarteBackend.Validation;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +36,13 @@ internal class Program
                 services.AddApplicationInsightsTelemetryWorkerService();
                 services.ConfigureFunctionsApplicationInsights();
                 services.AddMvc().AddNewtonsoftJson();
+                services.AddResponseCompression(o =>
+                {
+                    o.EnableForHttps = true;
+                    o.Providers.Add<BrotliCompressionProvider>();
+                    o.Providers.Add<GzipCompressionProvider>();
+                });
+
                 services.AddLogging(options =>
                 {
                     options.AddFilter(nameof(DefikarteBackend), LogLevel.Trace);
