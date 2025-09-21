@@ -10,6 +10,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +31,10 @@ internal class Program
         container.CreateIfNotExists();
 
         var host = new HostBuilder()
-            .ConfigureFunctionsWebApplication()
+            .ConfigureFunctionsWebApplication(b =>
+            {
+                b.UseNewtonsoftJson();
+            })
             .ConfigureServices(services =>
             {
                 services.AddApplicationInsightsTelemetryWorkerService();

@@ -1,4 +1,6 @@
-﻿namespace DefikarteBackend.Model
+﻿using Newtonsoft.Json;
+
+namespace DefikarteBackend.Model
 {
     public class FeatureCollection
     {
@@ -13,6 +15,7 @@
 
         public string Id { get; set; }
 
+        [JsonProperty("bbox")]
         public double[] BBox { get; set; }
 
         public PointGeometry Geometry { get; set; }
