@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DefikarteBackend.Model
+﻿namespace DefikarteBackend.Model
 {
     public class FeatureCollection
     {
@@ -14,6 +12,8 @@ namespace DefikarteBackend.Model
         public string Type { get; set; } = "Feature";
 
         public string Id { get; set; }
+
+        public double[] BBox { get; set; }
 
         public PointGeometry Geometry { get; set; }
 
