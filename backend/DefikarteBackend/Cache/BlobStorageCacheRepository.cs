@@ -3,14 +3,10 @@ using DefikarteBackend.Interfaces;
 using DefikarteBackend.Model;
 using DefikarteBackend.Repository;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DefikarteBackend.Cache
 {
-    public class BlobStorageCacheRepository : BlobStorageDataRepository, IBlobStorageCacheRepository, ICacheRepository<OsmNode>
+    public class BlobStorageCacheRepository : BlobStorageDataRepository, ICacheRepository<OsmNode>
     {
         private readonly BlobContainerClient _containerClient;
         private readonly string _blobName;
@@ -20,18 +16,6 @@ namespace DefikarteBackend.Cache
         {
             _containerClient = containerClient;
             _blobName = blobName;
-        }
-
-        public async Task UpdateAsync(string jsonData, string blobName)
-        {
-            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-            await blobClient.UploadAsync(BinaryData.FromString(jsonData), overwrite: true);
-        }
-
-        public async Task DeleteAsync(string blobName)
-        {
-            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-            await blobClient.DeleteIfExistsAsync();
         }
 
         public async Task<IList<OsmNode>> GetAsync()
@@ -59,6 +43,12 @@ namespace DefikarteBackend.Cache
             }
 
             return success;
+        }
+
+        private async Task UpdateAsync(string jsonData, string blobName)
+        {
+            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
+            await blobClient.UploadAsync(BinaryData.FromString(jsonData), overwrite: true);
         }
     }
 }

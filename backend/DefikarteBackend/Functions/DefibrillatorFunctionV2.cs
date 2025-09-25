@@ -62,17 +62,23 @@ namespace DefikarteBackend.Functions
                         : new ObjectResult(new { Error = $"AED with Id: {id} not found." }) { StatusCode = StatusCodes.Status404NotFound };
                 }
 
-                var response = await _cacheRepository.GetAsync().ConfigureAwait(false);
-                if (response != null && response.Features.Count > 0)
+                var response = await _cacheRepository.GetRawAsync().ConfigureAwait(false);
+                if (!string.IsNullOrEmpty(response))
                 {
-                    _logger.LogInformation($"Get all AED from server-cache. Count: {response.Features.Count}, Etag:{response.ETag}");
-                    if (req.Headers.TryGetValue("If-None-Match", out var incomingETag) && incomingETag == response.ETag)
+                    var etag = ETagHashCalculator.Calculate(response);
+                    _logger.LogInformation($"Get all AED from server-cache. Etag:{etag}");
+                    if (req.Headers.TryGetValue("If-None-Match", out var incomingETag) && incomingETag == etag)
                     {
                         return new StatusCodeResult(StatusCodes.Status304NotModified);
                     }
 
-                    req.HttpContext.Response.Headers.ETag = response.ETag;
-                    return new OkObjectResult(response);
+                    req.HttpContext.Response.Headers.ETag = etag;
+                    return new ContentResult
+                    {
+                        Content = response,
+                        ContentType = "application/json",
+                        StatusCode = 200,
+                    };
                 }
 
                 var overpassApiUrl = _config.OverpassApiUrl;

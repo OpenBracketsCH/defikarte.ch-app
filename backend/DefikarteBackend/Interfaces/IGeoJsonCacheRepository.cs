@@ -10,6 +10,8 @@ namespace DefikarteBackend.Interfaces
 
         Task<FeatureCollection> GetAsync();
 
+        Task<string> GetRawAsync();
+
         Task<Feature?> GetByIdAsync(string id);
 
         Task<bool> TryUpdateCacheAsync(FeatureCollection values);

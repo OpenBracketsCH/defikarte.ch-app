@@ -1,13 +1,13 @@
 ﻿using Azure.Storage.Blobs;
-using DefikarteBackend.Helpers;
 using DefikarteBackend.Interfaces;
 using DefikarteBackend.Model;
 using DefikarteBackend.Repository;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace DefikarteBackend.Cache
 {
-    public class BlobStorageCacheRepositoryV2 : BlobStorageDataRepository, IBlobStorageCacheRepository, IGeoJsonCacheRepository
+    public class BlobStorageCacheRepositoryV2 : BlobStorageDataRepository, IGeoJsonCacheRepository
     {
         private readonly BlobContainerClient _containerClient;
         private readonly string _blobName;
@@ -22,18 +22,6 @@ namespace DefikarteBackend.Cache
             DataSourceType = dataSourceType;
         }
 
-        public async Task UpdateAsync(string jsonData, string blobName)
-        {
-            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-            await blobClient.UploadAsync(BinaryData.FromString(jsonData), overwrite: true);
-        }
-
-        public async Task DeleteAsync(string blobName)
-        {
-            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-            await blobClient.DeleteIfExistsAsync();
-        }
-
         public async Task<FeatureCollection> GetAsync()
         {
             string content = await ReadAsync(_blobName);
@@ -42,9 +30,12 @@ namespace DefikarteBackend.Cache
                 return new FeatureCollection();
             }
 
-            var geoJson = JsonConvert.DeserializeObject<FeatureCollection>(content) ?? new FeatureCollection();
-            geoJson.ETag = ETagHashCalculator.Calculate(content);
-            return geoJson;
+            return JsonConvert.DeserializeObject<FeatureCollection>(content) ?? new FeatureCollection();
+        }
+
+        public async Task<string> GetRawAsync()
+        {
+            return await ReadAsync(_blobName);
         }
 
         public async Task<Feature?> GetByIdAsync(string id)
@@ -57,7 +48,15 @@ namespace DefikarteBackend.Cache
             var success = false;
             try
             {
-                await UpdateAsync(JsonConvert.SerializeObject(values), _blobName);
+                var serializerSettings = new JsonSerializerSettings
+                {
+                    ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new CamelCaseNamingStrategy()
+                    }
+                };
+
+                await UpdateAsync(JsonConvert.SerializeObject(values, serializerSettings), _blobName);
                 success = true;
             }
             catch (Exception ex)
@@ -71,6 +70,12 @@ namespace DefikarteBackend.Cache
         public async Task<bool> ExistsAsync()
         {
             return await ExistsAsync(_blobName);
+        }
+
+        private async Task UpdateAsync(string jsonData, string blobName)
+        {
+            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
+            await blobClient.UploadAsync(BinaryData.FromString(jsonData), overwrite: true);
         }
     }
 }

@@ -7,9 +7,6 @@ namespace DefikarteBackend.Model
         public string Type { get; set; } = "FeatureCollection";
 
         public List<Feature> Features { get; set; } = new List<Feature>();
-
-        [JsonIgnore]
-        public string ETag { get; set; } = string.Empty;
     }
 
     public class Feature
