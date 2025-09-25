@@ -65,7 +65,13 @@ namespace DefikarteBackend.Functions
                 var response = await _cacheRepository.GetAsync().ConfigureAwait(false);
                 if (response != null && response.Features.Count > 0)
                 {
-                    _logger.LogInformation($"Get all AED from cache. Count: {response.Features.Count}");
+                    _logger.LogInformation($"Get all AED from server-cache. Count: {response.Features.Count}, Etag:{response.ETag}");
+                    if (req.Headers.TryGetValue("If-None-Match", out var incomingETag) && incomingETag == response.ETag)
+                    {
+                        return new StatusCodeResult(StatusCodes.Status304NotModified);
+                    }
+
+                    req.HttpContext.Response.Headers.ETag = response.ETag;
                     return new OkObjectResult(response);
                 }
 

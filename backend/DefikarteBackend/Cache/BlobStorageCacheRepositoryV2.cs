@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using DefikarteBackend.Helpers;
 using DefikarteBackend.Interfaces;
 using DefikarteBackend.Model;
 using DefikarteBackend.Repository;
@@ -41,7 +42,9 @@ namespace DefikarteBackend.Cache
                 return new FeatureCollection();
             }
 
-            return JsonConvert.DeserializeObject<FeatureCollection>(content) ?? new FeatureCollection();
+            var geoJson = JsonConvert.DeserializeObject<FeatureCollection>(content) ?? new FeatureCollection();
+            geoJson.ETag = ETagHashCalculator.Calculate(content);
+            return geoJson;
         }
 
         public async Task<Feature?> GetByIdAsync(string id)
