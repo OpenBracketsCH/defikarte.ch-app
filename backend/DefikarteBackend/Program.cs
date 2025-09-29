@@ -69,6 +69,7 @@ internal class Program
 
                 services.AddTransient<IValidator<DefibrillatorRequest>, DefibrillatorRequestValidator>();
                 services.AddTransient<IValidator<DefibrillatorRequestV2>, DefibrillatorRequestValidatorV2>();
+                services.AddTransient<IValidator<FeatureCollection>, FeatureCollectionValidator>();
 
                 services.AddTransient<IAddressSearchService, AddressSearchService>();
 

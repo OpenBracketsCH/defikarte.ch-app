@@ -7,15 +7,15 @@ using Microsoft.Extensions.Logging;
 
 namespace DefikarteBackend.Functions
 {
-    public class SimpleCacheFunction
+    public class SimpleCacheTimer
     {
-        private readonly ILogger<SimpleCacheFunction> _logger;
+        private readonly ILogger<SimpleCacheTimer> _logger;
         private readonly IServiceConfiguration _config;
         private readonly ICacheRepository<OsmNode> _cacheRepository;
         private readonly IUpdateGeoJsonCacheService _updateGeoJsonCacheService;
 
-        public SimpleCacheFunction(
-            ILogger<SimpleCacheFunction> logger,
+        public SimpleCacheTimer(
+            ILogger<SimpleCacheTimer> logger,
             IServiceConfiguration config,
             ICacheRepository<OsmNode> cacheRepository,
             IUpdateGeoJsonCacheService updateGeoJsonCacheService)
@@ -26,7 +26,7 @@ namespace DefikarteBackend.Functions
             _updateGeoJsonCacheService = updateGeoJsonCacheService;
         }
 
-        [Function(nameof(SimpleCacheFunction))]
+        [Function(nameof(SimpleCacheTimer))]
         public async Task RunAsync([TimerTrigger("0 */15 * * * *", RunOnStartup = true)] TimerInfo myTimer)
         {
             try
@@ -35,7 +35,7 @@ namespace DefikarteBackend.Functions
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Exception occured while tried to CleanupOldItemsInLocalCacheAsync. Continue update chache in SimpleCacheFunction.");
+                _logger.LogError(ex, $"Exception occured while tried to CleanupOldItemsInLocalCacheAsync. Continue update chache in {nameof(SimpleCacheTimer)}.");
             }
 
             var overpassApiUrl = _config.OverpassApiUrl;
@@ -52,7 +52,7 @@ namespace DefikarteBackend.Functions
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error running SimpleCacheFunction");
+                _logger.LogError(ex, $"Error running {nameof(SimpleCacheTimer)}");
             }
         }
 
