@@ -1,6 +1,5 @@
 ﻿using DefikarteBackend.Model;
 using OsmSharp;
-using static DefikarteBackend.Validation.FeatureCollectionValidator;
 
 namespace DefikarteBackend.Helpers
 {

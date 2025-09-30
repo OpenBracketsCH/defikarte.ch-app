@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace DefikarteBackend.Validation
 {
-    public partial class FeatureCollectionValidator : AbstractValidator<FeatureCollection>
+    public class FeatureCollectionValidator : AbstractValidator<FeatureCollection>
     {
         public FeatureCollectionValidator()
         {
