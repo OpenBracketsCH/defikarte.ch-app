@@ -32,7 +32,7 @@ public class AddressSearchControllerV3
         {
             if (string.IsNullOrEmpty(searchText))
             {
-                return new NotFoundObjectResult(new { Error = "searchText is null or empty" });
+                return new NotFoundObjectResult(new { Message = "searchText is null or empty" });
             }
 
             var result = await _addressSearchService.SearchAddressAsync(searchText).ConfigureAwait(false);
@@ -41,7 +41,7 @@ public class AddressSearchControllerV3
         catch (Exception ex)
         {
             _logger.LogError(ex.ToString());
-            return new ObjectResult(new { Error = ex.Message })
+            return new ObjectResult(new { ex.Message })
             {
                 StatusCode = StatusCodes.Status500InternalServerError,
             };

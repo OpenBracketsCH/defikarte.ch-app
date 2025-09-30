@@ -121,7 +121,7 @@ namespace DefikarteBackend.Functions
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
-                return new ObjectResult(new { Error = ex.Message })
+                return new ObjectResult(new { ex.Message })
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
                 };
@@ -145,7 +145,7 @@ namespace DefikarteBackend.Functions
                 if (string.IsNullOrEmpty(osmApiToken) || string.IsNullOrEmpty(osmApiUrl))
                 {
                     _logger.LogWarning("No valid configuration available for eighter username, token or osmApiUrl");
-                    return new ObjectResult(new { Error = "Configuration error. Contact API-Admins." })
+                    return new ObjectResult(new { Message = "Configuration error. Contact API-Admins." })
                     {
                         StatusCode = StatusCodes.Status500InternalServerError,
                     };
@@ -155,7 +155,7 @@ namespace DefikarteBackend.Functions
                 if (validationResult == null || validationResult.IsValid == false)
                 {
                     _logger.LogInformation($"Invalid request data: {JsonConvert.SerializeObject(validationResult?.Errors)}");
-                    return validationResult?.ToBadRequest() ?? new BadRequestObjectResult(new { Error = "Request cannot be parsed. Body is not a valid JSON or null." });
+                    return validationResult?.ToBadRequest() ?? new BadRequestObjectResult(new { Message = "Request cannot be parsed. Body is not a valid JSON or null." });
                 }
 
                 // currently only 1 feature change is allowed, but still we will iterate over the all features to make it easier for further implementations
@@ -218,7 +218,7 @@ namespace DefikarteBackend.Functions
                 if (string.IsNullOrEmpty(osmApiToken) || string.IsNullOrEmpty(osmApiUrl))
                 {
                     _logger.LogWarning("No valid configuration available for eighter username, token or osmApiUrl");
-                    return new ObjectResult(new { Error = "Configuration error. Contact API-Admins." })
+                    return new ObjectResult(new { Message = "Configuration error. Contact API-Admins." })
                     {
                         StatusCode = StatusCodes.Status500InternalServerError,
                     };
@@ -228,7 +228,7 @@ namespace DefikarteBackend.Functions
                 if (validationResult == null || validationResult.IsValid == false)
                 {
                     _logger.LogInformation($"Invalid request data: {JsonConvert.SerializeObject(validationResult?.Errors)}");
-                    return validationResult?.ToBadRequest() ?? new BadRequestObjectResult(new { Error = "Request cannot be parsed. Body is not a valid JSON or null." });
+                    return validationResult?.ToBadRequest() ?? new BadRequestObjectResult(new { Message = "Request cannot be parsed. Body is not a valid JSON or null." });
                 }
 
                 var feature = validationResult.Value.Features.First();
@@ -265,12 +265,12 @@ namespace DefikarteBackend.Functions
             catch (JsonSerializationException ex)
             {
                 _logger.LogError(ex.ToString());
-                return new BadRequestObjectResult(new { Error = ex.Message });
+                return new BadRequestObjectResult(new { ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
-                return new ObjectResult(new { Error = ex.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+                return new ObjectResult(new { ex.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
             }
         }
 
