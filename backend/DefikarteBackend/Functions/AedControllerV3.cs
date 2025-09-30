@@ -144,7 +144,7 @@ namespace DefikarteBackend.Functions
 
                 if (string.IsNullOrEmpty(osmApiToken) || string.IsNullOrEmpty(osmApiUrl))
                 {
-                    _logger.LogWarning("No valid configuration available for eighter username, token or osmApiUrl");
+                    _logger.LogWarning("No valid configuration available for either username, token or osmApiUrl");
                     return new ObjectResult(new { Message = "Configuration error. Contact API-Admins." })
                     {
                         StatusCode = StatusCodes.Status500InternalServerError,
