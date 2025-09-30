@@ -46,7 +46,7 @@ namespace DefikarteBackend.Functions
         [Function("AED_GET_BY_ID_V3")]
         [OpenApiOperation(operationId: "AED_GET_BY_ID_V3", tags: ["AED_V3"], Summary = "Get AED by ID as geojson.")]
         [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(string), Summary = "ID of AED to return as geojson")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/geo+json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(object), Description = "The NotFound response.")]
         [OpenApiSecurity("api-key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
         public async Task<IActionResult> GetById(
@@ -65,7 +65,7 @@ namespace DefikarteBackend.Functions
                 {
                     var result = new FeatureCollection();
                     result.Features.Add(byIdResponse);
-                    return new GeoJsonContentResult(result);
+                    return new OkObjectResult(result);
                 }
 
                 var geojsonResponse = await GetAedFromOverpassAsync();
@@ -74,7 +74,7 @@ namespace DefikarteBackend.Functions
                 {
                     var overpassResult = new FeatureCollection();
                     overpassResult.Features.Add(overPassByIdResponse);
-                    return new GeoJsonContentResult(overpassResult);
+                    return new OkObjectResult(overpassResult);
                 }
 
                 return new ObjectResult(new { Message = $"AED with Id: {id} not found." }) { StatusCode = StatusCodes.Status404NotFound };
@@ -91,7 +91,7 @@ namespace DefikarteBackend.Functions
 
         [Function("AED_GET_V3")]
         [OpenApiOperation(operationId: "AED_GET_V3", tags: ["AED_V3"], Summary = "Get all AEDs in switzerland as geojson.")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/geo+json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotModified, Description = "Content not modified")]
         [OpenApiSecurity("api-key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
         public async Task<IActionResult> GetAll(
@@ -116,7 +116,7 @@ namespace DefikarteBackend.Functions
 
                 _logger.LogWarning($"Get all AED from overpass. Server-cache not available.");
                 var geojsonResponse = await GetAedFromOverpassAsync();
-                return new GeoJsonContentResult(geojsonResponse);
+                return new OkObjectResult(geojsonResponse);
             }
             catch (Exception ex)
             {
@@ -130,8 +130,8 @@ namespace DefikarteBackend.Functions
 
         [Function("AED_POST_V3")]
         [OpenApiOperation(operationId: "AED_POST_V3", tags: ["AED_V3"], Summary = "Create a new AED from geojson in OSM.")]
-        [OpenApiRequestBody("application/geo+json", typeof(FeatureCollection))]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/geo+json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
+        [OpenApiRequestBody("application/json", typeof(FeatureCollection))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
         [OpenApiSecurity("api-key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
         public async Task<IActionResult> Create(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "v3/aed")] HttpRequest req)
@@ -185,7 +185,7 @@ namespace DefikarteBackend.Functions
                 var geoJsonResponse = GeoJsonConverter.Convert2GeoJson(resultIds);
                 await _updateGeoJsonCacheService.AddOrUpdateFeaturesInLocalCacheAsync(geoJsonResponse).ConfigureAwait(false);
 
-                return new GeoJsonContentResult(geoJsonResponse) { StatusCode = StatusCodes.Status201Created };
+                return new OkObjectResult(geoJsonResponse) { StatusCode = StatusCodes.Status201Created };
             }
             catch (JsonSerializationException ex)
             {
@@ -202,8 +202,8 @@ namespace DefikarteBackend.Functions
         [Function("AED_PUT_V3")]
         [OpenApiOperation(operationId: "AED_PUT_V3", tags: ["AED_V3"], Summary = "Updates (replaces) AED with given ID and props in OSM.")]
         [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(long), Summary = "Id of the AED to replace.")]
-        [OpenApiRequestBody("application/geo+json", typeof(FeatureCollection))]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/geo+json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
+        [OpenApiRequestBody("application/json", typeof(FeatureCollection))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
         [OpenApiSecurity("api-key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
         public async Task<IActionResult> Update(
           [HttpTrigger(AuthorizationLevel.Function, "put", Route = "v3/aed/{id}")] HttpRequest req, long id)

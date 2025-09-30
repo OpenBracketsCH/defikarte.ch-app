@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace DefikarteBackend.Model
 {
@@ -17,23 +15,6 @@ namespace DefikarteBackend.Model
 
         public GeoJsonContentResult(string content) : this(content, 200)
         {
-        }
-
-        public GeoJsonContentResult(object obj) : this(obj, 200)
-        {
-        }
-
-        public GeoJsonContentResult(object obj, int statusCode)
-        {
-            Content = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                }
-            });
-            StatusCode = statusCode;
-            ContentType = _contentType;
         }
     }
 }

@@ -24,7 +24,7 @@ public class AddressSearchControllerV3
     [Function("ADDRESS_SEARCH_V3")]
     [OpenApiOperation(operationId: "ADDRESS_SEARCH_V3", tags: ["ADDRESS_SEARCH_V3"], Summary = "Search for addresses")]
     [OpenApiParameter(name: "searchText", In = ParameterLocation.Path, Required = true, Type = typeof(string), Summary = "Search string to search for.")]
-    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/geo+json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(Dictionary<string, string>), Description = "The NotFound response.")]
     public async Task<IActionResult> SearchAddressAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "v3/search/{searchText}")] HttpRequest req, string searchText)
     {
@@ -36,7 +36,7 @@ public class AddressSearchControllerV3
             }
 
             var result = await _addressSearchService.SearchAddressAsync(searchText).ConfigureAwait(false);
-            return new GeoJsonContentResult(result ?? new FeatureCollection());
+            return new OkObjectResult(result ?? new FeatureCollection());
         }
         catch (Exception ex)
         {
