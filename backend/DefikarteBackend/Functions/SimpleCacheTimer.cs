@@ -35,7 +35,7 @@ namespace DefikarteBackend.Functions
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Exception occured while tried to CleanupOldItemsInLocalCacheAsync. Continue update chache in {nameof(SimpleCacheTimer)}.");
+                _logger.LogError(ex, $"Exception occurred while tried to CleanupOldItemsInLocalCacheAsync. Continue update cache in {nameof(SimpleCacheTimer)}.");
             }
 
             var overpassApiUrl = _config.OverpassApiUrl;
