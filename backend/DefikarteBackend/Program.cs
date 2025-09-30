@@ -53,11 +53,6 @@ internal class Program
                     o.EnableForHttps = true;
                     o.Providers.Add<BrotliCompressionProvider>();
                     o.Providers.Add<GzipCompressionProvider>();
-                    var mimeTypes = new List<string>(ResponseCompressionDefaults.MimeTypes)
-                    {
-                        "application/geo+json"
-                    };
-                    o.MimeTypes = mimeTypes;
                 });
 
                 services.AddLogging(options =>

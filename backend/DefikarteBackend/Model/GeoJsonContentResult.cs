@@ -6,7 +6,7 @@ namespace DefikarteBackend.Model
 {
     public class GeoJsonContentResult : ContentResult
     {
-        private const string _contentType = "application/geo+json";
+        private const string _contentType = "application/json";
 
         public GeoJsonContentResult(string content, int statusCode)
         {
