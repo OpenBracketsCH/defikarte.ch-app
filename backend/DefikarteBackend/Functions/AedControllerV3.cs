@@ -129,7 +129,7 @@ namespace DefikarteBackend.Functions
         }
 
         [Function("AED_POST_V3")]
-        [OpenApiOperation(operationId: "AED_POST_V3", tags: ["AED_V3"], Summary = "Create a new AED from given FeatureCollection.")]
+        [OpenApiOperation(operationId: "AED_POST_V3", tags: ["AED_V3"], Summary = "Create a new AED from geojson in OSM.")]
         [OpenApiRequestBody("application/geo+json", typeof(FeatureCollection))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/geo+json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
         [OpenApiSecurity("api-key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
@@ -176,7 +176,6 @@ namespace DefikarteBackend.Functions
                     newNode.ChangeSetId = changeSetId;
                     var nodeId = await osmClient.CreateElement(changeSetId, newNode);
 
-                    // Todo: Check if this node can already be queried
                     var createdNode = await osmClient.GetNode(nodeId);
                     resultIds.Add(createdNode);
                     _logger.LogInformation($"Added new node {nodeId}, isInSwitzerland:{isInSwitzerland}");
