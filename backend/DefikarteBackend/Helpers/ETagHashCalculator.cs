@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+﻿using System.IO.Hashing;
 using System.Text;
 
 namespace DefikarteBackend.Helpers
@@ -7,7 +7,7 @@ namespace DefikarteBackend.Helpers
     {
         public static string Calculate(string content)
         {
-            byte[] hashBytes = MD5.HashData(Encoding.UTF8.GetBytes(content));
+            byte[] hashBytes = XxHash64.Hash(Encoding.UTF8.GetBytes(content));
             return $"\"{Convert.ToBase64String(hashBytes)}\"";
         }
     }
