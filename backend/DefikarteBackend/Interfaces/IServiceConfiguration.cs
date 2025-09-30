@@ -8,6 +8,8 @@
 
         string BlobStorageBlobNameV2 { get; }
 
+        string BlobStorageBlobNameLocalV2 { get; }
+
         string BlobStorageContainerName { get; }
 
         string BlobStorageSwissBoundariesName { get; }

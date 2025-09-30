@@ -1,8 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using DefikarteBackend.Interfaces;
-using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DefikarteBackend.Repository
 {
@@ -24,9 +22,16 @@ namespace DefikarteBackend.Repository
         public async Task<string> ReadAsync(string blobName)
         {
             BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-            var response = await blobClient.DownloadContentAsync();
-            var content = response.Value.Content;
-            return Encoding.UTF8.GetString(content);
+
+            using var memoryStream = new MemoryStream();
+            await blobClient.DownloadToAsync(memoryStream).ConfigureAwait(false);
+            return Encoding.UTF8.GetString(memoryStream.ToArray());
+        }
+
+        public async Task<bool> ExistsAsync(string blobName)
+        {
+            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
+            return await blobClient.ExistsAsync();
         }
     }
 }

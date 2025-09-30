@@ -1,6 +1,5 @@
 ﻿using DefikarteBackend.Model;
 using FluentValidation;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace DefikarteBackend.Validation
@@ -49,7 +48,7 @@ namespace DefikarteBackend.Validation
                     context.AddFailure(context.PropertyPath, "Phonenumber not valid");
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 context.AddFailure(context.PropertyPath, "Phonenumber not valid");
             }

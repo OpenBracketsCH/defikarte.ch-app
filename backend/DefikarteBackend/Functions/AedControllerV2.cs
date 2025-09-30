@@ -41,7 +41,7 @@ namespace DefikarteBackend.Functions
         }
 
         [Function("Defibrillators_GETALL_V2")]
-        [OpenApiOperation(operationId: "GetDefibrillators_V2", tags: ["Defibrillator-V2"], Summary = "Get all or resourceId based defibrillators from switzerland as geojson.")]
+        [OpenApiOperation(operationId: "GetDefibrillators_V2", tags: ["Defibrillator-V2"], Summary = "Get all or resourceId based defibrillators from switzerland as geojson.", Deprecated = true)]
         [OpenApiParameter(name: "id?", In = ParameterLocation.Path, Required = false, Type = typeof(string), Summary = "Id of the defibrillator which should be returned.")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FeatureCollection), Description = "The OK response")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(Dictionary<string, string>), Description = "The NotFound response.")]
@@ -56,7 +56,7 @@ namespace DefikarteBackend.Functions
                     var byIdResponse = await _cacheRepository.GetByIdAsync(id);
                     return byIdResponse != null
                         ? new OkObjectResult(byIdResponse)
-                        : new ObjectResult(new { Error = $"AED with Id: {id} not found." }) { StatusCode = StatusCodes.Status404NotFound };
+                        : new ObjectResult(new { Message = $"AED with Id: {id} not found." }) { StatusCode = StatusCodes.Status404NotFound };
                 }
 
                 var response = await _cacheRepository.GetAsync();
@@ -77,7 +77,7 @@ namespace DefikarteBackend.Functions
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
-                return new ObjectResult(new { Error = ex.Message })
+                return new ObjectResult(new { ex.Message })
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
                 };
@@ -86,7 +86,7 @@ namespace DefikarteBackend.Functions
 
 
         [Function("Defibrillators_POST_V2")]
-        [OpenApiOperation(operationId: "CreateDefibrillator_V2", tags: ["Defibrillator-V2"], Summary = "Create a new defibrillator.")]
+        [OpenApiOperation(operationId: "CreateDefibrillator_V2", tags: ["Defibrillator-V2"], Summary = "Create a new defibrillator.", Deprecated = true)]
         [OpenApiRequestBody("application/json", typeof(DefibrillatorRequestV2))]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(DefibrillatorResponse), Description = "The OK response")]
         [OpenApiSecurity("api-key", SecuritySchemeType.ApiKey, In = OpenApiSecurityLocationType.Header, Name = "x-functions-key")]
@@ -102,7 +102,7 @@ namespace DefikarteBackend.Functions
                 if (string.IsNullOrEmpty(osmApiToken) || string.IsNullOrEmpty(osmApiUrl))
                 {
                     _logger.LogWarning("No valid configuration available for eighter username, token or osmApiUrl");
-                    return new ObjectResult(new { Error = "Configuration error. Contact API-Admins." })
+                    return new ObjectResult(new { Message = "Configuration error. Contact API-Admins." })
                     {
                         StatusCode = StatusCodes.Status500InternalServerError,
                     };
@@ -112,7 +112,7 @@ namespace DefikarteBackend.Functions
                 if (validationResult == null || validationResult.IsValid == false)
                 {
                     _logger.LogInformation($"Invalid request data.");
-                    return validationResult?.ToBadRequest() ?? new BadRequestObjectResult(new { Error = "Request cannot be parsed. Body is not a valid JSON or null." });
+                    return validationResult?.ToBadRequest() ?? new BadRequestObjectResult(new { Message = "Request cannot be parsed. Body is not a valid JSON or null." });
                 }
 
                 var body = validationResult.Value;
@@ -137,12 +137,12 @@ namespace DefikarteBackend.Functions
             catch (JsonSerializationException ex)
             {
                 _logger.LogError(ex.ToString());
-                return new BadRequestObjectResult(new { Error = ex.Message });
+                return new BadRequestObjectResult(new { ex.Message });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
-                return new ObjectResult(new { Error = ex.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+                return new ObjectResult(new { ex.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
             }
         }
 

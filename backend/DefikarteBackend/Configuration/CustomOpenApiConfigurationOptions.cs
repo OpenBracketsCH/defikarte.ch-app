@@ -9,12 +9,12 @@ namespace DefikarteBackend.Configuration
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
             Version = "1.0.0",
-            Title = "OpenAPI Document for Defikarte.ch-API",
-            Description = "HTTP APIs used for the Defikarte.ch",
-            TermsOfService = new Uri("https://defikarte.ch/impressum.html"),
+            Title = "OpenAPI Document for defikarte.ch API",
+            Description = "HTTP/s APIs used for the defikarte.ch",
+            TermsOfService = new Uri("https://defikarte.ch/privacy"),
             Contact = new OpenApiContact()
             {
-                Name = "Defikarte.ch-API",
+                Name = "defikarte.ch API",
                 Email = "info@defikarte.ch",
                 Url = new Uri("https://github.com/OpenBracketsCH/defikarte.ch-app/issues"),
             },

@@ -1,13 +1,18 @@
 ﻿using DefikarteBackend.Model;
-using System.Threading.Tasks;
 
 namespace DefikarteBackend.Interfaces
 {
     public interface IGeoJsonCacheRepository
     {
+        public DataSourceType DataSourceType { get; }
+
+        Task<bool> ExistsAsync();
+
         Task<FeatureCollection> GetAsync();
 
-        Task<Feature> GetByIdAsync(string id);
+        Task<string> GetRawAsync();
+
+        Task<Feature?> GetByIdAsync(string id);
 
         Task<bool> TryUpdateCacheAsync(FeatureCollection values);
     }

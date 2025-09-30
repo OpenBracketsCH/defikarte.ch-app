@@ -7,7 +7,10 @@ using DefikarteBackend.Repository;
 using DefikarteBackend.Services;
 using DefikarteBackend.Validation;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +19,8 @@ using Microsoft.Extensions.Logging;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 internal class Program
 {
@@ -28,12 +33,28 @@ internal class Program
         container.CreateIfNotExists();
 
         var host = new HostBuilder()
-            .ConfigureFunctionsWebApplication()
+            .ConfigureFunctionsWebApplication(b =>
+            {
+                b.UseNewtonsoftJson(new JsonSerializerSettings
+                {
+                    ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new CamelCaseNamingStrategy(),
+                    }
+                });
+            })
             .ConfigureServices(services =>
             {
                 services.AddApplicationInsightsTelemetryWorkerService();
                 services.ConfigureFunctionsApplicationInsights();
                 services.AddMvc().AddNewtonsoftJson();
+                services.AddResponseCompression(o =>
+                {
+                    o.EnableForHttps = true;
+                    o.Providers.Add<BrotliCompressionProvider>();
+                    o.Providers.Add<GzipCompressionProvider>();
+                });
+
                 services.AddLogging(options =>
                 {
                     options.AddFilter(nameof(DefikarteBackend), LogLevel.Trace);
@@ -43,7 +64,11 @@ internal class Program
                 services.AddTransient<ICacheRepository<OsmNode>>(s =>
                     new BlobStorageCacheRepository(container, serviceConfig.BlobStorageBlobName));
                 services.AddTransient<IGeoJsonCacheRepository>(s =>
-                    new BlobStorageCacheRepositoryV2(container, serviceConfig.BlobStorageBlobNameV2));
+                    new BlobStorageCacheRepositoryV2(container, serviceConfig.BlobStorageBlobNameV2, DataSourceType.Osm));
+                services.AddTransient<IGeoJsonCacheRepository>(s =>
+                   new BlobStorageCacheRepositoryV2(container, serviceConfig.BlobStorageBlobNameLocalV2, DataSourceType.Local));
+
+                services.AddTransient<IUpdateGeoJsonCacheService, UpdateGeoJsonCacheService>();
 
                 services.AddSingleton(container);
                 services.AddSingleton<IBlobStorageDataRepository, BlobStorageDataRepository>();
@@ -52,6 +77,7 @@ internal class Program
 
                 services.AddTransient<IValidator<DefibrillatorRequest>, DefibrillatorRequestValidator>();
                 services.AddTransient<IValidator<DefibrillatorRequestV2>, DefibrillatorRequestValidatorV2>();
+                services.AddTransient<IValidator<FeatureCollection>, FeatureCollectionValidator>();
 
                 services.AddTransient<IAddressSearchService, AddressSearchService>();
 
