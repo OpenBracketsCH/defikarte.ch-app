@@ -19,6 +19,8 @@ using Microsoft.Extensions.Logging;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 internal class Program
 {
@@ -33,7 +35,13 @@ internal class Program
         var host = new HostBuilder()
             .ConfigureFunctionsWebApplication(b =>
             {
-                b.UseNewtonsoftJson();
+                b.UseNewtonsoftJson(new JsonSerializerSettings
+                {
+                    ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new CamelCaseNamingStrategy(),
+                    }
+                });
             })
             .ConfigureServices(services =>
             {
