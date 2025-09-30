@@ -16,7 +16,7 @@ namespace DefikarteBackend.Model
         public string Id { get; set; } = string.Empty;
 
         [JsonProperty("bbox")]
-        public double[] BBox { get; set; } = [];
+        public double[]? BBox { get; set; }
 
         public PointGeometry Geometry { get; set; } = new PointGeometry();
 
