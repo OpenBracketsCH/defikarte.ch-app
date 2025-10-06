@@ -27,6 +27,8 @@ namespace DefikarteBackend.Configuration
 
         public string AddressSearchUrl { get; private set; } = string.Empty;
 
+        public string MaptilerApiKey { get; private set; } = string.Empty;
+
         public static ServiceConfiguration Initialize(IConfigurationRoot configuration)
         {
             return new ServiceConfiguration
@@ -42,6 +44,7 @@ namespace DefikarteBackend.Configuration
                 BlobStorageBlobNameLocalV2 = configuration.GetValue<string>("BLOB_STORAGE_BLOB_NAME_LOCAL_V2") ?? string.Empty,
                 BlobStorageSwissBoundariesName = configuration.GetValue<string>("BLOB_STORAGE_SWISSBOUNDARIES") ?? string.Empty,
                 AddressSearchUrl = configuration.GetValue<string>("ADDRESS_SEARCH_URL") ?? string.Empty,
+                MaptilerApiKey = configuration.GetValue<string>("MAPTILER_API_KEY") ?? string.Empty,
             };
         }
     }

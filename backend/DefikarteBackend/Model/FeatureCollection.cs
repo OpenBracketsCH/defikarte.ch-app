@@ -9,6 +9,13 @@ namespace DefikarteBackend.Model
         public List<Feature> Features { get; set; } = [];
     }
 
+    public class FeatureCollection<TFeature>
+    {
+        public string Type { get; set; } = "FeatureCollection";
+
+        public List<TFeature> Features { get; set; } = [];
+    }
+
     public class Feature
     {
         public string Type { get; set; } = "Feature";
@@ -20,7 +27,7 @@ namespace DefikarteBackend.Model
 
         public PointGeometry Geometry { get; set; } = new PointGeometry();
 
-        public Dictionary<string, string> Properties { get; set; } = [];
+        public virtual Dictionary<string, string> Properties { get; set; } = [];
     }
 
     public class PointGeometry

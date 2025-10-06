@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace DefikarteBackend.Services
 {
-    public class AddressSearchService : IAddressSearchService
+    public class SwisstopoAddressSearchService : IAddressSearchService
     {
         private static readonly string ICON_TAG = "<i>";
         private static readonly string ICON_TAG_END = "</i>";
@@ -15,9 +15,9 @@ namespace DefikarteBackend.Services
         private static readonly List<string> TAG_LIST = [ICON_TAG, ICON_TAG_END, BOLD_TAG, BOLD_TAG_END];
 
         private readonly IServiceConfiguration _configuration;
-        private readonly ILogger<AddressSearchService> _logger;
+        private readonly ILogger<SwisstopoAddressSearchService> _logger;
 
-        public AddressSearchService(IServiceConfiguration configuration, ILogger<AddressSearchService> logger)
+        public SwisstopoAddressSearchService(IServiceConfiguration configuration, ILogger<SwisstopoAddressSearchService> logger)
         {
             _configuration = configuration;
             _logger = logger;
