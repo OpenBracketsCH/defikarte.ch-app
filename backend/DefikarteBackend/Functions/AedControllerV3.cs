@@ -333,7 +333,7 @@ namespace DefikarteBackend.Functions
 
             var cleanTags = tags
                 .Where(x => !string.IsNullOrEmpty(x.Value?.Trim()))
-                .Select(x => new KeyValuePair<string, string?>(x.Key, x.Value?.Trim()))
+                .Select(x => new KeyValuePair<string, string?>(x.Key, StringHelper.RemoveDuplicatedWhitespace(x.Value)))
                 .ToDictionary(x => x.Key, x => x.Value);
 
             return new Node()
