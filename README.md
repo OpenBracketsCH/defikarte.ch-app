@@ -3,9 +3,7 @@
 
 # Defikarte.ch - die App
 
-<img src="./app/assets/logo_defikarte.png" alt="defikarte.ch" style="height:150px"/>
-
-This Page is also available in English, please visit: [English 👈🏻](README_en.md)
+<img src="./app/assets/defi_logo.png" alt="defikarte.ch" style="height:150px"/>
 
 ## Zweck der App
 
