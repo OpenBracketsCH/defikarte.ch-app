@@ -32,7 +32,8 @@
     "react-native-select-dropdown": "^4.0.1",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
-    "expo-localization": "~14.8.4"
+    "expo-localization": "~14.8.4",
+    "expo-dev-client": "~3.3.12"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
