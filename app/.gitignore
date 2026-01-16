@@ -39,3 +39,7 @@ yarn-error.*
 android
 
 **/*.apk
+
+*.ipa
+*.aab
+*.apk
