@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import { t } from 'i18next';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { AppState, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { AppState, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LocationError from '../components/LocationError';
 import Map from '../components/Map';
@@ -40,7 +40,7 @@ const MainScreen = ({ navigation, route }) => {
       animateToRegion({ latitude: userLocation.location.latitude, longitude: userLocation.location.longitude });
       setInitZoom(true);
     }
-  }, [userLocation]);
+  }, [setInitZoom, userLocation]);
 
   useEffect(() => {
     const latlng = route.params?.latlng;
@@ -56,7 +56,7 @@ const MainScreen = ({ navigation, route }) => {
       });
       resetErr();
     }
-  }, [locationErr]);
+  }, [locationErr, resetErr]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', _handleAppStateChange);
@@ -72,7 +72,7 @@ const MainScreen = ({ navigation, route }) => {
     } else {
       enableLocationTracking(false);
     }
-  }, [appStateVisible]);
+  }, [appStateVisible, enableLocationTracking]);
 
   const _handleAppStateChange = (nextAppState) => {
     appState.current = nextAppState;

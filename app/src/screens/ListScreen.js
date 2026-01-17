@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { t } from 'i18next';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DefiItem from '../components/DefiItem';
 import WarningInfoPanel from '../components/WarningInfoPanel';
@@ -67,24 +67,23 @@ const ListScreen = () => {
     },
   };
 
-  const getLocationState = () => {
-    const defiNearLocCount = userLocation.location ? defisNearLocation.length : 0;
-    return !userLocation.enabled
-      ? 'locationDisabled'
-      : loading
-        ? 'loading'
-        : !userLocation.location || defiNearLocCount < 1
-          ? 'noDefisNearYou'
-          : 'location';
-  };
-
   useEffect(() => {
+    const getLocationState = () => {
+      const defiNearLocCount = userLocation.location ? defisNearLocation.length : 0;
+      return !userLocation.enabled
+        ? 'locationDisabled'
+        : loading
+          ? 'loading'
+          : !userLocation.location || defiNearLocCount < 1
+            ? 'noDefisNearYou'
+            : 'location';
+    };
     setCurrentConfig(getLocationState());
-  }, [userLocation, defisNearLocation]);
+  }, [userLocation, defisNearLocation, loading]);
 
   useEffect(() => {
     enableLocationTracking(true);
-  }, []);
+  }, [enableLocationTracking]);
 
   return (
     <View style={styles.containerStyle}>

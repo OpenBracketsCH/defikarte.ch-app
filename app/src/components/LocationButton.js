@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useContext } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Context as LocationContext } from '../context/LocationContext';
 

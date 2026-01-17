@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 

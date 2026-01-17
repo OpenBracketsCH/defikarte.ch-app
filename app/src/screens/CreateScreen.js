@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { t } from 'i18next';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -38,7 +38,7 @@ const CreateScreen = ({ navigation, route }) => {
     if (latlon) {
       setState({ ...state, latitude: latlon.latitude, longitude: latlon.longitude });
     }
-  }, []);
+  }, [route.params?.latlng, state]);
 
   const renderFormComponent = () => {
     return createForm.map((formComp, index) => {

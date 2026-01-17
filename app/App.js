@@ -1,3 +1,5 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { t } from 'i18next';
 import 'intl-pluralrules';
 import { StatusBar } from 'react-native';
@@ -12,8 +14,6 @@ import CreateScreen from './src/screens/CreateScreen';
 import DetailScreen from './src/screens/DetailScreen';
 import ListScreen from './src/screens/ListScreen';
 import MainScreen from './src/screens/MainScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,7 +32,7 @@ function AppNavigator() {
   );
 }
 
-export default () => {
+const App = () => {
   return (
     <DefibrillatorProvider>
       <LocationProvider>
@@ -48,3 +48,5 @@ export default () => {
     </DefibrillatorProvider>
   );
 };
+
+export default App;

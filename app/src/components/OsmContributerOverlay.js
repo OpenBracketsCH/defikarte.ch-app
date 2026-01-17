@@ -1,5 +1,4 @@
-import React from 'react';
-import { View, Text, StyleSheet, Linking } from 'react-native';
+import { Linking, StyleSheet, Text, View } from 'react-native';
 
 const OsmContributerOverlay = ({ show }) => {
   if (show) {
@@ -21,12 +20,11 @@ const OsmContributerOverlay = ({ show }) => {
 const styles = StyleSheet.create({
   overlayContainerStyle: {
     alignSelf: 'flex-end',
-    bottom: 0,
     position: 'absolute',
     backgroundColor: 'rgba(255, 255, 255, 0.6)',
     zIndex: 100,
     right: 42,
-    bottom: 6,
+    bottom: 6, // or 0
     paddingHorizontal: 4,
     paddingVertical: 3,
     borderRadius: 4,

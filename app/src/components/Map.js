@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-map-clustering';
 import { Marker, UrlTile } from 'react-native-maps';
@@ -44,14 +44,14 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
     if (isCreateMode) {
       setNewDefiCoords({ latitude: region.latitude, longitude: region.longitude });
     }
-  }, [isCreateMode]);
+  }, [isCreateMode, region.latitude, region.longitude]);
 
   useEffect(() => {
     let markerOutsideRegion = !isPointInRegion({ lat: newDefiCoords.latitude, lon: newDefiCoords.longitude }, region);
     if (isCreateMode && markerOutsideRegion) {
       setNewDefiCoords({ latitude: region.latitude, longitude: region.longitude });
     }
-  }, [region, isCreateMode]);
+  }, [region.latitude, region.longitude, isCreateMode, newDefiCoords.latitude, newDefiCoords.longitude, region]);
 
   useEffect(() => {
     // Use spatial index for O(log n) performance instead of O(n) filtering
@@ -86,7 +86,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         return null;
       }
       return defibrillators.map((defibrillator) => {
-        if (selectedDefibrillator && selectedDefibrillator.id == defibrillator.id) {
+        if (selectedDefibrillator && selectedDefibrillator.id === defibrillator.id) {
           return (
             <DefiMarker
               key={defibrillator.id.toString()}
@@ -160,7 +160,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         maxZoom={17}
         onPress={(e) => onMapPress(e.nativeEvent)}
         showsMyLocationButton={false}
-        mapType={Platform.OS == 'android' ? 'standard' : 'mutedStandard'}
+        mapType={Platform.OS === 'android' ? 'standard' : 'mutedStandard'}
         moveOnMarkerPress={false}
         showsCompass={false}
       >

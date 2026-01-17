@@ -1,8 +1,8 @@
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapInfoPanel from './MapInfoPanel';
-import { useNavigation } from '@react-navigation/native';
 
 const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, isTopView }) => {
   const navigation = useNavigation();

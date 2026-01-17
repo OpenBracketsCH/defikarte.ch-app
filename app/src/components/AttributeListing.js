@@ -1,10 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet, Text, View } from 'react-native';
 
 const AttributeListing = ({ title, iconName, value }) => {
   const icon =
-    iconName == 'stairs' ? (
+    iconName === 'stairs' ? (
       <MaterialCommunityIcons style={styles.iconStyle} name={iconName} />
     ) : (
       <Feather style={styles.iconStyle} name={iconName} />

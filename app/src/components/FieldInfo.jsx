@@ -1,6 +1,6 @@
 import { FontAwesome6 } from '@expo/vector-icons';
 import { t } from 'i18next';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Linking, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const FieldInfo = ({ titel, text, link }) => {
