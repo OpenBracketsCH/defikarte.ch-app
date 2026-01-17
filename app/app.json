@@ -18,7 +18,8 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ch.defikarte.app",
-      "buildNumber": "1.0.47"
+      "buildNumber": "1.0.47",
+      "newArchEnabled": true
     },
     "android": {
       "package": "ch.defikarte.app",
