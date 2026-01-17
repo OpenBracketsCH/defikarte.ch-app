@@ -1,8 +1,8 @@
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-//import MapView from 'react-native-map-clustering';
-import MapView, { Marker, UrlTile } from 'react-native-maps';
+import MapView from 'react-native-map-clustering';
+import { Marker, UrlTile } from 'react-native-maps';
 import { currentDefisOnMap, isPointInRegion } from '../helpers/markersOnMap.js';
 import CreateMapOverlay from './CreateMapOverlay';
 import DefiMarker from './DefiMarker';
