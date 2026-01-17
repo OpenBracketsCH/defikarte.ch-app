@@ -2,21 +2,18 @@ import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 
-const DefiMarker = ({ defibrillator }) => {
+const markerImage = require('../../assets/marker.png');
+
+const DefiMarker = ({ defibrillator, coordinate }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const tags = defibrillator.tags;
   const dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.markerDayStyle : styles.markerDayNightStyle;
 
   return (
-    <Marker
-      anchor={{ x: 0.5, y: 1 }}
-      centerOffset={{ x: 0, y: -35 }}
-      coordinate={{ latitude: defibrillator.lat, longitude: defibrillator.lon }}
-      tracksViewChanges={imageLoaded}
-    >
+    <Marker coordinate={coordinate || { latitude: defibrillator.lat, longitude: defibrillator.lon }} tracksViewChanges={true}>
       <View style={styles.markerOutsideStyle}>
         <View style={dayNightStyle}>
-          <Image style={styles.imageStyle} source={require('../../assets/marker.png')} onLoadEnd={() => setImageLoaded(true)} />
+          <Image style={styles.imageStyle} source={markerImage} onLoadEnd={() => setImageLoaded(true)} />
         </View>
       </View>
       <View style={styles.markerPointerStyle} />
@@ -30,6 +27,7 @@ const styles = StyleSheet.create({
     height: 38,
     margin: 4,
     alignSelf: 'center',
+    zIndex: 200,
   },
   markerOutsideStyle: {
     borderRadius: 15,
@@ -37,7 +35,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#009a3b',
     height: 54,
     width: 54,
-    zIndex: 100,
   },
   markerPointerStyle: {
     borderLeftColor: 'transparent',
