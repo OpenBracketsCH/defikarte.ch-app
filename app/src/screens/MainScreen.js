@@ -10,7 +10,7 @@ import { Context as LocationContext } from '../context/LocationContext';
 import useDefibrillators from '../hooks/useDefibrillators';
 import useLocation from '../hooks/useLocation';
 
-const MainScreen = ({ navigation }) => {
+const MainScreen = ({ navigation, route }) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const insets = useSafeAreaInsets();
@@ -26,6 +26,7 @@ const MainScreen = ({ navigation }) => {
   const [isCreateMode, setIsCreateMode] = useState(false);
 
   const animateToRegion = ({ latitude, longitude }) => {
+    if (!mapRef.current) return;
     mapRef.current.animateToRegion({
       latitude,
       longitude,
@@ -42,12 +43,11 @@ const MainScreen = ({ navigation }) => {
   }, [userLocation]);
 
   useEffect(() => {
-    const latlng = navigation.getParam('latlng');
+    const latlng = route.params?.latlng;
     if (latlng) {
       animateToRegion(latlng);
     }
-  }, [navigation]);
-
+  }, [route]);
   useEffect(() => {
     if (locationErr) {
       LocationError({
@@ -59,15 +59,10 @@ const MainScreen = ({ navigation }) => {
   }, [locationErr]);
 
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      AppState.addEventListener('focus', _handleAppStateFocus);
-    } else if (Platform.OS === 'ios') {
-      AppState.addEventListener('change', _handleAppStateChange);
-    }
+    const subscription = AppState.addEventListener('change', _handleAppStateChange);
 
     return () => {
-      AppState.removeEventListener('focus', _handleAppStateFocus);
-      AppState.removeEventListener('change', _handleAppStateChange);
+      subscription.remove();
     };
   }, []);
 
@@ -84,16 +79,12 @@ const MainScreen = ({ navigation }) => {
     setAppStateVisible(appState.current);
   };
 
-  const _handleAppStateFocus = () => {
-    setAppStateVisible('active');
-  };
-
   let bottomBar = { ...styles.bottomBar };
   bottomBar.paddingBottom = insets.bottom * 0.5;
   return (
     <View style={styles.containerStyle}>
       <Map
-        mapRef={mapRef}
+        ref={mapRef}
         initCoords={{
           latitude: 47,
           longitude: 7.4,

@@ -9,9 +9,9 @@ import AttributeListing from '../components/AttributeListing';
 import DefiMarker from '../components/DefiMarker';
 import OsmContributerOverlay from '../components/OsmContributerOverlay';
 
-const DetailScreen = ({ navigation }) => {
+const DetailScreen = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
-  const defibrillator = navigation.getParam('defibrillator');
+  const defibrillator = route.params?.defibrillator;
 
   const initCoords = {
     latitude: defibrillator.lat,

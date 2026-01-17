@@ -43,3 +43,5 @@ android
 *.ipa
 *.aab
 *.apk
+*.jar
+*.apks

@@ -9,10 +9,11 @@ const reducer = (state, action) => {
   }
 };
 
-const updateShowInfo = dispatch => {
+const updateShowInfo = (dispatch) => {
   return (show) => {
     dispatch({
-      type: 'update_showInfo', payload: show
+      type: 'update_showInfo',
+      payload: show,
     });
   };
 };

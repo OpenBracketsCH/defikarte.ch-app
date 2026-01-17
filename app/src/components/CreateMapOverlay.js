@@ -1,11 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
 import { t } from 'i18next';
-import React from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { withNavigation } from 'react-navigation';
 import MapInfoPanel from './MapInfoPanel';
+import { useNavigation } from '@react-navigation/native';
 
-const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation, isTopView }) => {
+const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, isTopView }) => {
+  const navigation = useNavigation();
+
   const ApprovePosition = () => {
     Alert.alert(
       t('check_position'),
@@ -71,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(CreateMapOverlay);
+export default CreateMapOverlay;

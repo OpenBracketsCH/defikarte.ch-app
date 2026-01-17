@@ -5,7 +5,13 @@ const OsmContributerOverlay = ({ show }) => {
   if (show) {
     return (
       <View style={styles.overlayContainerStyle}>
-        <Text style={styles.textStyle}>© <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://www.openstreetmap.org/copyright')}>OpenStreetMap</Text> contributors</Text>
+        <Text style={styles.textStyle}>
+          ©{' '}
+          <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://www.openstreetmap.org/copyright')}>
+            OpenStreetMap
+          </Text>{' '}
+          contributors
+        </Text>
       </View>
     );
   }
@@ -27,7 +33,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 9,
-    color: 'rgb(30, 30, 30)'
+    color: 'rgb(30, 30, 30)',
   },
   linkStyle: {
     alignSelf: 'center',

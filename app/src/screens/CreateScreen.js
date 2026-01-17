@@ -11,7 +11,7 @@ import createForm from '../config/createForm';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import { trimStringValues } from '../helpers/stringHelpers';
 
-const CreateScreen = ({ navigation }) => {
+const CreateScreen = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const { state: defiState, addDefibrillator } = useContext(DefibrillatorContext);
   const [state, setState] = useState({ latitude: 0, longitude: 0, emergencyPhone: '144' });
@@ -34,7 +34,7 @@ const CreateScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const latlon = navigation.getParam('latlon');
+    const latlon = route.params?.latlng;
     if (latlon) {
       setState({ ...state, latitude: latlon.latitude, longitude: latlon.longitude });
     }

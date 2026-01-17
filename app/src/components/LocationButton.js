@@ -16,12 +16,15 @@ const LocationButton = ({ isTopView, animateToRegion }) => {
   }
 
   return (
-    <TouchableOpacity style={locationButtonStyle} onPress={async () => {
-      enableLocationTracking(true)
-      if (userLocation.location) {
-        animateToRegion(userLocation.location);
-      }
-    }}>
+    <TouchableOpacity
+      style={locationButtonStyle}
+      onPress={async () => {
+        enableLocationTracking(true);
+        if (userLocation.location) {
+          animateToRegion(userLocation.location);
+        }
+      }}
+    >
       <MaterialIcons name={locationIcon} style={styles.iconStyle} />
     </TouchableOpacity>
   );
@@ -42,7 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'rgba(40, 40, 40, 0.7)',
     shadowColor: 'black',
-  }
+  },
 });
 
 export default LocationButton;

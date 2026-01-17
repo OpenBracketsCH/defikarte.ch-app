@@ -17,9 +17,7 @@ const MapInfoPanel = ({ text, subText, showLoading, isTopView }) => {
     <View style={containerStyle}>
       <View style={styles.inlineStyle}>
         {loadingAnimation}
-        <Text style={styles.textStyle}>
-          {text}
-        </Text>
+        <Text style={styles.textStyle}>{text}</Text>
       </View>
       {subTextComp}
     </View>
@@ -35,7 +33,7 @@ const styles = StyleSheet.create({
   },
   inlineStyle: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   textStyle: {
     textAlign: 'center',
@@ -47,7 +45,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 5,
     color: 'white',
-  }
+  },
 });
 
 export default MapInfoPanel;

@@ -3,9 +3,14 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const AttributeListing = ({ title, iconName, value }) => {
-  const icon = iconName == 'stairs' ? <MaterialCommunityIcons style={styles.iconStyle} name={iconName} /> : <Feather style={styles.iconStyle} name={iconName} />;
+  const icon =
+    iconName == 'stairs' ? (
+      <MaterialCommunityIcons style={styles.iconStyle} name={iconName} />
+    ) : (
+      <Feather style={styles.iconStyle} name={iconName} />
+    );
   return (
-    <View style={styles.containerStyle} >
+    <View style={styles.containerStyle}>
       {icon}
       <View style={styles.innerContainerStyle}>
         <Text style={styles.titleStyle}>{title}</Text>
@@ -25,7 +30,7 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     fontSize: 30,
-    color: 'grey'
+    color: 'grey',
   },
   innerContainerStyle: {
     flex: 1,
@@ -36,7 +41,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 2,
     padding: 10,
-  }
+  },
 });
 
 export default AttributeListing;

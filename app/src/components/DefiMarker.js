@@ -16,10 +16,7 @@ const DefiMarker = ({ defibrillator }) => {
     >
       <View style={styles.markerOutsideStyle}>
         <View style={dayNightStyle}>
-          <Image
-            style={styles.imageStyle}
-            source={require('../../assets/marker.png')}
-            onLoadEnd={() => setImageLoaded(true)} />
+          <Image style={styles.imageStyle} source={require('../../assets/marker.png')} onLoadEnd={() => setImageLoaded(true)} />
         </View>
       </View>
       <View style={styles.markerPointerStyle} />
@@ -64,7 +61,7 @@ const styles = StyleSheet.create({
     borderColor: '#009a3b',
     borderRadius: 15,
     borderWidth: 4,
-  }
+  },
 });
 
 export default DefiMarker;
