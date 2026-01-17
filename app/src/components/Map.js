@@ -44,7 +44,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
     if (isCreateMode) {
       setNewDefiCoords({ latitude: region.latitude, longitude: region.longitude });
     }
-  }, [isCreateMode, region.latitude, region.longitude]);
+  }, [isCreateMode]);
 
   useEffect(() => {
     let markerOutsideRegion = !isPointInRegion({ lat: newDefiCoords.latitude, lon: newDefiCoords.longitude }, region);

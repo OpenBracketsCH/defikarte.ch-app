@@ -19,7 +19,6 @@ export default (defibrillators, getDefibrillators, setDefisNearLocation, userLoc
         return d1.distance - d2.distance;
       });
   };
-
   useEffect(() => {
     getDefibrillators();
     const timerId = setTimeout(() => getDefibrillators(), 60000);
@@ -27,9 +26,9 @@ export default (defibrillators, getDefibrillators, setDefisNearLocation, userLoc
     return () => {
       clearTimeout(timerId);
     };
-  }, [getDefibrillators]);
+  }, []);
 
   useEffect(() => {
     setDefisNearLocation(getDefisNearLocation(defibrillators, userLocation.location));
-  }, [defibrillators, setDefisNearLocation, userLocation.location]);
+  }, [defibrillators, userLocation.location]);
 };

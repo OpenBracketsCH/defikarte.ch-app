@@ -83,7 +83,7 @@ const ListScreen = () => {
 
   useEffect(() => {
     enableLocationTracking(true);
-  }, [enableLocationTracking]);
+  }, []);
 
   return (
     <View style={styles.containerStyle}>

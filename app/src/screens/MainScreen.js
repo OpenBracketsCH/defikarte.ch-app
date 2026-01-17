@@ -48,6 +48,7 @@ const MainScreen = ({ navigation, route }) => {
       animateToRegion(latlng);
     }
   }, [route]);
+
   useEffect(() => {
     if (locationErr) {
       LocationError({
@@ -72,7 +73,7 @@ const MainScreen = ({ navigation, route }) => {
     } else {
       enableLocationTracking(false);
     }
-  }, [appStateVisible, enableLocationTracking]);
+  }, [appStateVisible]);
 
   const _handleAppStateChange = (nextAppState) => {
     appState.current = nextAppState;

@@ -37,6 +37,7 @@ yarn-error.*
 .env
 
 android
+ios
 
 **/*.apk
 

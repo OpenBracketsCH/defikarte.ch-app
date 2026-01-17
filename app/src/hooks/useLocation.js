@@ -36,7 +36,7 @@ export default (userLocation, callback, enableLocationTracking, setLocationTrack
       }
       setLocationTracker(null);
     }
-  }, [callback, enableLocationTracking, setLocationTracker, userLocation.enabled, userLocation.locationTracker]);
+  }, [userLocation.enabled]);
 
   return [err, () => setErr(null)];
 };
