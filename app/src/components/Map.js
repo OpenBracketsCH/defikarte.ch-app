@@ -1,9 +1,10 @@
 import { t } from 'i18next';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import MapView from 'react-native-map-clustering';
 import { Marker, UrlTile } from 'react-native-maps';
 import { currentDefisOnMap, isPointInRegion } from '../helpers/markersOnMap.js';
+import { createDefiIndex, queryDefisInRegion } from '../helpers/spatialIndex.js';
 import CreateMapOverlay from './CreateMapOverlay';
 import DefiMarker from './DefiMarker';
 import DetailMapOverlay from './DetailMapOverlay';
@@ -20,6 +21,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
   const [selectedDefibrillator, setSelectedDefibrillator] = useState(null);
   const [mode, setMode] = useState('');
   const [isTileOverlayActive, setIsTileOverlayActive] = useState(false);
+  const [spatialIndex, setSpatialIndex] = useState(null);
 
   const animateToRegion = ({ latitude, longitude }) => {
     if (!mapRef.current) return;
@@ -30,6 +32,13 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
       longitudeDelta: 0.01,
     });
   };
+
+  // Create spatial index when defibrillators are loaded or updated
+  useEffect(() => {
+    if (defibrillators.length > 0) {
+      setSpatialIndex(createDefiIndex(defibrillators));
+    }
+  }, [defibrillators]);
 
   useEffect(() => {
     if (isCreateMode) {
@@ -45,17 +54,22 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
   }, [region, isCreateMode]);
 
   useEffect(() => {
-    // debounce defis on map claculation for performance optimization
+    // Use spatial index for O(log n) performance instead of O(n) filtering
     const timerId = setTimeout(() => {
-      setDefisOnMap(currentDefisOnMap(defibrillators, region));
-    }, 500);
+      if (spatialIndex) {
+        setDefisOnMap(queryDefisInRegion(spatialIndex, region));
+      } else {
+        // Fallback to linear filtering if index not ready
+        setDefisOnMap(currentDefisOnMap(defibrillators, region));
+      }
+    }, 300); // Reduced debounce time due to faster queries
 
     return () => {
       if (timerId) {
         clearTimeout(timerId);
       }
     };
-  }, [region, defibrillators]);
+  }, [region, spatialIndex, defibrillators]);
 
   useEffect(() => {
     const firstload = defibrillators.length === 0 && defibrillatorsLoading;
@@ -139,12 +153,14 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         showsUserLocation
         followsUserLocation={false}
         onRegionChangeComplete={setRegion}
-        spiralEnabled={false}
+        spiralEnabled={true}
+        clusterColor="#67af51"
+        clusterTextColor="#fff"
+        radius={50}
+        maxZoom={17}
         onPress={(e) => onMapPress(e.nativeEvent)}
         showsMyLocationButton={false}
         mapType={Platform.OS == 'android' ? 'standard' : 'mutedStandard'}
-        maxZoomLevel={19}
-        maxZoom={17}
         moveOnMarkerPress={false}
         showsCompass={false}
       >
