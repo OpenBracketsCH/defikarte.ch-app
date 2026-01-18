@@ -57,7 +57,7 @@ const MainScreen = ({ navigation, route }) => {
       });
       resetErr();
     }
-  }, [locationErr, resetErr]);
+  }, [locationErr]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', _handleAppStateChange);
