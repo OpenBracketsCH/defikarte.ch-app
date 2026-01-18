@@ -85,7 +85,7 @@ const MainScreen = ({ navigation, route }) => {
   return (
     <View style={styles.containerStyle}>
       <Map
-        ref={mapRef}
+        mapRef={mapRef}
         initCoords={{
           latitude: 47,
           longitude: 7.4,
