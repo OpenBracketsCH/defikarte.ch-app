@@ -12,7 +12,7 @@ const WarningInfoPanel = ({ text, onButtonClick }) => {
       <Feather name="info" color="black" size={42} />
       <Text style={styles.textStyle}>{text}</Text>
       <TouchableOpacity onPress={() => onButtonClick(false)}>
-        <AntDesign name="closecircleo" color="black" size={24} />
+        <AntDesign name="close-circle" color="black" size={24} />
       </TouchableOpacity>
     </View>
   );
