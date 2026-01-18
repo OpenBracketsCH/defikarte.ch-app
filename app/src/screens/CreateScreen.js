@@ -34,11 +34,11 @@ const CreateScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    const latlon = route.params?.latlng;
+    const latlon = route.params?.latlon;
     if (latlon) {
       setState((prev) => ({ ...prev, latitude: latlon.latitude, longitude: latlon.longitude }));
     }
-  }, [route.params?.latlng]);
+  }, [route.params?.latlon]);
 
   const renderFormComponent = () => {
     return createForm.map((formComp, index) => {
