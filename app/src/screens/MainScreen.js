@@ -76,8 +76,10 @@ const MainScreen = ({ navigation, route }) => {
   }, [appStateVisible]);
 
   const _handleAppStateChange = (nextAppState) => {
-    appState.current = nextAppState;
-    setAppStateVisible(appState.current);
+    if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    }
   };
 
   let bottomBar = { ...styles.bottomBar };
