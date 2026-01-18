@@ -40,7 +40,7 @@ const MainScreen = ({ navigation, route }) => {
       animateToRegion({ latitude: userLocation.location.latitude, longitude: userLocation.location.longitude });
       setInitZoom(true);
     }
-  }, [setInitZoom, userLocation]);
+  }, [userLocation]);
 
   useEffect(() => {
     const latlng = route.params?.latlng;
