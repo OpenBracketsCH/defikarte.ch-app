@@ -8,7 +8,12 @@ const DefiMarker = ({ defibrillator, coordinate }) => {
   const dayNightStyle = !tags || !tags.opening_hours || tags.opening_hours !== '24/7' ? styles.markerDayStyle : styles.markerDayNightStyle;
 
   return (
-    <Marker coordinate={coordinate || { latitude: defibrillator.lat, longitude: defibrillator.lon }} tracksViewChanges={true}>
+    <Marker
+      coordinate={coordinate || { latitude: defibrillator.lat, longitude: defibrillator.lon }}
+      tracksViewChanges={true}
+      anchor={{ x: 0.5, y: 1 }}
+      centerOffset={{ x: 0, y: -27 }}
+    >
       <View style={styles.markerOutsideStyle}>
         <View style={dayNightStyle}>
           <Image style={styles.imageStyle} source={markerImage} />
