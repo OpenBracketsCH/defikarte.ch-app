@@ -1,9 +1,9 @@
 // restricts which defis are displayed, if not the map will block the ui
 function currentDefisOnMap(defibrillators, region) {
-  return defibrillators.filter(defibrillator => {
+  return defibrillators.filter((defibrillator) => {
     return isPointInRegion(defibrillator, region);
   });
-};
+}
 
 function isPointInRegion(point, region) {
   const lat = point.lat;

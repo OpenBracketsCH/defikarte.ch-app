@@ -66,7 +66,6 @@ const resources = {
       aed_only_temporary_in_app: 'Temporarily recorded in app, OSM update pending',
       directions: 'Directions',
       emergency_phone: 'Call ({{emergencyPhone}})',
-      cancel: 'Cancel',
       create: 'Create',
       close_to_you: 'Close to you',
       create_aed: 'Report defibrillator',
@@ -147,7 +146,6 @@ const resources = {
       aed_only_temporary_in_app: 'Temporär in App erfasst, OSM update ausstehend',
       directions: 'Navigieren',
       emergency_phone: 'Notruf ({{emergencyPhone}})',
-      cancel: 'Abbrechen',
       create: 'Erstellen',
       close_to_you: 'In deiner Nähe',
       create_aed: 'Defibrillator melden',
@@ -228,7 +226,6 @@ const resources = {
       aed_only_temporary_in_app: "Temporairement enregistré dans l'application, mise à jour OSM en attente",
       directions: 'Itinéraire',
       emergency_phone: 'Appel ({{emergencyPhone}})',
-      cancel: 'Annuler',
       create: 'Créer',
       close_to_you: 'Près de chez vous',
       create_aed: 'Signaler un défibrillateur',
@@ -309,7 +306,6 @@ const resources = {
       aed_only_temporary_in_app: "Temporaneamente registrato nell'app, aggiornamento OSM in sospeso",
       directions: 'Indicazioni',
       emergency_phone: 'Call ({{emergencyPhone}})',
-      cancel: 'Annulla',
       create: 'Crea',
       close_to_you: 'Vicino a te',
       create_aed: 'Segnala defibrillatore',
@@ -327,6 +323,7 @@ const resources = {
   },
 };
 
+// eslint-disable-next-line import/no-named-as-default-member
 i18n.init({
   compatibilityJSON: 'v3',
   resources,
@@ -339,6 +336,7 @@ i18n.init({
 });
 
 const deviceLanguage = getLocales()[0]?.languageCode || 'de';
+// eslint-disable-next-line import/no-named-as-default-member
 i18n.changeLanguage(deviceLanguage);
 
 export default i18n;

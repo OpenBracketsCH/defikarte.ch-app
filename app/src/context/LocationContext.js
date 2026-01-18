@@ -15,30 +15,31 @@ const reducer = (state, action) => {
   }
 };
 
-const updateLocation = dispatch => {
+const updateLocation = (dispatch) => {
   return (location) => {
     dispatch({
-      type: 'update_location', payload: {
+      type: 'update_location',
+      payload: {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
-      }
+      },
     });
   };
 };
 
-const enableLocationTracking = dispatch => {
+const enableLocationTracking = (dispatch) => {
   return (enable) => {
     dispatch({ type: 'update_enabled', payload: enable });
   };
 };
 
-const setLocationTracker = dispatch => {
+const setLocationTracker = (dispatch) => {
   return (tracker) => {
     dispatch({ type: 'update_locationTracker', payload: tracker });
   };
 };
 
-const setInitZoom = dispatch => {
+const setInitZoom = (dispatch) => {
   return (init) => {
     dispatch({ type: 'update_initZoom', payload: init });
   };

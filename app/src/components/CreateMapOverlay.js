@@ -1,11 +1,12 @@
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
-import React from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { withNavigation } from 'react-navigation';
 import MapInfoPanel from './MapInfoPanel';
 
-const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation, isTopView }) => {
+const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, isTopView }) => {
+  const navigation = useNavigation();
+
   const ApprovePosition = () => {
     Alert.alert(
       t('check_position'),
@@ -37,11 +38,11 @@ const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation, isTopVie
             ApprovePosition();
           }}
         >
-          <AntDesign name="checkcircleo" size={48} color="white" />
+          <AntDesign name="check" size={48} color="white" />
           <Text style={styles.descriptionTextStyle}>{t('confirm_position')}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setIsCreateMode(false)} style={styles.iconStyle}>
-          <AntDesign name="closecircleo" size={48} color="white" />
+          <AntDesign name="close" size={48} color="white" />
           <Text style={styles.descriptionTextStyle}>{t('cancel')}</Text>
         </TouchableOpacity>
       </View>
@@ -52,7 +53,7 @@ const CreateMapOverlay = ({ setIsCreateMode, newDefiCoords, navigation, isTopVie
 const styles = StyleSheet.create({
   createIconsContainerStyle: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     zIndex: 100,
@@ -60,10 +61,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(40, 40, 40, 0.7)',
     position: 'absolute',
     bottom: 0,
+    gap: 40,
   },
   iconStyle: {
     marginVertical: 10,
     alignItems: 'center',
+    width: 120,
   },
   descriptionTextStyle: {
     color: 'white',
@@ -71,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(CreateMapOverlay);
+export default CreateMapOverlay;

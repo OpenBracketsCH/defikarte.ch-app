@@ -1,6 +1,5 @@
 import { t } from 'i18next';
-import React from 'react';
-import { Image, Linking, Pressable, ScrollView, StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
+import { Image, Linking, Platform, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 
 const AboutScreen = () => {
   return (
