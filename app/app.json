@@ -42,7 +42,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Allow Defikarte to use your location to show nearby AEDs."
+          "locationWhenInUsePermission": true
         }
       ]
     ],
