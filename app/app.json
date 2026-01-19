@@ -24,6 +24,12 @@
     "android": {
       "package": "ch.defikarte.app",
       "versionCode": 48,
+      "icon": "./assets/android-icons/icon.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/android-icons/foreground.png",
+        "monochromeImage": "./assets/android-icons/foreground-monochrome.png",
+        "backgroundImage": "./assets/android-icons/background.png"
+      },
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
