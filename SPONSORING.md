@@ -1,4 +1,4 @@
-![Picture of the Logo Defikarte.ch](images/defi_logo.png)
+![Picture of the Logo Defikarte.ch](images/logo_defikarte.png)
 
 # Informationen für Sponsoren
 

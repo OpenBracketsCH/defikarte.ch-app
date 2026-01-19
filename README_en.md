@@ -1,6 +1,6 @@
 # Defikarte.ch - the App
 
-<img src="./app/assets/logo_defikarte.png" alt="defikarte.ch" style="height:150px"/>
+<img src="./images/logo_defikarte.png" alt="defikarte.ch" style="height:150px"/>
 
 ## Purpose of the app
 
