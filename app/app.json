@@ -1,14 +1,13 @@
 {
   "expo": {
-    "name": "Defikarte.ch",
+    "name": "defikarte.ch",
     "slug": "Defikarte-ch",
     "owner": "defikarte",
-    "version": "1.0.48",
+    "version": "1.0.49",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,12 +17,12 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ch.defikarte.app",
-      "buildNumber": "1.0.48",
+      "buildNumber": "1.0.49",
       "newArchEnabled": true
     },
     "android": {
       "package": "ch.defikarte.app",
-      "versionCode": 48,
+      "versionCode": 49,
       "icon": "./assets/android-icons/icon.png",
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icons/foreground.png",

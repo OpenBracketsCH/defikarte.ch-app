@@ -4,7 +4,7 @@ import { Image, Linking, Platform, Pressable, ScrollView, StatusBar, StyleSheet,
 const AboutScreen = () => {
   return (
     <ScrollView style={styles.container}>
-      <Image style={styles.imageStyle} source={require('../../assets/logo_defikarte.png')} />
+      <Image style={styles.imageStyle} source={require('../../assets/defikarte-logo-hoch-gruen-positiv-rgb.png')} />
       <View style={styles.wrapperStyle}>
         <Text style={styles.titleStyle}>{t('the_project')}</Text>
         <Text style={styles.textStyle}>{t('about_the_project_text')}</Text>
@@ -28,7 +28,7 @@ const AboutScreen = () => {
       <View style={styles.wrapperStyle}>
         <Text style={styles.titleStyle}>{t('app_sponsored_by')}</Text>
         <Pressable onPress={() => Linking.openURL('https://www.aed.ch')}>
-          <Image style={styles.imageStyle} source={require('../../assets/procamed.jpg')} />
+          <Image style={styles.imageStyle} source={require('../../assets/defikarte-partner-procamed.png')} />
         </Pressable>
         <Text style={styles.titleStyle}>{t('thanks_to_all_sponsors')}</Text>
         <Text style={styles.linkStyle} onPress={() => Linking.openURL('https://www.defikarte.ch/sponsors.html')}>
@@ -84,9 +84,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   imageStyle: {
-    height: 100,
+    height: '168',
     width: '100%',
-    marginBottom: 10,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 5,
   },
   versionText: {
     fontSize: 12,
