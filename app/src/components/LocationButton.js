@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useContext } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Context as LocationContext } from '../context/LocationContext';
 
@@ -16,12 +16,15 @@ const LocationButton = ({ isTopView, animateToRegion }) => {
   }
 
   return (
-    <TouchableOpacity style={locationButtonStyle} onPress={async () => {
-      enableLocationTracking(true)
-      if (userLocation.location) {
-        animateToRegion(userLocation.location);
-      }
-    }}>
+    <TouchableOpacity
+      style={locationButtonStyle}
+      onPress={async () => {
+        enableLocationTracking(true);
+        if (userLocation.location) {
+          animateToRegion(userLocation.location);
+        }
+      }}
+    >
       <MaterialIcons name={locationIcon} style={styles.iconStyle} />
     </TouchableOpacity>
   );
@@ -42,7 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'rgba(40, 40, 40, 0.7)',
     shadowColor: 'black',
-  }
+  },
 });
 
 export default LocationButton;

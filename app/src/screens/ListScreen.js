@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { t } from 'i18next';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DefiItem from '../components/DefiItem';
 import WarningInfoPanel from '../components/WarningInfoPanel';
@@ -10,46 +10,43 @@ import { Context as LocationContext } from '../context/LocationContext';
 
 const ListScreen = () => {
   const { state: userLocation, enableLocationTracking } = useContext(LocationContext);
-  const { state: { defisNearLocation, loading } } = useContext(DefibrillatorContext);
-  const { state: { showInfo }, updateShowInfo } = useContext(InfoContext);
+  const {
+    state: { defisNearLocation, loading },
+  } = useContext(DefibrillatorContext);
+  const {
+    state: { showInfo },
+    updateShowInfo,
+  } = useContext(InfoContext);
   const [currentConfig, setCurrentConfig] = useState(defisNearLocation.length > 0 ? 'location' : 'loading');
 
   const locationConfig = {
     loading: {
       render: () => {
-        return (
-          <ActivityIndicator style={styles.spinnerStyle} size="large" color="green" />
-        );
-      }
+        return <ActivityIndicator style={styles.spinnerStyle} size="large" color="green" />;
+      },
     },
     locationDisabled: {
       render: () => {
         const locationIcon = !userLocation.enabled ? 'location-disabled' : !userLocation.location ? 'location-searching' : 'my-location';
         return (
           <>
-            <MaterialIcons style={styles.noLocationIconStyle} name='location-disabled' />
+            <MaterialIcons style={styles.noLocationIconStyle} name="location-disabled" />
             <Text style={styles.noLocationTextStyle}>{t('turn_on_location_services_to_show_aed')}</Text>
             <TouchableOpacity onPress={() => enableLocationTracking(true)}>
               <MaterialIcons style={styles.actLocationIconStyle} name={locationIcon} />
             </TouchableOpacity>
           </>
         );
-      }
+      },
     },
     noDefisNearYou: {
       render: () => {
-        return (
-          <Text style={styles.noLocationTextStyle}>{t('no_aed_close_to_you')}</Text>
-        );
-      }
+        return <Text style={styles.noLocationTextStyle}>{t('no_aed_close_to_you')}</Text>;
+      },
     },
     location: {
       render: () => {
-        const infoPanel = showInfo ?
-          <WarningInfoPanel
-            onButtonClick={updateShowInfo}
-            text={t('warning_not_all_aed_on_map')} />
-          : null;
+        const infoPanel = showInfo ? <WarningInfoPanel onButtonClick={updateShowInfo} text={t('warning_not_all_aed_on_map')} /> : null;
         return (
           <>
             <FlatList
@@ -57,7 +54,7 @@ const ListScreen = () => {
               keyExtractor={(def) => def.id.toString()}
               renderItem={({ item }) => {
                 return (
-                  <View style={styles.itemBorderStyle} >
+                  <View style={styles.itemBorderStyle}>
                     <DefiItem defibrillator={item} />
                   </View>
                 );
@@ -66,18 +63,23 @@ const ListScreen = () => {
             {infoPanel}
           </>
         );
-      }
-    }
-  }
-
-  const getLocationState = () => {
-    const defiNearLocCount = userLocation.location ? defisNearLocation.length : 0;
-    return !userLocation.enabled ? 'locationDisabled' : loading ? 'loading' : !userLocation.location || defiNearLocCount < 1 ? 'noDefisNearYou' : 'location';
+      },
+    },
   };
 
   useEffect(() => {
+    const getLocationState = () => {
+      const defiNearLocCount = userLocation.location ? defisNearLocation.length : 0;
+      return !userLocation.enabled
+        ? 'locationDisabled'
+        : loading
+          ? 'loading'
+          : !userLocation.location || defiNearLocCount < 1
+            ? 'noDefisNearYou'
+            : 'location';
+    };
     setCurrentConfig(getLocationState());
-  }, [userLocation, defisNearLocation]);
+  }, [userLocation, defisNearLocation, loading]);
 
   useEffect(() => {
     enableLocationTracking(true);
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
   iconStyle: {
     alignSelf: 'center',
     fontSize: 30,
-    color: 'white'
+    color: 'white',
   },
   noLocationIconStyle: {
     alignSelf: 'center',
@@ -132,8 +134,8 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'white'
-  }
+    backgroundColor: 'white',
+  },
 });
 
 export default ListScreen;

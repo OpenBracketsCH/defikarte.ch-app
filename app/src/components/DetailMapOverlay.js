@@ -1,13 +1,10 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import DefiItem from './DefiItem';
 
 const DetailMapOverlay = ({ defibrillator }) => {
   return (
     <View style={styles.containerStyle}>
-      <DefiItem
-        defibrillator={defibrillator}
-      />
+      <DefiItem defibrillator={defibrillator} />
     </View>
   );
 };
@@ -21,7 +18,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'lightgrey',
     borderWidth: 0.3,
-  }
+  },
 });
 
 export default DetailMapOverlay;

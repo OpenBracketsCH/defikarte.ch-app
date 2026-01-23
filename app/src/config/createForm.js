@@ -8,7 +8,7 @@ const openingHoursErrorsAndWarnings = (value) => {
     const oh = new opening_hours(value);
     const warnings = oh.getWarnings();
     msg = warnings.join(', ');
-  } catch (error) {
+  } catch {
     msg = 'error_openinghours';
   }
 
@@ -49,7 +49,7 @@ export default [
     placeholder: 'placeholder_level',
     defaultValue: '',
     errorMsg: 'error_level',
-    keyboardType: Platform.OS == 'ios' ? 'numbers-and-punctuation' : 'numeric',
+    keyboardType: Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric',
   },
   {
     name: 'description',

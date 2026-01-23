@@ -1,30 +1,38 @@
 {
   "expo": {
-    "name": "Defikarte.ch",
+    "name": "defikarte.ch",
     "slug": "Defikarte-ch",
     "owner": "defikarte",
-    "version": "1.0.46",
+    "version": "1.0.50",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["assets/*.png"],
+    "assetBundlePatterns": [
+      "assets/*.png"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ch.defikarte.app",
-      "buildNumber": "1.0.46",
-      "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": true
-      }
+      "buildNumber": "1.0.50",
+      "newArchEnabled": true
     },
     "android": {
       "package": "ch.defikarte.app",
-      "versionCode": 46,
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+      "versionCode": 50,
+      "icon": "./assets/android-icons/icon.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/android-icons/foreground.png",
+        "monochromeImage": "./assets/android-icons/foreground-monochrome.png",
+        "backgroundImage": "./assets/android-icons/background.png"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
       "config": {
         "googleMaps": {
           "apiKey": ""
@@ -34,7 +42,15 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-localization"],
+    "plugins": [
+      "expo-localization",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": true
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "1d176347-a834-4c1c-92e7-c0f4637108a0"

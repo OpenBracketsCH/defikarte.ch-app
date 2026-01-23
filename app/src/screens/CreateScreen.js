@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { t } from 'i18next';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,7 +11,7 @@ import createForm from '../config/createForm';
 import { Context as DefibrillatorContext } from '../context/DefibrillatorContext';
 import { trimStringValues } from '../helpers/stringHelpers';
 
-const CreateScreen = ({ navigation }) => {
+const CreateScreen = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const { state: defiState, addDefibrillator } = useContext(DefibrillatorContext);
   const [state, setState] = useState({ latitude: 0, longitude: 0, emergencyPhone: '144' });
@@ -34,11 +34,11 @@ const CreateScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const latlon = navigation.getParam('latlon');
+    const latlon = route.params?.latlon;
     if (latlon) {
-      setState({ ...state, latitude: latlon.latitude, longitude: latlon.longitude });
+      setState((prev) => ({ ...prev, latitude: latlon.latitude, longitude: latlon.longitude }));
     }
-  }, []);
+  }, [route.params?.latlon]);
 
   const renderFormComponent = () => {
     return createForm.map((formComp, index) => {

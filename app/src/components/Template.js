@@ -1,14 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 const Template = () => {
   return (
-    <View >
-      <Text>Template</Text>
+    <View>
+      <Text style={styles.example}>Template</Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({ example: {} });
 
 export default Template;

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import distanceBetweenPoints from '../helpers/coordinateCalc.js'
+import distanceBetweenPoints from '../helpers/coordinateCalc.js';
 
 export default (defibrillators, getDefibrillators, setDefisNearLocation, userLocation) => {
   const getDefisNearLocation = (defibrillators, location) => {
     return defibrillators
-      .filter(d => {
+      .filter((d) => {
         if (location) {
           const dist = distanceBetweenPoints(d.lat, d.lon, location.latitude, location.longitude);
           d.distance = dist;
@@ -19,17 +19,16 @@ export default (defibrillators, getDefibrillators, setDefisNearLocation, userLoc
         return d1.distance - d2.distance;
       });
   };
-
   useEffect(() => {
     getDefibrillators();
     const timerId = setTimeout(() => getDefibrillators(), 60000);
 
     return () => {
       clearTimeout(timerId);
-    }
-  }, [])
+    };
+  }, []);
 
   useEffect(() => {
-    setDefisNearLocation(getDefisNearLocation(defibrillators, userLocation.location))
-  }, [defibrillators, userLocation.location])
-}
+    setDefisNearLocation(getDefisNearLocation(defibrillators, userLocation.location));
+  }, [defibrillators, userLocation.location]);
+};

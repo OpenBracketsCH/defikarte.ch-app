@@ -1,3 +1,5 @@
 {
-  "NSLocationWhenInUseUsageDescription": "Otterrai la distanza ai defibrillatori nelle vicinanze, potrai facilmente crearne di nuovi nella tua posizione e localizzarti quando attiverai i servizi di localizzazione per Defikarte.ch."
+  "ios": {
+    "NSLocationWhenInUseUsageDescription": "Otterrai la distanza ai defibrillatori nelle vicinanze, potrai facilmente crearne di nuovi nella tua posizione e localizzarti quando attiverai i servizi di localizzazione per Defikarte.ch."
+  }
 }

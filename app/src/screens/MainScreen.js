@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import { t } from 'i18next';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { AppState, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { AppState, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LocationError from '../components/LocationError';
 import Map from '../components/Map';
@@ -10,7 +10,7 @@ import { Context as LocationContext } from '../context/LocationContext';
 import useDefibrillators from '../hooks/useDefibrillators';
 import useLocation from '../hooks/useLocation';
 
-const MainScreen = ({ navigation }) => {
+const MainScreen = ({ navigation, route }) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const insets = useSafeAreaInsets();
@@ -26,12 +26,26 @@ const MainScreen = ({ navigation }) => {
   const [isCreateMode, setIsCreateMode] = useState(false);
 
   const animateToRegion = ({ latitude, longitude }) => {
+    if (!mapRef.current) return;
     mapRef.current.animateToRegion({
       latitude,
       longitude,
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
     });
+
+    // workaround to trigger onRegionChangeComplete because animateToRegion does not always trigger the region change event,
+    // especially when being on a low zoom level and animating to the user's location.
+    setTimeout(
+      () =>
+        mapRef.current.animateToRegion({
+          latitude,
+          longitude,
+          latitudeDelta: 0.01001,
+          longitudeDelta: 0.01001,
+        }),
+      100
+    );
   };
 
   useEffect(() => {
@@ -42,11 +56,11 @@ const MainScreen = ({ navigation }) => {
   }, [userLocation]);
 
   useEffect(() => {
-    const latlng = navigation.getParam('latlng');
+    const latlng = route.params?.latlng;
     if (latlng) {
       animateToRegion(latlng);
     }
-  }, [navigation]);
+  }, [route]);
 
   useEffect(() => {
     if (locationErr) {
@@ -59,15 +73,10 @@ const MainScreen = ({ navigation }) => {
   }, [locationErr]);
 
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      AppState.addEventListener('focus', _handleAppStateFocus);
-    } else if (Platform.OS === 'ios') {
-      AppState.addEventListener('change', _handleAppStateChange);
-    }
+    const subscription = AppState.addEventListener('change', _handleAppStateChange);
 
     return () => {
-      AppState.removeEventListener('focus', _handleAppStateFocus);
-      AppState.removeEventListener('change', _handleAppStateChange);
+      subscription.remove();
     };
   }, []);
 
@@ -80,12 +89,10 @@ const MainScreen = ({ navigation }) => {
   }, [appStateVisible]);
 
   const _handleAppStateChange = (nextAppState) => {
-    appState.current = nextAppState;
-    setAppStateVisible(appState.current);
-  };
-
-  const _handleAppStateFocus = () => {
-    setAppStateVisible('active');
+    if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    }
   };
 
   let bottomBar = { ...styles.bottomBar };

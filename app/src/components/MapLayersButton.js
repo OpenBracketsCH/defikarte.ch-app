@@ -1,6 +1,5 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 const LocationButton = ({ setLayerActive, layerIsActive }) => {
   const layerIcon = layerIsActive ? 'layers' : 'layers-outline';

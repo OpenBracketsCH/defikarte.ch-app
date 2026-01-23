@@ -1,6 +1,5 @@
 import { Feather } from '@expo/vector-icons';
 import { t } from 'i18next';
-import React from 'react';
 import { Linking, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { UrlTile } from 'react-native-maps';
 import openMap from 'react-native-open-maps';
@@ -9,9 +8,9 @@ import AttributeListing from '../components/AttributeListing';
 import DefiMarker from '../components/DefiMarker';
 import OsmContributerOverlay from '../components/OsmContributerOverlay';
 
-const DetailScreen = ({ navigation }) => {
+const DetailScreen = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
-  const defibrillator = navigation.getParam('defibrillator');
+  const defibrillator = route.params?.defibrillator;
 
   const initCoords = {
     latitude: defibrillator.lat,
@@ -20,7 +19,7 @@ const DetailScreen = ({ navigation }) => {
     longitudeDelta: 0.001,
   };
 
-  makeCall = (phoneNumber) => {
+  const makeCall = (phoneNumber) => {
     if (Platform.OS === 'ios') {
       phoneNumber = `telprompt:${phoneNumber}`;
     } else {

@@ -37,9 +37,12 @@ yarn-error.*
 .env
 
 android
+ios
 
 **/*.apk
 
 *.ipa
 *.aab
 *.apk
+*.jar
+*.apks

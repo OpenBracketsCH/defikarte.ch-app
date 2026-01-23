@@ -1,5 +1,5 @@
-import createDataContext from './createDataContext';
 import defikarteBackend from '../api/defikarteBackend';
+import createDataContext from './createDataContext';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -10,7 +10,7 @@ const reducer = (state, action) => {
           ...state.defibrillators.filter((d) => {
             let inOsm = false;
             action.payload.forEach((n) => {
-              if (n.id == d.id) {
+              if (n.id === d.id) {
                 inOsm = true;
               }
             });
@@ -40,7 +40,7 @@ const getDefibrillators = (dispatch) => {
       dispatch({ type: 'update_loading', payload: true });
       const response = await defikarteBackend.get('/defibrillator');
       dispatch({ type: 'update_all', payload: response.data });
-    } catch (error) {
+    } catch {
       dispatch({ type: 'update_error', payload: { code: 'error_aed_not_loaded', additionalMessage: '' } });
     } finally {
       dispatch({ type: 'update_loading', payload: false });
