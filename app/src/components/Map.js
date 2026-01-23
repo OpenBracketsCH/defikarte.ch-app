@@ -23,6 +23,10 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
   const [isTileOverlayActive, setIsTileOverlayActive] = useState(false);
   const [spatialIndex, setSpatialIndex] = useState(null);
 
+  const onRegionChangeComplete = (newRegion) => {
+    setRegion(newRegion);
+  };
+
   const animateToRegion = ({ latitude, longitude }) => {
     if (!mapRef.current) return;
     mapRef.current.animateToRegion({
@@ -31,6 +35,19 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
     });
+
+    // workaround to trigger onRegionChangeComplete because animateToRegion does not always trigger the region change event,
+    // especially when being on a low zoom level and animating to the user's location.
+    setTimeout(
+      () =>
+        mapRef.current.animateToRegion({
+          latitude,
+          longitude,
+          latitudeDelta: 0.01001,
+          longitudeDelta: 0.01001,
+        }),
+      100
+    );
   };
 
   // Create spatial index when defibrillators are loaded or updated
@@ -152,7 +169,7 @@ const Map = ({ initCoords, mapRef, defibrillators, defibrillatorsLoading, isCrea
         initialRegion={initCoords}
         showsUserLocation
         followsUserLocation={false}
-        onRegionChangeComplete={setRegion}
+        onRegionChangeComplete={(r, _) => onRegionChangeComplete(r)}
         spiralEnabled={true}
         clusterColor="#67af51"
         clusterTextColor="#fff"

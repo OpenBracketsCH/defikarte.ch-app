@@ -33,6 +33,19 @@ const MainScreen = ({ navigation, route }) => {
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
     });
+
+    // workaround to trigger onRegionChangeComplete because animateToRegion does not always trigger the region change event,
+    // especially when being on a low zoom level and animating to the user's location.
+    setTimeout(
+      () =>
+        mapRef.current.animateToRegion({
+          latitude,
+          longitude,
+          latitudeDelta: 0.01001,
+          longitudeDelta: 0.01001,
+        }),
+      100
+    );
   };
 
   useEffect(() => {
