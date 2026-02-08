@@ -55,11 +55,11 @@ namespace DefikarteBackend.Services
 
                     foreach (var feature in featureCollection.Features)
                     {
-                        if (feature.Properties.TryGetValue("label", out var label) && !string.IsNullOrEmpty(label))
+                        if (feature.SwisstopoProperties.TryGetValue("label", out var label) && !string.IsNullOrEmpty(label?.ToString()))
                         {
-                            var values = CleanLabelContent(label);
-                            feature.Properties["addressPrimary"] = values != null && values.Count > 0 ? values[0] : string.Empty;
-                            feature.Properties["addressSecondary"] = values != null && values.Count > 1 ? values[1] : string.Empty;
+                            var values = CleanLabelContent(label.ToString());
+                            feature.SwisstopoProperties["addressPrimary"] = values != null && values.Count > 0 ? values[0] : string.Empty;
+                            feature.SwisstopoProperties["addressSecondary"] = values != null && values.Count > 1 ? values[1] : string.Empty;
                         }
                     }
 
