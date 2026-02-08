@@ -10,6 +10,7 @@ namespace DefikarteBackend.Model
     }
 
     public class FeatureCollection<TFeature>
+        where TFeature : Feature
     {
         public string Type { get; set; } = "FeatureCollection";
 
