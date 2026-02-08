@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace DefikarteBackend.Services
 {
-    public class AddressSearchService : IAddressSearchService
+    public class SwisstopoAddressSearchService : IAddressSearchService
     {
         private static readonly string ICON_TAG = "<i>";
         private static readonly string ICON_TAG_END = "</i>";
@@ -15,9 +15,9 @@ namespace DefikarteBackend.Services
         private static readonly List<string> TAG_LIST = [ICON_TAG, ICON_TAG_END, BOLD_TAG, BOLD_TAG_END];
 
         private readonly IServiceConfiguration _configuration;
-        private readonly ILogger<AddressSearchService> _logger;
+        private readonly ILogger<SwisstopoAddressSearchService> _logger;
 
-        public AddressSearchService(IServiceConfiguration configuration, ILogger<AddressSearchService> logger)
+        public SwisstopoAddressSearchService(IServiceConfiguration configuration, ILogger<SwisstopoAddressSearchService> logger)
         {
             _configuration = configuration;
             _logger = logger;
@@ -47,7 +47,7 @@ namespace DefikarteBackend.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(jsonString);
+                    var featureCollection = JsonConvert.DeserializeObject<FeatureCollection<SwisstopoFeature>>(jsonString);
                     if (featureCollection == null)
                     {
                         return null;
@@ -55,15 +55,15 @@ namespace DefikarteBackend.Services
 
                     foreach (var feature in featureCollection.Features)
                     {
-                        if (feature.Properties.TryGetValue("label", out var label) && !string.IsNullOrEmpty(label))
+                        if (feature.SwisstopoProperties.TryGetValue("label", out var label) && !string.IsNullOrEmpty(label?.ToString()))
                         {
-                            var values = CleanLabelContent(label);
-                            feature.Properties["addressPrimary"] = values != null && values.Count > 0 ? values[0] : string.Empty;
-                            feature.Properties["addressSecondary"] = values != null && values.Count > 1 ? values[1] : string.Empty;
+                            var values = CleanLabelContent(label.ToString());
+                            feature.SwisstopoProperties["addressPrimary"] = values != null && values.Count > 0 ? values[0] : string.Empty;
+                            feature.SwisstopoProperties["addressSecondary"] = values != null && values.Count > 1 ? values[1] : string.Empty;
                         }
                     }
 
-                    return featureCollection;
+                    return ConvertToFeatureCollection(featureCollection);
                 }
             }
             catch (Exception ex)
@@ -92,6 +92,14 @@ namespace DefikarteBackend.Services
                 .Skip(index + 1)
                 .Where(part => !TAG_LIST.Contains(part))
                 .ToList();
+        }
+
+        private static FeatureCollection ConvertToFeatureCollection(FeatureCollection<SwisstopoFeature> source)
+        {
+            return new FeatureCollection
+            {
+                Features = source.Features.Select(f => (Feature)f).ToList(),
+            };
         }
     }
 }

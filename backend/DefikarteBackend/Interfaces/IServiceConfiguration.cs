@@ -23,5 +23,7 @@
         string OverpassApiUrl { get; }
 
         string AddressSearchUrl { get; }
+
+        string MaptilerApiKey { get; }
     }
 }
