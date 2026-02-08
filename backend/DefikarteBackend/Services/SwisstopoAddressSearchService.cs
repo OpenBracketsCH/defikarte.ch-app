@@ -47,7 +47,7 @@ namespace DefikarteBackend.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(jsonString);
+                    var featureCollection = JsonConvert.DeserializeObject<FeatureCollection<SwisstopoFeature>>(jsonString);
                     if (featureCollection == null)
                     {
                         return null;
@@ -63,7 +63,7 @@ namespace DefikarteBackend.Services
                         }
                     }
 
-                    return featureCollection;
+                    return ConvertToFeatureCollection(featureCollection);
                 }
             }
             catch (Exception ex)
@@ -92,6 +92,14 @@ namespace DefikarteBackend.Services
                 .Skip(index + 1)
                 .Where(part => !TAG_LIST.Contains(part))
                 .ToList();
+        }
+
+        private static FeatureCollection ConvertToFeatureCollection(FeatureCollection<SwisstopoFeature> source)
+        {
+            return new FeatureCollection
+            {
+                Features = source.Features.Select(f => (Feature)f).ToList(),
+            };
         }
     }
 }

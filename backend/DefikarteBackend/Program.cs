@@ -79,7 +79,7 @@ internal class Program
                 services.AddTransient<IValidator<DefibrillatorRequestV2>, DefibrillatorRequestValidatorV2>();
                 services.AddTransient<IValidator<FeatureCollection>, FeatureCollectionValidator>();
 
-                services.AddTransient<IAddressSearchService, MaptilerAddressSearchService>();
+                services.AddTransient<IAddressSearchService, SwisstopoAddressSearchService>();
 
                 services.AddSingleton<IGeofenceService, GeofenceService>();
                 RegisterNtsGeometryServices(services);
