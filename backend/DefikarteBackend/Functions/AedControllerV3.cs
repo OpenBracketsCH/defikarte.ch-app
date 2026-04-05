@@ -171,7 +171,7 @@ namespace DefikarteBackend.Functions
                 {
                     var coordinates = feature.Geometry.Coordinates;
                     var isInSwitzerland = await _localisationService.IsSwitzerlandAsync(coordinates[1], coordinates[0]).ConfigureAwait(false);
-                    var newNode = CreateNode(feature, isInSwitzerland, false);
+                    var newNode = CreateNode(feature, isInSwitzerland, null);
 
                     newNode.ChangeSetId = changeSetId;
                     var nodeId = await osmClient.CreateElement(changeSetId, newNode);
@@ -243,7 +243,7 @@ namespace DefikarteBackend.Functions
                 var clientFactory = new ClientsFactory(_logger, _httpClient, osmApiUrl);
                 var osmClient = clientFactory.CreateOAuth2Client(osmApiToken);
                 var currentNode = await osmClient.GetNode(id);
-                var node = CreateNode(feature, isInSwitzerland, true);
+                var node = CreateNode(feature, isInSwitzerland, currentNode.Tags);
                 node.Id = id;
                 node.Version = currentNode.Version;
 
@@ -273,7 +273,7 @@ namespace DefikarteBackend.Functions
             }
         }
 
-        private static Node CreateNode(Feature feature, bool isInSwitzerland, bool keepAdditionalProps)
+        private static Node CreateNode(Feature feature, bool isInSwitzerland, TagsCollectionBase? currentNodeTags)
         {
             var props = GeoJsonConverter.Convert2AedPropertyData(feature.Properties);
             var emergencyPhone = isInSwitzerland
@@ -298,6 +298,9 @@ namespace DefikarteBackend.Functions
                     "phone", props.OperatorPhone
                 },
                 {
+                    "email", props.OperatorEmail
+                },
+                {
                     "operator", props.Operator
                 },
                 {
@@ -318,15 +321,14 @@ namespace DefikarteBackend.Functions
                 },
             };
 
-            if (keepAdditionalProps)
+            if (currentNodeTags != null)
             {
-                var keysToIgnore = new List<string> { "reporter", "changesetId", "timestamp", "userId", "userName", "version" };
-                // Add also not supported props in case of update scenarios
-                foreach (var property in feature.Properties)
+                // Preserve existing tags from the current OSM node that are not already set
+                foreach (var tag in currentNodeTags)
                 {
-                    if (!tags.ContainsKey(property.Key) && !keysToIgnore.Contains(property.Key, StringComparer.OrdinalIgnoreCase))
+                    if (!tags.ContainsKey(tag.Key))
                     {
-                        tags[property.Key] = property.Value?.ToString();
+                        tags[tag.Key] = tag.Value;
                     }
                 }
             }
