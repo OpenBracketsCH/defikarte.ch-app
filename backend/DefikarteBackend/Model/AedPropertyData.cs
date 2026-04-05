@@ -10,6 +10,8 @@
 
         public string? OperatorPhone { get; set; }
 
+        public string? OperatorEmail { get; set; }
+
         public string? Access { get; set; }
 
         public string? Indoor { get; set; }
