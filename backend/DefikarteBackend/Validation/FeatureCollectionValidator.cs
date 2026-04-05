@@ -42,7 +42,7 @@ namespace DefikarteBackend.Validation
                 RuleFor(x => x.Location).NotEmpty().MaximumLength(200);
                 RuleFor(x => x.Description).MaximumLength(200);
                 RuleFor(x => x.OperatorPhone).Custom((value, context) => IsPhoneNumberValid(value, context)).When(x => !string.IsNullOrEmpty(x.OperatorPhone));
-                RuleFor(x => x.OperatorEmail).EmailAddress().When(x => !string.IsNullOrEmpty(x.OperatorEmail)).WithMessage("Email not valid");
+                RuleFor(x => x.OperatorEmail).EmailAddress().When(x => !string.IsNullOrEmpty(x.OperatorEmail)).WithMessage("GeoJSON property 'email' is not a valid email address");
                 RuleFor(x => x.Access).Custom((value, context) => IsAccessValid(value, context));
                 RuleFor(x => x.Indoor).NotEmpty().Custom((value, context) => IsIndoorValid(value, context));
                 RuleFor(x => x.Level).Custom((value, context) => IsNumber(value, context));

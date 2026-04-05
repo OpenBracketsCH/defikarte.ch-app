@@ -280,7 +280,7 @@ namespace DefikarteBackend.Functions
                 ? "144"
                 : string.Empty;
 
-            var tags = new Dictionary<string, string?>
+            var tags = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase)
             {
                 {
                     "emergency", "defibrillator"
