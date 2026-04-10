@@ -69,6 +69,7 @@ namespace DefikarteBackend.Helpers
                 Operator = props.TryGetValue("Operator", out var op) ? op : null,
                 Source = props.TryGetValue("Source", out var source) ? source : null,
                 OpeningHours = props.TryGetValue("opening_hours", out var openingHours) ? openingHours : null,
+                OperatorEmail = props.TryGetValue("email", out var operatorEmail) ? operatorEmail : null,
             };
         }
     }
